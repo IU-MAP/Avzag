@@ -7,3 +7,5 @@ The goal of the project is to develop a cross-lingual dictionary with efficient 
 ## Project setup
 
 After donwloading the repo for the first time `npm update`. To run the app locally `npm run serve`.
+
+### TODO
