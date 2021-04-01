@@ -45,6 +45,8 @@ const routes = [
 ] as RouteRecordRaw[];
 
 export default createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(
+    process.env.NODE_ENV === "production" ? "/Avzag/" : "/"
+  ),
   routes,
 });
