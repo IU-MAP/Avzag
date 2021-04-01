@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: "/Avzag",
   productionSourceMap: false,
   configureWebpack: {
     devtool: "source-map",
