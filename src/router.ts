@@ -5,10 +5,8 @@ const Home = () => import("@/Home/index.vue");
 const Navigation = () => import("@/Navigation.vue");
 const EditorNavigation = () => import("@/EditorNavigation.vue");
 
-// const Phonology = () => import("@/Phonology/index.vue");
 const Dictionary = () => import("@/Dictionary/index.vue");
-
-// const PhonologyEditor = () => import("@/Phonology/Editor.vue");
+const DictionaryEditor = () => import("@/Dictionary/Editor.vue");
 
 const routes = [
   {
@@ -31,11 +29,11 @@ const routes = [
     path: "/editor/",
     component: EditorNavigation,
     children: [
-      // {
-      //   path: "phrasebook/corpus",
-      //   name: "PhrasebookCorpusEditor",
-      //   component: PhrasebookCorpusEditor,
-      // },
+      {
+        path: "dictionary",
+        name: "DictionaryEditor",
+        component: DictionaryEditor,
+      },
     ],
   },
   {

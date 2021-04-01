@@ -41,8 +41,8 @@ export default defineComponent({
 
     const menus = [
       {
-        text: "Phrasebook Corpus",
-        name: "PhrasebookCorpusEditor",
+        text: "Dictionary",
+        name: "DictionaryEditor",
       },
     ];
     const menu = ref((route.name ?? menus[0].name) as string);
