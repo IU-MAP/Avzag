@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Avzag/404.html"
   },
   {
-    "revision": "3e1491dda8dcfac11eac",
+    "revision": "a2179610106c007bff94",
     "url": "/Avzag/css/app.adb2f4cc.css"
   },
   {
@@ -28,12 +28,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Avzag/icon.png"
   },
   {
-    "revision": "3781e55cdc6dc5167263c644d9972f8d",
+    "revision": "6b420954b6b62905bfcb4d67bcbf559c",
     "url": "/Avzag/index.html"
   },
   {
-    "revision": "3e1491dda8dcfac11eac",
-    "url": "/Avzag/js/app.2af900b4.js"
+    "revision": "a2179610106c007bff94",
+    "url": "/Avzag/js/app.5cf1055d.js"
   },
   {
     "revision": "4eed412e62ecb7d214cf",
