@@ -40,18 +40,18 @@ export default defineComponent({
     const router = useRouter();
 
     const menus = [
-      {
-        text: "Phonology",
-        name: "PhonologyEditor",
-      },
-      {
-        text: "Converter",
-        name: "ConverterEditor",
-      },
-      {
-        text: "Phrasebook",
-        name: "PhrasebookEditor",
-      },
+      // {
+      //   text: "Phonology",
+      //   name: "PhonologyEditor",
+      // },
+      // {
+      //   text: "Converter",
+      //   name: "ConverterEditor",
+      // },
+      // {
+      //   text: "Phrasebook",
+      //   name: "PhrasebookEditor",
+      // },
       {
         text: "Phrasebook Corpus",
         name: "PhrasebookCorpusEditor",
