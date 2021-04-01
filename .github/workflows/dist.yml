@@ -18,6 +18,7 @@ jobs:
           npm run build
         env:
           CI: true
+          VUE_APP_STORE: https://raw.githubusercontent.com/IU-MAP/Avzag/store/
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
