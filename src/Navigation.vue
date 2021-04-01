@@ -22,9 +22,6 @@ export default defineComponent({
     return {
       menus: [
         { icon: "arrow_back", name: "Home" },
-        // { icon: "audiotrack", text: "Phonology" },
-        // { icon: "sync_alt", text: "Converter" },
-        // { icon: "chat", text: "Phrasebook" },
         { icon: "book", text: "Dictionary" },
       ],
     };

@@ -5,15 +5,10 @@ const Home = () => import("@/Home/index.vue");
 const Navigation = () => import("@/Navigation.vue");
 const EditorNavigation = () => import("@/EditorNavigation.vue");
 
-const Phonology = () => import("@/Phonology/index.vue");
-const Converter = () => import("@/Converter/index.vue");
-const Phrasebook = () => import("@/Phrasebook/index.vue");
+// const Phonology = () => import("@/Phonology/index.vue");
 const Dictionary = () => import("@/Dictionary/index.vue");
 
-const PhonologyEditor = () => import("@/Phonology/Editor.vue");
-const ConverterEditor = () => import("@/Converter/Editor.vue");
-const PhrasebookEditor = () => import("@/Phrasebook/Editor.vue");
-const PhrasebookCorpusEditor = () => import("@/Phrasebook/CorpusEditor.vue");
+// const PhonologyEditor = () => import("@/Phonology/Editor.vue");
 
 const routes = [
   {
@@ -26,21 +21,6 @@ const routes = [
     component: Navigation,
     children: [
       {
-        path: "phonology",
-        name: "Phonology",
-        component: Phonology,
-      },
-      {
-        path: "converter",
-        name: "Converter",
-        component: Converter,
-      },
-      {
-        path: "phrasebook",
-        name: "Phrasebook",
-        component: Phrasebook,
-      },
-      {
         path: "dictionary",
         name: "Dictionary",
         component: Dictionary,
@@ -51,26 +31,11 @@ const routes = [
     path: "/editor/",
     component: EditorNavigation,
     children: [
-      {
-        path: "phonology",
-        name: "PhonologyEditor",
-        component: PhonologyEditor,
-      },
-      {
-        path: "converter",
-        name: "ConverterEditor",
-        component: ConverterEditor,
-      },
-      {
-        path: "phrasebook",
-        name: "PhrasebookEditor",
-        component: PhrasebookEditor,
-      },
-      {
-        path: "phrasebook/corpus",
-        name: "PhrasebookCorpusEditor",
-        component: PhrasebookCorpusEditor,
-      },
+      // {
+      //   path: "phrasebook/corpus",
+      //   name: "PhrasebookCorpusEditor",
+      //   component: PhrasebookCorpusEditor,
+      // },
     ],
   },
   {

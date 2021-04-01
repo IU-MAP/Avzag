@@ -7,9 +7,6 @@ import { watchEffect, defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { lects } from "./store";
 
-import "./Phonology/main";
-import "./Converter/main";
-import "./Phrasebook/main";
 import "./Dictionary/main";
 
 export default defineComponent({
@@ -31,8 +28,7 @@ export default defineComponent({
       const name = route.name as string;
       if (!name) return;
       localStorage.url = route.path;
-      if (["Phonology", "Converter", "Phrasebook", "Dictionary"].includes(name))
-        localStorage.urlUser = route.path;
+      if (["Dictionary"].includes(name)) localStorage.urlUser = route.path;
     });
   },
 });
