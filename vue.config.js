@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: "/Avzag/",
+  publicPath: process.env.NODE_ENV === "production" ? "/Avzag/" : "/",
   productionSourceMap: false,
   configureWebpack: {
     devtool: "source-map",
