@@ -12,12 +12,6 @@
     "tags": "Caucasian Alanian"
   },
   {
-    "name": "Kabardian",
-    "point": [42.769419, 43.762647],
-    "family": ["Northwest Caucasian", "Circassian"],
-    "tags": "Caucasian Pontic Adyghe"
-  },
-  {
     "name": "Keren",
     "point": [47.546501, 41.707224],
     "family": ["Northeast Caucasian", "Lezgic", "Aghul"],
