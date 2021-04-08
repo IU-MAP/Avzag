@@ -7,7 +7,7 @@ This repo is a fork of [Avzag](https://github.com/alkaitagi/Avzag) project for _
 
 The goal of the project is to develop a cross-lingual dictionary with efficient search and rich data representation. The system should provide capability for searching offline, and in various grammatical forms and usage samples for the dictionary entries.
 
-Our backlog can be found in the ["Projects" -> "Dictionary"](https://github.com/IU-MAP/Avzag/projects/1) section. 
+Our backlog can be found in the ["Projects" -> "Dictionary"](https://github.com/IU-MAP/Avzag/projects/1) section.
 
 ## Project setup
 
