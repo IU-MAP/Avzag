@@ -1,9 +1,6 @@
 {
   "root": true,
-  "env": {
-    "node": true,
-    "jest/globals": true
-  },
+  "env": { "node": true },
   "extends": [
     "eslint:recommended",
     "@vue/typescript",
