@@ -1,6 +1,7 @@
 # Avzag Dictionary
 
 ![deployment status](https://github.com/IU-MAP/Avzag/actions/workflows/dist.yml/badge.svg)
+![code quality](https://github.com/IU-MAP/Avzag/actions/workflows/lint.yml/badge.svg)
 
 This repo is a fork of [Avzag](https://github.com/alkaitagi/Avzag) project for _IU-S21-MAP_ course. During the course the **team** of [@QazybekAsqarbek](https://github.com/IU-MAP/QazyBi), [@alkaitagi](https://github.com/alkaitagi/), [@annwhoorma](https://github.com/annwhoorma) will develop the new Dictionary module for the application. The web site is written using VueJS framework in TypeScript language.
 
