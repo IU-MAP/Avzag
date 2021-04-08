@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Avzag/404.html"
   },
   {
-    "revision": "fcd0a02d6e1a70dc9c9b",
+    "revision": "5985978ebb4a0fb51214",
     "url": "/Avzag/css/app.adb2f4cc.css"
   },
   {
@@ -12,11 +12,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Avzag/css/chunk-5009582e.04fc3d56.css"
   },
   {
-    "revision": "e496ea9300e1894b724d",
+    "revision": "0130069be4d240b857cd",
     "url": "/Avzag/css/chunk-71fdc79e.a0f278fc.css"
   },
   {
-    "revision": "89b6e9a2c0ed692643aa",
+    "revision": "2712f7397f2bbb78ed18",
     "url": "/Avzag/css/chunk-81f284b8.06585a28.css"
   },
   {
@@ -28,12 +28,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Avzag/icon.png"
   },
   {
-    "revision": "b4e94fc88241b1c4d473caba10189b9a",
+    "revision": "94ed7a6d59442370479e4156793e8442",
     "url": "/Avzag/index.html"
   },
   {
-    "revision": "fcd0a02d6e1a70dc9c9b",
-    "url": "/Avzag/js/app.f012c11e.js"
+    "revision": "5985978ebb4a0fb51214",
+    "url": "/Avzag/js/app.1c197471.js"
   },
   {
     "revision": "4eed412e62ecb7d214cf",
@@ -44,20 +44,20 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Avzag/js/chunk-5009582e.5199678d.js"
   },
   {
-    "revision": "e496ea9300e1894b724d",
-    "url": "/Avzag/js/chunk-71fdc79e.8e519f7e.js"
+    "revision": "0130069be4d240b857cd",
+    "url": "/Avzag/js/chunk-71fdc79e.5637268d.js"
   },
   {
-    "revision": "89b6e9a2c0ed692643aa",
-    "url": "/Avzag/js/chunk-81f284b8.6f5c02f3.js"
+    "revision": "2712f7397f2bbb78ed18",
+    "url": "/Avzag/js/chunk-81f284b8.c60d9e55.js"
   },
   {
     "revision": "641c8d295280f41dd8ae",
     "url": "/Avzag/js/chunk-ba1b15c8.fe5a4447.js"
   },
   {
-    "revision": "fb5cdf142ecbfdaf8a5f",
-    "url": "/Avzag/js/chunk-vendors.223bad5f.js"
+    "revision": "1e3c7157bc9dcddadf7f",
+    "url": "/Avzag/js/chunk-vendors.6d257cb4.js"
   },
   {
     "revision": "d1b41ee98e74a49690e154ba9680260d",
