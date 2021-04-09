@@ -20,5 +20,5 @@ jobs:
 
     - name: Install and Test 🔧
       run: |
-        npm ci
-        npm test
+        yarn ci
+        yarn test
