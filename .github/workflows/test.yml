@@ -20,5 +20,5 @@ jobs:
 
     - name: Install and Test 🔧
       run: |
-        yarn ci
+        yarn install
         yarn test
