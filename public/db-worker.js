@@ -9,7 +9,6 @@ async function fillDB(dictionaries) {
   }
 
   const lects = Object.keys(dictionaries);
-  console.log("lects", lects);
   const tx = db.transaction(lects, "readwrite");
   await Promise.all(lects.flatMap((l) => fillLect(l, dictionaries[l])));
 }
@@ -36,7 +35,6 @@ async function load(lects) {
 }
 
 onmessage = (e) => {
-  console.log("received msg");
   const args = e.data.split("+");
   root = args[0];
   load(args[1].split("."));
