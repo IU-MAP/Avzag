@@ -1,4 +1,4 @@
-import { loadJSON, lects } from "@/store";
+import { loadJSON, lects, root } from "@/store";
 import { reactive, shallowRef, watch } from "vue";
 import { DictionaryMeta } from "./types";
 import { deleteDB, IDBPDatabase, openDB } from "idb";
@@ -38,5 +38,5 @@ watch(lects, async () => {
   dictionaryMeta.value = await loadJSON("dictionary");
 
   await cleanDB();
-  worker.postMessage("db");
+  worker.postMessage([root, lects.value]);
 });
