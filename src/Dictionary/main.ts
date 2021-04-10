@@ -1,5 +1,5 @@
 import { loadLectsJSON, loadJSON, lects } from "@/store";
-import { computed, shallowRef, watch } from "vue";
+import { shallowRef, watch } from "vue";
 import { Entry, Search, DictionaryMeta } from "./types";
 import { IDBPDatabase, openDB } from "idb";
 
@@ -7,7 +7,7 @@ let db: IDBPDatabase;
 
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const dictionaries = shallowRef<Record<string, Entry[]>>({});
-export const dLects = computed(() => Object.keys(dictionaries.value));
+export const dLects = shallowRef([] as string[]);
 
 async function cleanDB(lects: string[]) {
   const tx = db.transaction(lects, "readwrite");
@@ -35,13 +35,19 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
 }
 
 watch(lects, async () => {
-  console.log("DB load started...");
-  const t = Date.now();
-
   dictionaries.value = {};
   dictionaryMeta.value = undefined;
   dictionaries.value = await loadLectsJSON<Entry[]>("dictionary");
   dictionaryMeta.value = await loadJSON("dictionary");
+  dLects.value = Object.keys(dictionaries.value);
+
+  console.log(
+    "DB entries: ",
+    Object.values(dictionaries.value).reduce((s, d) => s + d.length, 0)
+  );
+
+  const t = Date.now();
+  console.log("DB building...");
 
   if (!db)
     db = await openDB("avzag", 1, {
@@ -56,7 +62,7 @@ watch(lects, async () => {
   await cleanDB(dLects.value);
   await fillDB(dictionaries.value);
 
-  console.log("DB load ended: ", (Date.now() - t) / 1000, "sec.");
+  console.log("DB loaded: ", (Date.now() - t) / 1000, "sec.");
 });
 
 async function queryDictionaries(query: string[], queryMode: string) {
