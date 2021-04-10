@@ -9,7 +9,35 @@ export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const dictionaries = shallowRef<Record<string, Entry[]>>({});
 export const dLects = computed(() => Object.keys(dictionaries.value));
 
+async function cleanDB(lects: string[]) {
+  const tx = db.transaction(lects, "readwrite");
+  await Promise.all(lects.map((l) => tx.objectStore(l).clear()));
+}
+
+async function fillDB(dictionaries: Record<string, Entry[]>) {
+  async function fillLect(lect: string, dictionary: Entry[]) {
+    const st = tx.objectStore(lect);
+    return Promise.all(
+      dictionary.map((d) => st.put(d /* , d.forms[0].text.plain */))
+    );
+  }
+  const lects = Object.keys(dictionaries);
+  const tx = db.transaction(lects, "readwrite");
+
+  await fillLect(lects[0], dictionaries[lects[0]]);
+  // await Promise.all(
+  //   lects.flatMap((l) =>
+  //     dictionaries[l].map((d) =>
+  //       tx.objectStore(l).put(d, d.forms[0].text.plain)
+  //     )
+  //   )
+  // );
+}
+
 watch(lects, async () => {
+  console.log("DB load started...");
+  const t = Date.now();
+
   dictionaries.value = {};
   dictionaryMeta.value = undefined;
   dictionaries.value = await loadLectsJSON<Entry[]>("dictionary");
@@ -24,22 +52,15 @@ watch(lects, async () => {
         });
       },
     });
-  await Promise.all(
-    dLects.value.map(async (l) => {
-      const d = dictionaries.value[l];
-      const tx = db.transaction(l, "readwrite");
-      return await Promise.all(
-        d.map((d) => tx.store.put(d, d.forms[0].text.plain))
-      );
-    })
-  );
+
+  await cleanDB(dLects.value);
+  await fillDB(dictionaries.value);
+
+  console.log("DB load ended: ", (Date.now() - t) / 1000, "sec.");
 });
 
-async function queryDictionaries(
-  ss_: symbol,
-  query: string[],
-  queryMode: string
-) {
+async function queryDictionaries(query: string[], queryMode: string) {
+  const ss_ = ss;
   function fits(e: Entry) {
     const area = queryMode === "Tags" ? e.tags ?? "" : e.translation;
     return query.some((q) => area?.includes(q));
@@ -66,7 +87,8 @@ async function queryDictionaries(
   return search;
 }
 
-async function findTranslations(ss_: symbol, lect: string, query: string[]) {
+async function findTranslations(lect: string, query: string[]) {
+  const ss_ = ss;
   const translations = new Set<string>();
   let cr = await db.transaction(lect).store.openCursor();
   while (cr) {
@@ -88,10 +110,6 @@ export async function search(
   if (!db) return {};
   ss = Symbol("srch");
   return !lect
-    ? queryDictionaries(ss, query, queryMode)
-    : queryDictionaries(
-        ss,
-        await findTranslations(ss, lect, query),
-        "Translation"
-      );
+    ? queryDictionaries(query, queryMode)
+    : queryDictionaries(await findTranslations(lect, query), "Translation");
 }
