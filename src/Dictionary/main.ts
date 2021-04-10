@@ -1,5 +1,5 @@
 import { loadLectsJSON, loadJSON, lects } from "@/store";
-import { shallowRef, watch } from "vue";
+import { computed, shallowRef, watch } from "vue";
 import { Entry, Search, DictionaryMeta } from "./types";
 import { IDBPDatabase, openDB } from "idb";
 
@@ -7,6 +7,7 @@ let db: IDBPDatabase;
 
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const dictionaries = shallowRef<Record<string, Entry[]>>({});
+export const dLects = computed(() => Object.keys(dictionaries.value));
 
 watch(lects, async () => {
   dictionaries.value = {};
@@ -24,7 +25,7 @@ watch(lects, async () => {
       },
     });
   await Promise.all(
-    lects.value.map(async (l) => {
+    dLects.value.map(async (l) => {
       const d = dictionaries.value[l];
       const tx = db.transaction(l, "readwrite");
       return await Promise.all(
@@ -34,31 +35,42 @@ watch(lects, async () => {
   );
 });
 
-function queryDictionaries(query: string[], queryMode: string) {
-  return query.reduce((search, query) => {
-    Object.entries(dictionaries.value).forEach(([lect, dictionary]) => {
-      dictionary
-        .filter((entry) =>
-          (queryMode === "Tags"
-            ? entry.tags ?? ""
-            : entry.translation
-          )?.includes(query)
-        )
-        .forEach((entry) => {
-          const translation = entry.translation;
-          if (!search[translation]) search[translation] = {};
-          if (!search[translation][lect]) search[translation][lect] = [];
-          search[translation][lect].push(entry);
-        });
-    });
-    return search;
-  }, {} as Search);
+async function queryDictionaries(
+  ss_: symbol,
+  query: string[],
+  queryMode: string
+) {
+  function fits(e: Entry) {
+    const area = queryMode === "Tags" ? e.tags ?? "" : e.translation;
+    return query.some((q) => area?.includes(q));
+  }
+
+  const search = {} as Search;
+  const tx = db.transaction(dLects.value);
+  await Promise.all(
+    dLects.value.map(async (l) => {
+      let cr = await tx.objectStore(l).openCursor();
+      while (cr) {
+        if (ss !== ss_) return [];
+        const entry = cr.value as Entry;
+        if (fits(entry)) {
+          const ts = entry.translation;
+          if (!search[ts]) search[ts] = {};
+          if (!search[ts][l]) search[ts][l] = [];
+          search[ts][l].push(cr.value as Entry);
+        }
+        cr = await cr.continue();
+      }
+    })
+  );
+  return search;
 }
 
-async function findTranslations(lect: string, query: string[]) {
+async function findTranslations(ss_: symbol, lect: string, query: string[]) {
   const translations = new Set<string>();
   let cr = await db.transaction(lect).store.openCursor();
   while (cr) {
+    if (ss !== ss_) return [];
     const { forms, translation } = cr.value as Entry;
     if (forms.some(({ text }) => query.some((q) => text.plain.includes(q))))
       translations.add(translation);
@@ -67,12 +79,19 @@ async function findTranslations(lect: string, query: string[]) {
   return [...translations];
 }
 
+let ss = Symbol("srch");
 export async function search(
   lect: string,
   query: string[],
   queryMode = "Translation"
 ) {
+  if (!db) return {};
+  ss = Symbol("srch");
   return !lect
-    ? queryDictionaries(query, queryMode)
-    : queryDictionaries(await findTranslations(lect, query), "Translation");
+    ? queryDictionaries(ss, query, queryMode)
+    : queryDictionaries(
+        ss,
+        await findTranslations(ss, lect, query),
+        "Translation"
+      );
 }
