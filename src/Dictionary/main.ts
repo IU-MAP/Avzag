@@ -1,7 +1,7 @@
 import { loadLectsJSON, loadJSON, lects } from "@/store";
 import { shallowRef, watch } from "vue";
 import { Entry, Search, DictionaryMeta } from "./types";
-import { IDBPDatabase, openDB } from "idb";
+import { deleteDB, IDBPDatabase, openDB } from "idb";
 
 let db: IDBPDatabase;
 
@@ -49,19 +49,20 @@ watch(lects, async () => {
   const t = Date.now();
   console.log("DB building...");
 
-  if (!db)
-    db = await openDB("avzag", 1, {
-      upgrade(db) {
-        lects.value.forEach((l) => {
-          if (db.objectStoreNames.contains(l)) db.deleteObjectStore(l);
-          db.createObjectStore(l, { autoIncrement: true });
-        });
-      },
-    });
+  await deleteDB("avzag");
+  db = await openDB("avzag", 1, {
+    upgrade(db) {
+      dLects.value.forEach((l) => {
+        if (db.objectStoreNames.contains(l)) db.deleteObjectStore(l);
+        db.createObjectStore(l, { autoIncrement: true });
+      });
+    },
+  });
 
   await cleanDB(dLects.value);
   await fillDB(dictionaries.value);
 
+  dLects.value.forEach((l) => delete dictionaries.value[l]);
   console.log("DB loaded: ", (Date.now() - t) / 1000, "sec.");
 });
 
