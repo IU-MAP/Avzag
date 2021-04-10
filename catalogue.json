@@ -6,6 +6,12 @@
     "tags": "Dagestani Caucasian Caspian"
   },
   {
+    "name": "Aqusha",
+    "point": [47.822142, 43],
+    "family": ["Northeast Caucasian", "Dargic"],
+    "tags": "Dagestani Caucasian Caspian"
+  },
+  {
     "name": "Iron",
     "point": [44.245623, 42.865209],
     "family": ["Iranian", "Eastern Iranian", "Ossetian"],
