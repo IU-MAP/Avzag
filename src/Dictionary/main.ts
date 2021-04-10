@@ -1,10 +1,11 @@
 import { loadLectsJSON, loadJSON, lects } from "@/store";
-import { shallowRef, watch } from "vue";
+import { ref, shallowRef, watch } from "vue";
 import { Entry, Search, DictionaryMeta } from "./types";
 import { deleteDB, IDBPDatabase, openDB } from "idb";
 
 let db: IDBPDatabase;
 
+export const isLoading = ref(false);
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const dictionaries = shallowRef<Record<string, Entry[]>>({});
 export const dLects = shallowRef([] as string[]);
@@ -17,24 +18,18 @@ async function cleanDB(lects: string[]) {
 async function fillDB(dictionaries: Record<string, Entry[]>) {
   async function fillLect(lect: string, dictionary: Entry[]) {
     const st = tx.objectStore(lect);
-    return Promise.all(
-      dictionary.map((d) => st.put(d /* , d.forms[0].text.plain */))
-    );
+    return dictionary.map((d) => st.put(d /* , d.forms[0].text.plain */));
   }
   const lects = Object.keys(dictionaries);
   const tx = db.transaction(lects, "readwrite");
-
-  await fillLect(lects[0], dictionaries[lects[0]]);
-  // await Promise.all(
-  //   lects.flatMap((l) =>
-  //     dictionaries[l].map((d) =>
-  //       tx.objectStore(l).put(d, d.forms[0].text.plain)
-  //     )
-  //   )
-  // );
+  return await Promise.all(lects.flatMap((l) => fillLect(l, dictionaries[l])));
 }
 
 watch(lects, async () => {
+  const t = Date.now();
+  console.log("DB building...");
+  isLoading.value = true;
+
   dictionaries.value = {};
   dictionaryMeta.value = undefined;
   dictionaries.value = await loadLectsJSON<Entry[]>("dictionary");
@@ -45,9 +40,6 @@ watch(lects, async () => {
     "DB entries: ",
     Object.values(dictionaries.value).reduce((s, d) => s + d.length, 0)
   );
-
-  const t = Date.now();
-  console.log("DB building...");
 
   await deleteDB("avzag");
   db = await openDB("avzag", 1, {
@@ -63,6 +55,7 @@ watch(lects, async () => {
   await fillDB(dictionaries.value);
 
   dLects.value.forEach((l) => delete dictionaries.value[l]);
+  isLoading.value = false;
   console.log("DB loaded: ", (Date.now() - t) / 1000, "sec.");
 });
 

@@ -1,6 +1,7 @@
 <template>
   <div class="section col small">
-    <div class="row-1 lects fill">
+    <h1 v-if="isLoading">Dictionaries are loading...</h1>
+    <div v-else class="row-1 lects fill">
       <div class="col lect">
         <div class="row">
           <btn
@@ -60,7 +61,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, shallowRef, watchEffect } from "vue";
-import { search, dictionaryMeta, dLects } from "./main";
+import { search, dictionaryMeta, dLects, isLoading } from "./main";
 import EntryCard from "./EntryCard.vue";
 import Flag from "@/components/Flag.vue";
 import { Search } from "./types";
@@ -100,6 +101,7 @@ export default defineComponent({
       lect,
       searchResult,
       dictionaryMeta,
+      isLoading,
     };
   },
 });
