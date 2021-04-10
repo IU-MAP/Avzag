@@ -1,6 +1,6 @@
-import { loadLectsJSON, loadJSON, lects } from "@/store";
+import { loadJSON, lects } from "@/store";
 import { reactive, shallowRef, watch } from "vue";
-import { Entry, DictionaryMeta } from "./types";
+import { DictionaryMeta } from "./types";
 import { deleteDB, IDBPDatabase, openDB } from "idb";
 
 export let db: IDBPDatabase;
@@ -8,6 +8,14 @@ export let db: IDBPDatabase;
 export const processing = reactive({ loading: false, searching: false });
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
+
+let t = 0;
+const worker = new Worker("./db-worker.ts");
+worker.onmessage = function (e) {
+  console.log("Db loaded in", (Date.now() - t) / 1000);
+  processing.loading = false;
+  lects_.value = e.data;
+};
 
 async function cleanDB() {
   await deleteDB("avzag");
@@ -21,35 +29,14 @@ async function cleanDB() {
   });
 }
 
-async function fillDB(dictionaries: Record<string, Entry[]>) {
-  async function fillLect(lect: string, dictionary: Entry[]) {
-    const st = tx.objectStore(lect);
-    return dictionary.map((d) => st.put(d /* , d.forms[0].text.plain */));
-  }
-  const lects = Object.keys(dictionaries);
-  const tx = db.transaction(lects, "readwrite");
-  return await Promise.all(lects.flatMap((l) => fillLect(l, dictionaries[l])));
-}
-
 watch(lects, async () => {
-  const t = Date.now();
-  console.log("DB...");
   processing.loading = true;
+  console.log("Loading DB...");
+  t = Date.now();
 
   // fetching json
-  const dictionaries = await loadLectsJSON<Entry[]>("dictionary");
   dictionaryMeta.value = await loadJSON("dictionary");
-  lects_.value = Object.keys(dictionaries);
-
-  console.log(
-    "... of",
-    Object.values(dictionaries).reduce((s, d) => s + d.length, 0),
-    "entries..."
-  );
 
   await cleanDB();
-  await fillDB(dictionaries);
-
-  processing.loading = false;
-  console.log("is loaded in", (Date.now() - t) / 1000, "sec.");
+  worker.postMessage("db");
 });
