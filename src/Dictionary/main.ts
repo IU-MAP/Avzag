@@ -9,6 +9,18 @@ export const processing = reactive({ loading: false, searching: false });
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
 
+async function cleanDB() {
+  await deleteDB("avzag");
+  db = await openDB("avzag", 1, {
+    upgrade(db) {
+      lects_.value.forEach((l) => {
+        if (db.objectStoreNames.contains(l)) db.deleteObjectStore(l);
+        db.createObjectStore(l, { autoIncrement: true });
+      });
+    },
+  });
+}
+
 async function fillDB(dictionaries: Record<string, Entry[]>) {
   async function fillLect(lect: string, dictionary: Entry[]) {
     const st = tx.objectStore(lect);
@@ -30,25 +42,14 @@ watch(lects, async () => {
   lects_.value = Object.keys(dictionaries);
 
   console.log(
-    "... of ",
+    "... of",
     Object.values(dictionaries).reduce((s, d) => s + d.length, 0),
-    " entries..."
+    "entries..."
   );
 
-  // make new db with tables per lang
-  await deleteDB("avzag");
-  db = await openDB("avzag", 1, {
-    upgrade(db) {
-      lects_.value.forEach((l) => {
-        if (db.objectStoreNames.contains(l)) db.deleteObjectStore(l);
-        db.createObjectStore(l, { autoIncrement: true });
-      });
-    },
-  });
-
-  // await cleanDB(dLects.value);
+  await cleanDB();
   await fillDB(dictionaries);
 
   processing.loading = false;
-  console.log("is loaded in ", (Date.now() - t) / 1000, "sec.");
+  console.log("is loaded in", (Date.now() - t) / 1000, "sec.");
 });
