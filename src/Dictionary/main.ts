@@ -10,12 +10,12 @@ export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
 
 let t = 0;
-const worker = new Worker("./db-worker.ts");
-worker.onmessage = function (e) {
-  console.log("Db loaded in", (Date.now() - t) / 1000);
-  processing.loading = false;
-  lects_.value = e.data;
-};
+const worker = new Worker("db-worker.js");
+// worker.onmessage = function (e) {
+//   console.log("Db loaded in", (Date.now() - t) / 1000);
+//   processing.loading = false;
+//   lects_.value = e.data;
+// };
 
 async function cleanDB() {
   await deleteDB("avzag");
@@ -38,5 +38,5 @@ watch(lects, async () => {
   dictionaryMeta.value = await loadJSON("dictionary");
 
   await cleanDB();
-  worker.postMessage([root, lects.value]);
+  worker.postMessage(root + "+" + lects.value.join("."));
 });

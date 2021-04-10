@@ -24,8 +24,9 @@ async function load() {
 }
 
 onmessage = (e) => {
-  root = e.data[0];
-  lects = e.data[1];
+  const args = e.data.split("+");
+  root = args[0];
+  lects = args.split(".");
   load();
 };
 
