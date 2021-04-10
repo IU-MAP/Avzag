@@ -1,5 +1,19 @@
+import { openDB, deleteDB } from "https://unpkg.com/idb?module";
+
 let root;
 let db;
+
+async function cleanDB(lects) {
+  await deleteDB("avzag");
+  db = await openDB("avzag", 1, {
+    upgrade(db) {
+      lects.forEach((l) => {
+        if (db.objectStoreNames.contains(l)) db.deleteObjectStore(l);
+        db.createObjectStore(l, { autoIncrement: true });
+      });
+    },
+  });
+}
 
 async function fillDB(dictionaries) {
   function fillLect(lect, dictionary) {
@@ -14,24 +28,13 @@ async function fillDB(dictionaries) {
 }
 
 async function load(lects) {
+  console.log("Loading db");
   const dictionaries = await loadLectsJSON("dictionary", lects);
   lects = Object.keys(dictionaries);
 
-  const req = indexedDB.open("avzag", 1);
-
-  req.onupgradeneeded = (e) => {
-    const db = e.target.result;
-    lects.forEach((l) => {
-      if (db.objectStoreNames.contains(l)) db.deleteObjectStore(l);
-      db.createObjectStore(l, { autoIncrement: true });
-    });
-  };
-
-  req.onsuccess = async (e) => {
-    db = e.target.result;
-    await fillDB(dictionaries);
-    postMessage(lects);
-  };
+  await cleanDB(lects);
+  await fillDB(dictionaries);
+  postMessage(lects);
 }
 
 onmessage = (e) => {

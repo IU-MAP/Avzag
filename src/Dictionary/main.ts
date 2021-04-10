@@ -9,7 +9,7 @@ export const processing = reactive({ loading: false, searching: false });
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
 
-const worker = new Worker("db-worker.js");
+const worker = new Worker("db-worker.js", { type: "module" });
 worker.onmessage = function (e) {
   processing.loading = false;
   lects_.value = e.data;
