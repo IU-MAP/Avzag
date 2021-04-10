@@ -1,7 +1,8 @@
 <template>
   <div class="section col small">
-    <h1 v-if="isLoading">Dictionaries are loading...</h1>
+    <h1 v-if="processing.loading">Dictionaries are loading...</h1>
     <div v-else class="row-1 lects fill">
+      <h3 v-if="processing.searching">Searching...</h3>
       <div class="col lect">
         <div class="row">
           <btn
@@ -61,10 +62,11 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, shallowRef, watchEffect } from "vue";
-import { search, dictionaryMeta, dLects, isLoading } from "./main";
+import { dictionaryMeta, lects_, processing } from "./main";
 import EntryCard from "./EntryCard.vue";
 import Flag from "@/components/Flag.vue";
 import { Search } from "./types";
+import { search } from "./search";
 
 export default defineComponent({
   components: { EntryCard, Flag },
@@ -72,7 +74,6 @@ export default defineComponent({
     const queries = reactive({} as Record<string, string>);
     const queryMode = ref("Translations");
     const lect = ref("");
-    const lects = dLects;
 
     watchEffect(async () => {
       searchResult.value = await search(
@@ -95,13 +96,13 @@ export default defineComponent({
 
     return {
       queryModes,
-      lects,
+      lects: lects_,
       queries,
       queryMode,
       lect,
       searchResult,
       dictionaryMeta,
-      isLoading,
+      processing,
     };
   },
 });
