@@ -59,10 +59,18 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref } from "vue";
+import {
+  computed,
+  defineComponent,
+  reactive,
+  ref,
+  shallowRef,
+  watchEffect,
+} from "vue";
 import { search, dictionaries, dictionaryMeta } from "./main";
 import EntryCard from "./EntryCard.vue";
 import Flag from "@/components/Flag.vue";
+import { Search } from "./types";
 
 export default defineComponent({
   components: { EntryCard, Flag },
@@ -72,8 +80,8 @@ export default defineComponent({
     const lect = ref("");
     const lects = computed(() => Object.keys(dictionaries.value));
 
-    const searchResult = computed(() =>
-      search(
+    watchEffect(async () => {
+      searchResult.value = await search(
         lect.value,
         queries[lect.value]
           ?.toLowerCase()
@@ -81,8 +89,9 @@ export default defineComponent({
           .map((q) => q.trim())
           .filter((q) => q) ?? [],
         queryMode.value
-      )
-    );
+      );
+    });
+    const searchResult = shallowRef({} as Search);
 
     const queryModes = [
       ["Translations", "bookmark_border"],
@@ -108,14 +117,6 @@ export default defineComponent({
 .translation {
   line-height: map-get($button-height, "small");
 }
-// .section {
-//   $margin: map-get($margins, "normal");
-//   overflow-x: auto;
-//   padding: $margin;
-//   margin: -$margin;
-//   max-width: unset;
-//   width: calc(100% + 16px);
-// }
 @media only screen and (max-width: $mobile-width) {
   .section {
     overflow-x: auto;
