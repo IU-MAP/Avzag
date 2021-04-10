@@ -59,15 +59,8 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  reactive,
-  ref,
-  shallowRef,
-  watchEffect,
-} from "vue";
-import { search, dictionaries, dictionaryMeta } from "./main";
+import { defineComponent, reactive, ref, shallowRef, watchEffect } from "vue";
+import { search, dictionaryMeta, dLects } from "./main";
 import EntryCard from "./EntryCard.vue";
 import Flag from "@/components/Flag.vue";
 import { Search } from "./types";
@@ -78,7 +71,7 @@ export default defineComponent({
     const queries = reactive({} as Record<string, string>);
     const queryMode = ref("Translations");
     const lect = ref("");
-    const lects = computed(() => Object.keys(dictionaries.value));
+    const lects = dLects;
 
     watchEffect(async () => {
       searchResult.value = await search(
@@ -101,7 +94,6 @@ export default defineComponent({
 
     return {
       queryModes,
-      dictionaries,
       lects,
       queries,
       queryMode,
