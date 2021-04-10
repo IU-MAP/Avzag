@@ -7,13 +7,7 @@ export let db: IDBPDatabase;
 
 export const processing = reactive({ loading: false, searching: false });
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
-export const dictionaries = shallowRef<Record<string, Entry[]>>({});
 export const lects_ = shallowRef([] as string[]);
-
-// async function cleanDB(lects: string[]) {
-//   const tx = db.transaction(lects, "readwrite");
-//   await Promise.all(lects.map((l) => tx.objectStore(l).clear()));
-// }
 
 async function fillDB(dictionaries: Record<string, Entry[]>) {
   async function fillLect(lect: string, dictionary: Entry[]) {
@@ -27,17 +21,18 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
 
 watch(lects, async () => {
   const t = Date.now();
-  console.log("DB building...");
+  console.log("DB...");
   processing.loading = true;
 
   // fetching json
-  dictionaries.value = await loadLectsJSON<Entry[]>("dictionary");
+  const dictionaries = await loadLectsJSON<Entry[]>("dictionary");
   dictionaryMeta.value = await loadJSON("dictionary");
-  lects_.value = Object.keys(dictionaries.value);
+  lects_.value = Object.keys(dictionaries);
 
   console.log(
-    "DB entries: ",
-    Object.values(dictionaries.value).reduce((s, d) => s + d.length, 0)
+    "... of ",
+    Object.values(dictionaries).reduce((s, d) => s + d.length, 0),
+    " entries..."
   );
 
   // make new db with tables per lang
@@ -52,10 +47,8 @@ watch(lects, async () => {
   });
 
   // await cleanDB(dLects.value);
-  await fillDB(dictionaries.value);
+  await fillDB(dictionaries);
 
-  // delete json from ram
-  lects_.value.forEach((l) => delete dictionaries.value[l]);
   processing.loading = false;
-  console.log("DB loaded: ", (Date.now() - t) / 1000, "sec.");
+  console.log("is loaded in ", (Date.now() - t) / 1000, "sec.");
 });
