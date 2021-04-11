@@ -16,19 +16,17 @@ async function cleanDB(lects) {
 }
 
 async function fillDB(dictionaries) {
-  function fillLect(lect, dictionary) {
-    console.log("loading", lect);
-    const st = tx.objectStore(lect);
-    return dictionary.map((d) => st.add(d /* , d.forms[0].text.plain */));
-  }
-
   const lects = Object.keys(dictionaries);
   const tx = db.transaction(lects, "readwrite");
-  await Promise.all(lects.flatMap((l) => fillLect(l, dictionaries[l])));
+  for (const l of lects) {
+    console.log("Loading", l);
+    const st = tx.objectStore(l);
+    for (const d of dictionaries[l]) st.add(d /* , d.forms[0].text.plain */);
+  }
+  await tx.done;
 }
 
 async function load(lects) {
-  console.log("Loading db");
   const dictionaries = await loadLectsJSON("dictionary", lects);
   lects = Object.keys(dictionaries);
 
