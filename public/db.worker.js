@@ -1,4 +1,5 @@
 import { openDB, deleteDB } from "https://unpkg.com/idb?module";
+// import { openDB, deleteDB } from "idb";
 
 let root;
 let db;
@@ -27,6 +28,7 @@ async function fillDB(dictionaries) {
 }
 
 async function load(lects) {
+  console.log("Loading DB");
   const dictionaries = await loadLectsJSON("dictionary", lects);
   lects = Object.keys(dictionaries);
 
