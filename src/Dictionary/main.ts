@@ -10,14 +10,17 @@ export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
 
 const worker = new Worker("db-worker.js", { type: "module" });
-worker.onmessage = async function (e) {
-  processing.loading = false;
-  lects_.value = e.data;
-  db = await openDB("avzag", 1);
-};
+worker.onmessage = (e) => connect(e.data);
 
 watch(lects, async () => {
   processing.loading = true;
   dictionaryMeta.value = await loadJSON("dictionary");
+  // await connect(lects.value);
   worker.postMessage(root + "+" + lects.value.join("."));
 });
+
+async function connect(lects: string[]) {
+  db = await openDB("avzag", 1);
+  lects_.value = lects;
+  processing.loading = false;
+}
