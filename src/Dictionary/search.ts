@@ -50,7 +50,6 @@ export async function search(
   query: string[],
   queryMode = "Translation"
 ) {
-  console.log("search", db);
   if (!db) return {};
   ss = Symbol("srch");
 

@@ -2,7 +2,6 @@
   <div class="section col small">
     <h1 v-if="processing.loading">Dictionaries are loading...</h1>
     <div v-else class="row-1 lects fill">
-      <h3 v-if="processing.searching">Searching...</h3>
       <div class="col lect">
         <div class="row">
           <btn
