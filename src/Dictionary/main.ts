@@ -2,7 +2,7 @@ import { loadJSON, lects, root } from "@/store";
 import { reactive, shallowRef, watch } from "vue";
 import { DictionaryMeta } from "./types";
 import { IDBPDatabase, openDB } from "idb";
-import Worker from "./db.worker.js";
+// import Worker from "./db.worker.js";
 
 export let db: IDBPDatabase;
 
@@ -10,7 +10,8 @@ export const processing = reactive({ loading: false, searching: false });
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
 
-const worker = new Worker();
+// const worker = new Worker();
+const worker = new Worker("db.worker.js", { type: "module" });
 worker.onmessage = (e) => connect(e.data);
 
 watch(lects, async () => {
