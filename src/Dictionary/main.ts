@@ -4,15 +4,15 @@ import { DictionaryMeta } from "./types";
 import { IDBPDatabase, openDB } from "idb";
 // import Worker from "./db.worker.js";
 
+// const worker = new Worker();
+const worker = new Worker("db.worker.js", { type: "module" });
+worker.onmessage = (e) => connect(e.data);
+
 export let db: IDBPDatabase;
 
 export const processing = reactive({ loading: false, searching: false });
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
-
-// const worker = new Worker();
-const worker = new Worker("db.worker.js", { type: "module" });
-worker.onmessage = (e) => connect(e.data);
 
 watch(lects, async () => {
   processing.loading = true;
