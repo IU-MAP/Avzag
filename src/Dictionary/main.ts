@@ -18,7 +18,7 @@ watch(lects, async () => {
   processing.loading = true;
   dictionaryMeta.value = await loadJSON("dictionary");
   // await connect(lects.value);
-  worker.postMessage(root + "+" + lects.value.join("."));
+  worker.postMessage(JSON.stringify([root, lects.value]));
 });
 
 async function connect(lects: string[]) {

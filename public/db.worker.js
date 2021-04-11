@@ -37,10 +37,10 @@ async function load(lects) {
   postMessage(lects);
 }
 
-onmessage = (e) => {
-  const args = e.data.split("+");
-  root = args[0];
-  load(args[1].split("."));
+onmessage = ({ data }) => {
+  data = JSON.parse(data);
+  root = data[0];
+  load(data[1]);
 };
 
 async function loadJSON(filename, defaultValue) {
