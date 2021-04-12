@@ -5,29 +5,17 @@ module.exports = {
     config.module
       .rule("web-worker")
       .test("/.worker.(c|m)?js$/i")
-      .use("worker-loader")
+      .use("worker")
       .loader("worker-loader")
+      .end()
+      .use("babel")
+      .loader("babel-loader")
+      .options({
+        presets: ["@babel/preset-env"],
+      })
       .end(),
   configureWebpack: {
     devtool: "source-map",
-    // module: {
-    //   rules: [
-    //     {
-    //       test: /\.worker\.(c|m)?js$/i,
-    //       use: [
-    //         {
-    //           loader: "worker-loader",
-    //         },
-    //         {
-    //           loader: "babel-loader",
-    //           options: {
-    //             presets: ["@babel/preset-env"],
-    //           },
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
   },
   css: {
     loaderOptions: {
