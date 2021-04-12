@@ -20,7 +20,7 @@ async function fillDB(dictionaries) {
   const lects = Object.keys(dictionaries);
   for (const l of lects) {
     postMessage(JSON.stringify({ state: "loading", lects: l }));
-    const st = db.transaction(l, "readwrite").objectStore(l);
+    const st = db.transaction(l, "readwrite").store;
     const puts = [];
     for (const d of dictionaries[l])
       puts.push(st.add(d /* , d.forms[0].text.plain */));
