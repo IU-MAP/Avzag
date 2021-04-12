@@ -1,4 +1,4 @@
-import { loadJSON, lects, root } from "@/store";
+import { loadJSON, lects } from "@/store";
 import { reactive, shallowRef, watch } from "vue";
 import { DictionaryMeta } from "./types";
 import { IDBPDatabase, openDB } from "idb";
@@ -25,8 +25,7 @@ export const lects_ = shallowRef([] as string[]);
 
 watch(lects, async () => {
   dictionaryMeta.value = await loadJSON("dictionary");
-  // await connect(lects.value);
-  worker.postMessage(JSON.stringify([root, lects.value]));
+  worker.postMessage(JSON.stringify(lects.value));
 });
 
 async function connect(data: string) {

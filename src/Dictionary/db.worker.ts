@@ -42,10 +42,7 @@ async function load(lects: string[]) {
   postMessage(JSON.stringify({ state: "ready" }));
 }
 
-onmessage = ({ data }) => {
-  data = JSON.parse(data);
-  load(data[1]);
-};
+onmessage = ({ data }) => load(JSON.parse(data));
 
 async function loadJSON(filename: string, defaultValue?: unknown) {
   return await fetch(root + filename + ".json")
