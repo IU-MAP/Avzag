@@ -30,7 +30,6 @@ async function fillDB(dictionaries) {
 }
 
 async function load(lects) {
-  const t = Date.now();
   postMessage(JSON.stringify({ state: "fetching" }));
   const dictionaries = await loadLectsJSON("dictionary", lects);
   lects = Object.keys(dictionaries);
@@ -40,7 +39,6 @@ async function load(lects) {
   await cleanDB(lects);
   await fillDB(dictionaries);
   postMessage(JSON.stringify({ state: "ready" }));
-  console.log("DB loaded in", (Date.now() - t) / 1000, "sec.");
 }
 
 onmessage = ({ data }) => {
