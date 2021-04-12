@@ -1,6 +1,8 @@
 <template>
   <div class="section col small">
-    <h1 v-if="processing.loading">Dictionaries are loading...</h1>
+    <h2 v-if="processing.dbState.state !== 'ready'">
+      {{ processing.dbState.text }}
+    </h2>
     <div v-else class="row-1 lects fill">
       <div class="col lect">
         <div class="row">

@@ -18,23 +18,28 @@ async function cleanDB(lects) {
 
 async function fillDB(dictionaries) {
   const lects = Object.keys(dictionaries);
-  const tx = db.transaction(lects, "readwrite");
   for (const l of lects) {
-    console.log("Loading", l);
-    const st = tx.objectStore(l);
-    for (const d of dictionaries[l]) st.add(d /* , d.forms[0].text.plain */);
+    postMessage(JSON.stringify({ state: "loading", lects: l }));
+    const st = db.transaction(l, "readwrite").objectStore(l);
+    const puts = [];
+    for (const d of dictionaries[l])
+      puts.push(st.add(d /* , d.forms[0].text.plain */));
+    await Promise.all(puts);
   }
-  await tx.done;
 }
 
 async function load(lects) {
-  console.log("Loading DB");
+  const t = Date.now();
+  postMessage(JSON.stringify({ state: "fetching" }));
   const dictionaries = await loadLectsJSON("dictionary", lects);
   lects = Object.keys(dictionaries);
+  postMessage(JSON.stringify({ state: "fetched", lects }));
 
+  postMessage(JSON.stringify({ state: "preparing" }));
   await cleanDB(lects);
   await fillDB(dictionaries);
-  postMessage(lects);
+  postMessage(JSON.stringify({ state: "ready" }));
+  console.log("DB loaded in", (Date.now() - t) / 1000, "sec.");
 }
 
 onmessage = ({ data }) => {
