@@ -1,5 +1,5 @@
 import { openDB, deleteDB, IDBPDatabase } from "idb";
-import { root } from "@/store";
+import { loadLectsJSON } from "@/store";
 import { Entry, DBWorkerState } from "./types";
 
 let db: IDBPDatabase;
@@ -46,17 +46,3 @@ function postState(state: DBWorkerState, lects: string | string[] = "") {
 }
 
 onmessage = ({ data }) => load(JSON.parse(data));
-
-async function loadJSON(filename: string, defaultValue?: unknown) {
-  return await fetch(root + filename + ".json")
-    .then((r) => r.json())
-    .catch(() => defaultValue);
-}
-async function loadLectsJSON<T>(filename: string, lects: string[]) {
-  const files = {} as Record<string, T>;
-  for (const lect of lects) {
-    const file = await loadJSON(lect + "/" + filename);
-    if (file) files[lect] = file;
-  }
-  return files;
-}

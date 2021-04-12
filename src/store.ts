@@ -10,9 +10,9 @@ export async function loadJSON(filename: string, defaultValue?: unknown) {
     .then((r) => r.json())
     .catch(() => defaultValue);
 }
-export async function loadLectsJSON<T>(filename: string) {
+export async function loadLectsJSON<T>(filename: string, lects_?: string[]) {
   const files = {} as Record<string, T>;
-  for (const lect of lects.value) {
+  for (const lect of lects_ ?? lects.value) {
     const file = await loadJSON(lect + "/" + filename);
     if (file) files[lect] = file;
   }
