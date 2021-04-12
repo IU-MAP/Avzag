@@ -2,10 +2,10 @@ import { loadJSON, lects, root } from "@/store";
 import { reactive, shallowRef, watch } from "vue";
 import { DictionaryMeta } from "./types";
 import { IDBPDatabase, openDB } from "idb";
-// import Worker from "./db.worker.js";
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import Worker from "worker-loader!./db.worker";
 
-// const worker = new Worker();
-const worker = new Worker("db.worker.js", { type: "module" });
+const worker = new Worker();
 worker.onmessage = (e) => connect(e.data);
 
 export let db: IDBPDatabase;
