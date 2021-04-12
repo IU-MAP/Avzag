@@ -10,10 +10,11 @@ worker.onmessage = (e) => connect(e.data);
 
 export let db: IDBPDatabase;
 
-export const processing = reactive({
-  dbState: { state: "loading", lects: "", text: "" } as DBWorkerInfo,
-  searching: false,
-});
+export const dbState = reactive({
+  state: "loading",
+  lects: "",
+  text: "",
+} as DBWorkerInfo);
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
 
@@ -24,22 +25,29 @@ watch(lects, async () => {
 
 async function connect(data: string) {
   const { state, lects } = JSON.parse(data) as DBWorkerInfo;
-  processing.dbState.state = state;
+  dbState.state = state;
 
-  if (state === "fetched") lects_.value = lects as string[];
-  else if (state === "fetching")
-    processing.dbState.text = "Fetching data from server...";
-  else if (state === "preparing")
-    processing.dbState.text = "Preparing database...";
-  else if (state === "loading") {
-    processing.dbState.lects = lects;
-    processing.dbState.text = `Loading ${lects} (${
-      lects_.value.indexOf(lects as string) + 1
-    }/${lects_.value.length})...`;
-  } else if (state === "ready") {
-    processing.dbState.state = "opening";
-    processing.dbState.text = "Opening database...";
-    db = await openDB("avzag", 1);
-    processing.dbState.state = "ready";
+  switch (state) {
+    case "fetched":
+      lects_.value = lects as string[];
+      break;
+    case "fetching":
+      dbState.text = "Fetching data from server...";
+      break;
+    case "preparing":
+      dbState.text = "Preparing database...";
+      break;
+    case "loading":
+      dbState.lects = lects;
+      dbState.text = `Loading ${lects} (${
+        lects_.value.indexOf(lects as string) + 1
+      }/${lects_.value.length})...`;
+      break;
+    case "ready":
+      dbState.state = "opening";
+      dbState.text = "Opening database...";
+      db = await openDB("avzag", 1);
+      dbState.state = "ready";
+      break;
   }
 }

@@ -1,4 +1,4 @@
-import { db, lects_, processing } from "./main";
+import { db, lects_, dbState } from "./main";
 import { Entry, Search } from "./types";
 
 async function queryDictionaries(query: string[], queryMode: string) {
@@ -48,19 +48,12 @@ export async function search(
   query: string[],
   queryMode = "Translation"
 ) {
-  if (processing.dbState.state !== "ready") return {};
-
-  processing.searching = true;
-
-  console.log("Started search");
+  if (dbState.state !== "ready") return {};
   const results = !lect
     ? await queryDictionaries(query, queryMode)
     : await queryDictionaries(
         await findTranslations(lect, query),
         "Translation"
       );
-  console.log("Found", results);
-
-  processing.searching = false;
   return results;
 }
