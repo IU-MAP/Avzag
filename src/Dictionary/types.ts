@@ -27,3 +27,16 @@ export type Entry = {
 export type DictionaryMeta = { lists: Record<string, string[]> };
 
 export type Search = Record<string, Record<string, Entry[]>>;
+
+export type DBWorkerState =
+  | "ready"
+  | "opening"
+  | "preparing"
+  | "fetching"
+  | "fetched"
+  | "loading";
+export type DBWorkerInfo = {
+  state: DBWorkerState;
+  lects: string | string[];
+  text: string;
+};

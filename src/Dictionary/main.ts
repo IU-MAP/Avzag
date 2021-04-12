@@ -1,23 +1,17 @@
-import { loadJSON, lects, root } from "@/store";
+import { loadJSON, lects } from "@/store";
 import { reactive, shallowRef, watch } from "vue";
-import { DictionaryMeta } from "./types";
+import { DictionaryMeta, DBWorkerInfo } from "./types";
 import { IDBPDatabase, openDB } from "idb";
-// import Worker from "./db.worker.js";
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import Worker from "worker-loader!./db.worker";
 
-// const worker = new Worker();
-const worker = new Worker("db.worker.js", { type: "module" });
+const worker = new Worker();
 worker.onmessage = (e) => connect(e.data);
 
 export let db: IDBPDatabase;
 
-type DBState = {
-  state: "ready" | "opening" | "preparing" | "fetching" | "fetched" | "loading";
-  lects: string | string[];
-  text: string;
-};
-
-export const processing = reactive<{ dbState: DBState; searching: boolean }>({
-  dbState: { state: "loading", lects: "", text: "" },
+export const processing = reactive({
+  dbState: { state: "loading", lects: "", text: "" } as DBWorkerInfo,
   searching: false,
 });
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
@@ -25,12 +19,11 @@ export const lects_ = shallowRef([] as string[]);
 
 watch(lects, async () => {
   dictionaryMeta.value = await loadJSON("dictionary");
-  // await connect(lects.value);
-  worker.postMessage(JSON.stringify([root, lects.value]));
+  worker.postMessage(JSON.stringify(lects.value));
 });
 
 async function connect(data: string) {
-  const { state, lects } = JSON.parse(data) as DBState;
+  const { state, lects } = JSON.parse(data) as DBWorkerInfo;
   processing.dbState.state = state;
 
   if (state === "fetched") lects_.value = lects as string[];
