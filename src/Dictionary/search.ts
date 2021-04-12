@@ -53,20 +53,21 @@ export async function search(
   query: string[],
   queryMode = "Translation"
 ) {
-  if (!db) return {};
-  // ss = Symbol("srch");
+  // if (processing.dbState.state !== "ready") return {};
+  // // ss = Symbol("srch");
 
-  processing.searching = true;
+  // processing.searching = true;
 
-  console.log("Started search");
-  const results = !lect
-    ? await queryDictionaries(query, queryMode)
-    : await queryDictionaries(
-        await findTranslations(lect, query),
-        "Translation"
-      );
-  console.log("Found", results);
+  // console.log("Started search");
+  // const results = !lect
+  //   ? await queryDictionaries(query, queryMode)
+  //   : await queryDictionaries(
+  //       await findTranslations(lect, query),
+  //       "Translation"
+  //     );
+  // console.log("Found", results);
 
-  processing.searching = false;
-  return results;
+  // processing.searching = false;
+  // return results;
+  return {} as Search;
 }
