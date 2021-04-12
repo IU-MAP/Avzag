@@ -1,10 +1,11 @@
 // import { openDB, deleteDB } from "https://unpkg.com/idb?module";
-import { openDB, deleteDB } from "idb";
+import { openDB, deleteDB, IDBPDatabase } from "idb";
+import { root } from "@/store";
+import { Entry } from "./types";
 
-let root;
-let db;
+let db: IDBPDatabase;
 
-async function cleanDB(lects) {
+async function cleanDB(lects: string[]) {
   await deleteDB("avzag");
   db = await openDB("avzag", 1, {
     upgrade(db) {
@@ -16,7 +17,7 @@ async function cleanDB(lects) {
   });
 }
 
-async function fillDB(dictionaries) {
+async function fillDB(dictionaries: Record<string, Entry[]>) {
   const lects = Object.keys(dictionaries);
   const tx = db.transaction(lects, "readwrite");
   for (const l of lects) {
@@ -29,10 +30,9 @@ async function fillDB(dictionaries) {
   }
 }
 
-async function load(lects) {
-  console.log(lects);
+async function load(lects: string[]) {
   postMessage(JSON.stringify({ state: "fetching" }));
-  const dictionaries = await loadLectsJSON("dictionary", lects);
+  const dictionaries = await loadLectsJSON<Entry[]>("dictionary", lects);
   lects = Object.keys(dictionaries);
   postMessage(JSON.stringify({ state: "fetched", lects }));
 
@@ -44,17 +44,16 @@ async function load(lects) {
 
 onmessage = ({ data }) => {
   data = JSON.parse(data);
-  root = data[0];
   load(data[1]);
 };
 
-async function loadJSON(filename, defaultValue) {
+async function loadJSON(filename: string, defaultValue?: unknown) {
   return await fetch(root + filename + ".json")
     .then((r) => r.json())
     .catch(() => defaultValue);
 }
-async function loadLectsJSON(filename, lects) {
-  const files = {};
+async function loadLectsJSON<T>(filename: string, lects: string[]) {
+  const files = {} as Record<string, T>;
   for (const lect of lects) {
     const file = await loadJSON(lect + "/" + filename);
     if (file) files[lect] = file;
