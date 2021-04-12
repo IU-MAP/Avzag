@@ -1,7 +1,7 @@
 <template>
   <div class="section col small">
-    <h2 v-if="processing.dbState.state !== 'ready'">
-      {{ processing.dbState.text }}
+    <h2 v-if="dbState.state !== 'ready'">
+      {{ dbState.text }}
     </h2>
     <div v-else class="row-1 lects fill">
       <div class="col lect">
@@ -63,7 +63,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, shallowRef, watchEffect } from "vue";
-import { dictionaryMeta, lects_, processing } from "./main";
+import { dictionaryMeta, lects_, dbState } from "./main";
 import EntryCard from "./EntryCard.vue";
 import Flag from "@/components/Flag.vue";
 import { Search } from "./types";
@@ -103,7 +103,7 @@ export default defineComponent({
       lect,
       searchResult,
       dictionaryMeta,
-      processing,
+      dbState,
     };
   },
 });
