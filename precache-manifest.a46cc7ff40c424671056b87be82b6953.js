@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Avzag/404.html"
   },
   {
-    "revision": "0b956d46c8c1995f92e9",
+    "revision": "a335cfbbd92439540b42",
     "url": "/Avzag/css/app.adb2f4cc.css"
   },
   {
@@ -12,7 +12,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Avzag/css/chunk-2d9553c2.79121b79.css"
   },
   {
-    "revision": "c93eb1b511fb3abe0882",
+    "revision": "e05023b9db29fe9951c3",
     "url": "/Avzag/css/chunk-596cc62c.4ef00c6b.css"
   },
   {
@@ -32,12 +32,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Avzag/icon.png"
   },
   {
-    "revision": "00ec997657bfb82a17b2b814edd7773b",
+    "revision": "be7a29896837257763f52a129aa59d16",
     "url": "/Avzag/index.html"
   },
   {
-    "revision": "0b956d46c8c1995f92e9",
-    "url": "/Avzag/js/app.1f295cc5.js"
+    "revision": "a335cfbbd92439540b42",
+    "url": "/Avzag/js/app.31069b21.js"
   },
   {
     "revision": "f82a2b7f569cd4f65eae",
@@ -48,8 +48,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Avzag/js/chunk-2d9553c2.f2e18a5b.js"
   },
   {
-    "revision": "c93eb1b511fb3abe0882",
-    "url": "/Avzag/js/chunk-596cc62c.ace8e884.js"
+    "revision": "e05023b9db29fe9951c3",
+    "url": "/Avzag/js/chunk-596cc62c.916915ad.js"
   },
   {
     "revision": "8601ddc1fca2f68c727d",
