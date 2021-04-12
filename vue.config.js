@@ -1,6 +1,13 @@
 module.exports = {
   publicPath: process.env.NODE_ENV === "production" ? "/Avzag/" : "/",
   productionSourceMap: false,
+  chainWebpack: (config) =>
+    config.module
+      .rule("web-worker")
+      .test("/.worker.(c|m)?js$/i")
+      .use("worker-loader")
+      .loader("worker-loader")
+      .end(),
   configureWebpack: {
     devtool: "source-map",
     // module: {
