@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Avzag/404.html"
   },
   {
-    "revision": "35217c956fd19f705370",
+    "revision": "0b956d46c8c1995f92e9",
     "url": "/Avzag/css/app.adb2f4cc.css"
   },
   {
@@ -28,20 +28,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Avzag/css/chunk-edcfe3ae.d15048b8.css"
   },
   {
-    "revision": "10ce6d92a21f32f18ff3eebff9d1c82b",
-    "url": "/Avzag/db.worker.js"
-  },
-  {
     "revision": "c33799a303656ee2db545ddbe182bbef",
     "url": "/Avzag/icon.png"
   },
   {
-    "revision": "91e5c2969d09862249ab09915848af3b",
+    "revision": "00ec997657bfb82a17b2b814edd7773b",
     "url": "/Avzag/index.html"
   },
   {
-    "revision": "35217c956fd19f705370",
-    "url": "/Avzag/js/app.013951c5.js"
+    "revision": "0b956d46c8c1995f92e9",
+    "url": "/Avzag/js/app.1f295cc5.js"
   },
   {
     "revision": "f82a2b7f569cd4f65eae",
@@ -70,6 +66,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "63b63dee43ec67dd0fb4",
     "url": "/Avzag/js/chunk-vendors.e602c88e.js"
+  },
+  {
+    "revision": "5e03d707ad53248110c79aef14d7ff9f",
+    "url": "/Avzag/js/db.worker.d4801bde.worker.js"
   },
   {
     "revision": "d1b41ee98e74a49690e154ba9680260d",
