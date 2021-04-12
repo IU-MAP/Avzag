@@ -1,7 +1,6 @@
-// import { openDB, deleteDB } from "https://unpkg.com/idb?module";
 import { openDB, deleteDB, IDBPDatabase } from "idb";
 import { root } from "@/store";
-import { Entry } from "./types";
+import { Entry, DBWorkerState } from "./types";
 
 let db: IDBPDatabase;
 
@@ -31,15 +30,19 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
 }
 
 async function load(lects: string[]) {
-  postMessage(JSON.stringify({ state: "fetching" }));
+  postState("fetching");
   const dictionaries = await loadLectsJSON<Entry[]>("dictionary", lects);
   lects = Object.keys(dictionaries);
-  postMessage(JSON.stringify({ state: "fetched", lects }));
+  postState("fetched", lects);
 
-  postMessage(JSON.stringify({ state: "preparing" }));
+  postState("preparing");
   await cleanDB(lects);
   await fillDB(dictionaries);
-  postMessage(JSON.stringify({ state: "ready" }));
+  postState("ready");
+}
+
+function postState(state: DBWorkerState, lects: string | string[] = "") {
+  postMessage(JSON.stringify({ state, lects }));
 }
 
 onmessage = ({ data }) => load(JSON.parse(data));

@@ -1,6 +1,6 @@
 import { loadJSON, lects } from "@/store";
 import { reactive, shallowRef, watch } from "vue";
-import { DictionaryMeta } from "./types";
+import { DictionaryMeta, DBWorkerInfo } from "./types";
 import { IDBPDatabase, openDB } from "idb";
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from "worker-loader!./db.worker";
@@ -10,14 +10,8 @@ worker.onmessage = (e) => connect(e.data);
 
 export let db: IDBPDatabase;
 
-type DBState = {
-  state: "ready" | "opening" | "preparing" | "fetching" | "fetched" | "loading";
-  lects: string | string[];
-  text: string;
-};
-
-export const processing = reactive<{ dbState: DBState; searching: boolean }>({
-  dbState: { state: "loading", lects: "", text: "" },
+export const processing = reactive({
+  dbState: { state: "loading", lects: "", text: "" } as DBWorkerInfo,
   searching: false,
 });
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
@@ -29,7 +23,7 @@ watch(lects, async () => {
 });
 
 async function connect(data: string) {
-  const { state, lects } = JSON.parse(data) as DBState;
+  const { state, lects } = JSON.parse(data) as DBWorkerInfo;
   processing.dbState.state = state;
 
   if (state === "fetched") lects_.value = lects as string[];
