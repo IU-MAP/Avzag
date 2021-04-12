@@ -17,23 +17,20 @@ async function cleanDB(lects: string[]) {
 }
 
 async function fillDB(dictionaries: Record<string, Entry[]>) {
-  const lects = Object.keys(dictionaries);
-  const tx = db.transaction(lects, "readwrite");
-
   postState("loading");
   const size = Object.values(dictionaries).reduce((s, d) => s + d.length, 0);
-  const step = 512;
-  let loaded = 0;
+  const step = 1024;
+  let done = 0;
 
-  for (const l of lects) {
-    const current = dictionaries[l].length;
-    const st = tx.objectStore(l);
+  for (const [l, ds] of Object.entries(dictionaries)) {
+    const st = db.transaction(l, "readwrite").store;
+    const current = ds.length;
     const puts = [];
-    for (const d of dictionaries[l]) {
-      puts.push(st.add(d /* , d.forms[0].text.plain */));
+    for (const d of ds) {
+      puts.push(st.add(d));
       if (!(puts.length % step)) {
-        loaded += step;
-        const progress = Math.round((loaded / size) * 100);
+        done += step;
+        const progress = Math.round((done / size) * 100);
         postState(
           "loading",
           `[${progress}%] Loading ${l} - ${puts.length} of ${current}`
@@ -45,7 +42,6 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
 }
 
 async function load(lects: string[]) {
-  const t = Date.now();
   postState("fetching", "Downloading files");
   const dictionaries = await loadLectsJSON<Entry[]>("dictionary", lects);
   lects = Object.keys(dictionaries);
@@ -55,7 +51,6 @@ async function load(lects: string[]) {
   await cleanDB(lects);
   await fillDB(dictionaries);
   postState("ready");
-  console.log((Date.now() - t) / 1000);
 }
 
 function postState(state: DBWorkerState, text: string | string[] = "Loading") {
