@@ -12,4 +12,4 @@ Our backlog can be found in the ["Projects" -> "Dictionary"](https://github.com/
 
 ## Project setup
 
-After donwloading the repo for the first time `npm update`. To run the app locally `npm run serve`.
+After donwloading the repo for the first time `yarn install`. To run the app locally `yarn serve`.
