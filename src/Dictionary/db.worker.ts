@@ -1,10 +1,12 @@
-import { openDB, IDBPDatabase } from "idb";
+import { openDB, IDBPDatabase, deleteDB } from "idb";
 import { loadLectsJSON } from "@/store";
 import { Entry, DBWorkerState } from "./types";
 
 let db: IDBPDatabase;
 
 async function cleanDB(lects: string[]) {
+  await deleteDB("avzag");
+  if (pending) return;
   db = await openDB("avzag", 1, {
     upgrade(db) {
       for (const l of lects) {
@@ -14,10 +16,6 @@ async function cleanDB(lects: string[]) {
       }
     },
   });
-  for (const l of lects) {
-    if (pending) return;
-    await db.clear(l);
-  }
 }
 
 async function fillDB(dictionaries: Record<string, Entry[]>) {
