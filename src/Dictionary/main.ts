@@ -9,7 +9,7 @@ import SearchWorker from "worker-loader!./search.worker";
 
 export const searchworker = new SearchWorker();
 
-const dbworker = new DBWorker();
+export const dbworker = new DBWorker();
 dbworker.onmessage = ({ data }) => {
   const { state, text } = JSON.parse(data);
   connect(state, text);
