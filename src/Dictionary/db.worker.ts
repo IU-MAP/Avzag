@@ -48,7 +48,12 @@ async function load(lects: string[]) {
   postState("fetched", lects.toString());
 
   postState("preparing", "Preparing database");
+  // measuring time taken for deletion
+  const t0 = performance.now();
   await cleanDB(lects);
+  const t1 = performance.now();
+  console.log("Call to cleanDB " + (t1 - t0) + " milliseconds.");
+
   await fillDB(dictionaries);
   postState("ready");
 }
