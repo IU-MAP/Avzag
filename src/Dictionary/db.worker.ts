@@ -50,13 +50,11 @@ async function load(lects: string[]) {
   const dictionaries = await loadLectsJSON<Entry[]>("dictionary", lects);
   lects = Object.keys(dictionaries);
   postState("fetched", lects.toString());
-  console.log("fetched");
   postState("preparing", "Preparing database");
   if (pending) return postState("fetching");
   await cleanDB(lects);
   if (pending) return postState("fetching");
   await fillDB(dictionaries);
-  console.log("filled db");
   postState("ready");
 }
 

@@ -19,7 +19,6 @@ async function queryDictionaries(query: string[], queryMode = "Translation") {
       if (fits(entry)) postMessage(JSON.stringify({ lect, entry }));
       cr = await cr.continue();
     }
-    console.log("Finished", lect);
   }
   await Promise.all(lects.map((l) => search(l)));
   postMessage(JSON.stringify({ lect: "" }));
