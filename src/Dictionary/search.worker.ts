@@ -1,5 +1,5 @@
 import { Entry, Search } from "./types";
-import { IDBPDatabase } from "idb";
+import { IDBPDatabase, openDB } from "idb";
 
 let lects_: string;
 let db: IDBPDatabase;
@@ -20,7 +20,7 @@ async function queryDictionaries(query: string[], queryMode: string) {
   }
 
   const search = {} as Search;
-  const tx = db.transaction(lects_);
+  const tx = (await db).transaction(lects_);
 
   for (const l of lects_) {
     console.log("Seaching in", l);
@@ -38,7 +38,7 @@ async function findTranslations(lect: string, query: string[]) {
   // look through all forms in the language and collect their translations.
   const translations = new Set<string>();
 
-  let cr = await db.transaction(lect).store.openCursor();
+  let cr = await (await db).transaction(lect).store.openCursor();
   while (cr) {
     const { forms, translation } = cr.value as Entry;
     if (forms.some(({ text }) => query.some((q) => text.plain.includes(q))))
@@ -70,13 +70,10 @@ onmessage = async ({ data }) => {
   const from: string = data.from;
   const args: [string, string[], string] = data.args;
   const lects__: string = data.lects;
-  const db_: IDBPDatabase = data.db;
 
   if (from === "main") {
-    console.log("initializing db");
-    db = db_;
-  } else if (from === "index") {
-    console.log("from index.vue");
+    db = await openDB("avzag");
+  } else if (from === "index" && db != null) {
     lects_ = lects__;
     const searchResult = await search(...args);
     postMessage(JSON.stringify(searchResult));

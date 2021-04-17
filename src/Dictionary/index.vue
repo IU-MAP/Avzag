@@ -87,7 +87,6 @@ export default defineComponent({
             queryMode.value,
           ],
           lects: lects_.value,
-          db: null,
         })
       );
     });

@@ -42,7 +42,6 @@ async function connect(state: DBWorkerState, text: string) {
         from: "main",
         args: null,
         lects: null,
-        db: db,
       })
     );
   } else dbInfo.text = text;
