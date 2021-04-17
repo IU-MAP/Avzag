@@ -1,5 +1,6 @@
 import { loadJSON, lects } from "@/store";
 import { reactive, shallowRef, watch } from "vue";
+import { useRoute } from "vue-router";
 import { DictionaryMeta, DBWorkerState } from "./types";
 import { IDBPDatabase, openDB } from "idb";
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -20,6 +21,13 @@ export const dbInfo = reactive({
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
 
+const route = useRoute();
+watch(
+  () => route.name,
+  () => {
+    if (route.name === "Home") worker.postMessage("stop");
+  }
+);
 watch(lects, async () => {
   dictionaryMeta.value = await loadJSON("dictionary");
   worker.postMessage(JSON.stringify(lects.value));

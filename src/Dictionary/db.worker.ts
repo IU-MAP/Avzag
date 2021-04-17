@@ -5,7 +5,9 @@ import { Entry, DBWorkerState } from "./types";
 let db: IDBPDatabase;
 
 async function cleanDB(lects: string[]) {
+  if (pending) return;
   await deleteDB("avzag");
+  if (pending) return;
   db = await openDB("avzag", 1, {
     upgrade(db) {
       for (const l of lects) {
@@ -44,22 +46,18 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
 }
 
 async function load(lects: string[]) {
-  executing = true;
   postState("fetching", "Downloading files");
+  if (pending) return;
   const dictionaries = await loadLectsJSON<Entry[]>("dictionary", lects);
   lects = Object.keys(dictionaries);
   postState("fetched", lects.toString());
 
   postState("preparing", "Preparing database");
+  if (pending) return;
   await cleanDB(lects);
+  if (pending) return;
   await fillDB(dictionaries);
   postState("ready");
-  executing = false;
-
-  if (pending) {
-    pending();
-    pending = undefined;
-  }
 }
 
 function postState(state: DBWorkerState, text: string | string[] = "Loading") {
@@ -69,8 +67,18 @@ function postState(state: DBWorkerState, text: string | string[] = "Loading") {
 let pending: undefined | (() => void);
 let executing = false;
 
-onmessage = ({ data }) => {
-  const call = () => load(JSON.parse(data));
+onmessage = (e) => {
+  const data = e.data as string;
+  console.log(data);
+  const call = async () => {
+    executing = true;
+    if (data !== "stop") await load(JSON.parse(data));
+    executing = false;
+    if (pending) {
+      pending();
+      pending = undefined;
+    }
+  };
   if (executing) pending = call;
   else call();
 };
