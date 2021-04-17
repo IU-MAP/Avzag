@@ -8,10 +8,11 @@ async function cleanDB(lects: string[]) {
   await deleteDB("avzag");
   db = await openDB("avzag", 1, {
     upgrade(db) {
-      lects.forEach((l) => {
+      for (const l of lects) {
+        if (pending) return;
         if (db.objectStoreNames.contains(l)) db.deleteObjectStore(l);
         db.createObjectStore(l, { autoIncrement: true });
-      });
+      }
     },
   });
 }
@@ -27,6 +28,7 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
     const current = ds.length;
     const puts = [];
     for (const d of ds) {
+      if (pending) return;
       puts.push(st.add(d));
       if (!(puts.length % step)) {
         done += step;
@@ -42,6 +44,7 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
 }
 
 async function load(lects: string[]) {
+  executing = true;
   postState("fetching", "Downloading files");
   const dictionaries = await loadLectsJSON<Entry[]>("dictionary", lects);
   lects = Object.keys(dictionaries);
@@ -51,10 +54,23 @@ async function load(lects: string[]) {
   await cleanDB(lects);
   await fillDB(dictionaries);
   postState("ready");
+  executing = false;
+
+  if (pending) {
+    pending();
+    pending = undefined;
+  }
 }
 
 function postState(state: DBWorkerState, text: string | string[] = "Loading") {
   postMessage(JSON.stringify({ state, text }));
 }
 
-onmessage = ({ data }) => load(JSON.parse(data));
+let pending: undefined | (() => void);
+let executing = false;
+
+onmessage = ({ data }) => {
+  const call = () => load(JSON.parse(data));
+  if (executing) pending = call;
+  else call();
+};
