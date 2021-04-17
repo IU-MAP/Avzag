@@ -1,19 +1,23 @@
-import { openDB, deleteDB, IDBPDatabase } from "idb";
+import { openDB, IDBPDatabase } from "idb";
 import { loadLectsJSON } from "@/store";
 import { Entry, DBWorkerState } from "./types";
 
 let db: IDBPDatabase;
 
 async function cleanDB(lects: string[]) {
-  await deleteDB("avzag");
   db = await openDB("avzag", 1, {
     upgrade(db) {
-      lects.forEach((l) => {
+      for (const l of lects) {
+        if (pending) return;
         if (db.objectStoreNames.contains(l)) db.deleteObjectStore(l);
         db.createObjectStore(l, { autoIncrement: true });
-      });
+      }
     },
   });
+  for (const l of lects) {
+    if (pending) return;
+    await db.clear(l);
+  }
 }
 
 async function fillDB(dictionaries: Record<string, Entry[]>) {
@@ -27,6 +31,7 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
     const current = ds.length;
     const puts = [];
     for (const d of ds) {
+      if (pending) return;
       puts.push(st.add(d));
       if (!(puts.length % step)) {
         done += step;
@@ -43,12 +48,15 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
 
 async function load(lects: string[]) {
   postState("fetching", "Downloading files");
+  if (pending) return postState("fetching");
   const dictionaries = await loadLectsJSON<Entry[]>("dictionary", lects);
   lects = Object.keys(dictionaries);
   postState("fetched", lects.toString());
 
   postState("preparing", "Preparing database");
+  if (pending) return postState("fetching");
   await cleanDB(lects);
+  if (pending) return postState("fetching");
   await fillDB(dictionaries);
   postState("ready");
 }
@@ -57,4 +65,21 @@ function postState(state: DBWorkerState, text: string | string[] = "Loading") {
   postMessage(JSON.stringify({ state, text }));
 }
 
-onmessage = ({ data }) => load(JSON.parse(data));
+let pending: undefined | (() => void);
+let executing = false;
+
+onmessage = (e) => {
+  const data = e.data as string;
+  const call = async () => {
+    executing = true;
+    if (data !== "stop") await load(JSON.parse(data));
+    executing = false;
+    if (pending) {
+      const p = pending;
+      pending = undefined;
+      p();
+    }
+  };
+  if (executing) pending = call;
+  else call();
+};

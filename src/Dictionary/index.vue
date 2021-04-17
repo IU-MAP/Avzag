@@ -61,7 +61,8 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, shallowRef, watchEffect } from "vue";
-import { dictionaryMeta, lects_, dbInfo } from "./main";
+import { useRoute } from "vue-router";
+import { dictionaryMeta, lects_, dbInfo, worker } from "./main";
 import EntryCard from "./EntryCard.vue";
 import Flag from "@/components/Flag.vue";
 import { Search } from "./types";
@@ -73,6 +74,11 @@ export default defineComponent({
     const queries = reactive({} as Record<string, string>);
     const queryMode = ref("Translations");
     const lect = ref("");
+    const route = useRoute();
+
+    watchEffect(() => {
+      if (route.name === "Home") worker.postMessage("stop");
+    });
 
     watchEffect(async () => {
       searchResult.value = await search(
