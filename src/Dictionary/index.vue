@@ -82,25 +82,20 @@ export default defineComponent({
     watchEffect(async () => {
       searchworker.postMessage(
         JSON.stringify({
-          from: "index",
-          args: [
-            lect.value,
+          lect: lect.value,
+          query:
             queries[lect.value]
               ?.toLowerCase()
               .split(",")
               .map((q) => q.trim())
               .filter((q) => q) ?? [],
-            queryMode.value,
-          ],
-          lects: lects_.value,
+          queryMode: queryMode.value,
         })
       );
     });
     const searchResult = shallowRef({} as Search);
 
-    searchworker.onmessage = ({ data }) => {
-      searchResult.value = JSON.parse(data);
-    };
+    searchworker.onmessage = (e) => (searchResult.value = JSON.parse(e.data));
 
     const queryModes = [
       ["Translations", "bookmark_border"],

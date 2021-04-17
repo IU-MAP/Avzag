@@ -1,8 +1,8 @@
-import { Entry, Search } from "./types";
+import { Entry, Search, SearchWorkerMessage } from "./types";
 import { IDBPDatabase, openDB } from "idb";
 
-let lects_: string;
 let db: IDBPDatabase;
+let lects: string[];
 
 async function queryDictionaries(query: string[], queryMode: string) {
   function fits(entry: Entry) {
@@ -14,31 +14,31 @@ async function queryDictionaries(query: string[], queryMode: string) {
   function push(entry: Entry, lect: string) {
     // add the word to the result under its translation.
     const t = entry.translation;
-    if (!search[t]) search[t] = {};
-    if (!search[t][lect]) search[t][lect] = [];
-    search[t][lect].push(entry as Entry);
+    if (!results[t]) results[t] = {};
+    if (!results[t][lect]) results[t][lect] = [];
+    results[t][lect].push(entry as Entry);
   }
 
-  const search = {} as Search;
-  const tx = (await db).transaction(lects_);
-
-  for (const l of lects_) {
-    console.log("Seaching in", l);
-    let cr = await tx.objectStore(l).openCursor();
+  async function search(lect: string) {
+    let cr = await db.transaction(lect).store.openCursor();
     while (cr) {
+      console.log("Seaching in", lect);
       const entry = cr.value as Entry;
-      if (fits(entry)) push(entry, l);
+      if (fits(entry)) push(entry, lect);
       cr = await cr.continue();
     }
   }
-  return search;
+
+  const results = {} as Search;
+  await Promise.all(lects.map((l) => search(l)));
+  return results;
 }
 
 async function findTranslations(lect: string, query: string[]) {
   // look through all forms in the language and collect their translations.
   const translations = new Set<string>();
 
-  let cr = await (await db).transaction(lect).store.openCursor();
+  let cr = await db.transaction(lect).store.openCursor();
   while (cr) {
     const { forms, translation } = cr.value as Entry;
     if (forms.some(({ text }) => query.some((q) => text.plain.includes(q))))
@@ -65,17 +65,13 @@ export async function search(
   return results;
 }
 
-onmessage = async ({ data }) => {
-  data = JSON.parse(data);
-  const from: string = data.from;
-  const args: [string, string[], string] = data.args;
-  const lects__: string = data.lects;
-
-  if (from === "main") {
-    db = await openDB("avzag");
-  } else if (from === "index" && db != null) {
-    lects_ = lects__;
-    const searchResult = await search(...args);
-    postMessage(JSON.stringify(searchResult));
+onmessage = async (e) => {
+  const data = JSON.parse(e.data) as SearchWorkerMessage;
+  if (Array.isArray(data)) {
+    db = await openDB("avzag", 1);
+    lects = data;
+    return;
   }
+  const searchResult = await search(data.lect, data.query, data.queryMode);
+  postMessage(JSON.stringify(searchResult));
 };
