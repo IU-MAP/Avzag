@@ -14,6 +14,7 @@ async function cleanDB(lects: string[]) {
       });
     },
   });
+  console.log("cleaned db");
 }
 
 async function fillDB(dictionaries: Record<string, Entry[]>) {
@@ -46,10 +47,11 @@ async function load(lects: string[]) {
   const dictionaries = await loadLectsJSON<Entry[]>("dictionary", lects);
   lects = Object.keys(dictionaries);
   postState("fetched", lects.toString());
-
+  console.log("fetched");
   postState("preparing", "Preparing database");
   await cleanDB(lects);
   await fillDB(dictionaries);
+  console.log("filled db");
   postState("ready");
 }
 
