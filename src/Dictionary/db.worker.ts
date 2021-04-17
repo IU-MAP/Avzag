@@ -48,15 +48,15 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
 
 async function load(lects: string[]) {
   postState("fetching", "Downloading files");
-  if (pending) return;
+  if (pending) return postState("fetching");
   const dictionaries = await loadLectsJSON<Entry[]>("dictionary", lects);
   lects = Object.keys(dictionaries);
   postState("fetched", lects.toString());
 
   postState("preparing", "Preparing database");
-  if (pending) return;
+  if (pending) return postState("fetching");
   await cleanDB(lects);
-  if (pending) return;
+  if (pending) return postState("fetching");
   await fillDB(dictionaries);
   postState("ready");
 }
