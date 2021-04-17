@@ -6,10 +6,13 @@ let db: IDBPDatabase;
 
 async function cleanDB(lects: string[]) {
   if (pending) return;
+  console.log("sueta");
   await deleteDB("avzag");
+  console.log("deleted");
   if (pending) return;
   db = await openDB("avzag", 1, {
     upgrade(db) {
+      console.log("upgraded");
       for (const l of lects) {
         if (pending) return;
         if (db.objectStoreNames.contains(l)) db.deleteObjectStore(l);
