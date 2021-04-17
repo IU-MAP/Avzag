@@ -4,19 +4,19 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Avzag/404.html"
   },
   {
-    "revision": "415f808c2d44f6166efa",
+    "revision": "f1b44843fbbc2b38b8f2",
     "url": "/Avzag/css/app.adb2f4cc.css"
   },
   {
-    "revision": "df7cb709b040df204bd6",
-    "url": "/Avzag/css/chunk-2e99924a.69126ad7.css"
-  },
-  {
-    "revision": "912459964c09f0de6ca5",
+    "revision": "6dbdcf2a0c2a0408954e",
     "url": "/Avzag/css/chunk-329d5df8.a0f278fc.css"
   },
   {
-    "revision": "8601ddc1fca2f68c727d",
+    "revision": "7cf3aebc435404fd475c",
+    "url": "/Avzag/css/chunk-56e474c8.d39daceb.css"
+  },
+  {
+    "revision": "4222fa6dc9dc560a6512",
     "url": "/Avzag/css/chunk-68518a58.f378756b.css"
   },
   {
@@ -28,40 +28,40 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Avzag/icon.png"
   },
   {
-    "revision": "96746ae9c3624e820c7b4ded9fca0e95",
+    "revision": "262976f4beced2041b7b789ec8302f9e",
     "url": "/Avzag/index.html"
   },
   {
-    "revision": "415f808c2d44f6166efa",
-    "url": "/Avzag/js/app.39062cea.js"
+    "revision": "f1b44843fbbc2b38b8f2",
+    "url": "/Avzag/js/app.78000a0e.js"
   },
   {
     "revision": "f82a2b7f569cd4f65eae",
     "url": "/Avzag/js/chunk-2d217db3.8f6361c6.js"
   },
   {
-    "revision": "df7cb709b040df204bd6",
-    "url": "/Avzag/js/chunk-2e99924a.f908486a.js"
+    "revision": "6dbdcf2a0c2a0408954e",
+    "url": "/Avzag/js/chunk-329d5df8.9e1b7514.js"
   },
   {
-    "revision": "912459964c09f0de6ca5",
-    "url": "/Avzag/js/chunk-329d5df8.854f97b9.js"
+    "revision": "7cf3aebc435404fd475c",
+    "url": "/Avzag/js/chunk-56e474c8.d57d45ce.js"
   },
   {
-    "revision": "8601ddc1fca2f68c727d",
-    "url": "/Avzag/js/chunk-68518a58.d1927e6a.js"
+    "revision": "4222fa6dc9dc560a6512",
+    "url": "/Avzag/js/chunk-68518a58.e2680bf0.js"
   },
   {
     "revision": "ba556a820dc7be05b11d",
     "url": "/Avzag/js/chunk-69ad5f42.68549c70.js"
   },
   {
-    "revision": "68ff6a5c724b7b6c415e",
-    "url": "/Avzag/js/chunk-vendors.88ea649b.js"
+    "revision": "42e4767be7bca4047e74",
+    "url": "/Avzag/js/chunk-vendors.d2df711d.js"
   },
   {
-    "revision": "09158dd92adc1b3fcb97c2deb3b20182",
-    "url": "/Avzag/js/db.worker.a2bca966.worker.js"
+    "revision": "3a01cb96b2020b34a544df0ea006676e",
+    "url": "/Avzag/js/db.worker.34f51a05.worker.js"
   },
   {
     "revision": "d1b41ee98e74a49690e154ba9680260d",
