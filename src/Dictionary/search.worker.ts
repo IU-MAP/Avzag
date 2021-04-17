@@ -1,4 +1,4 @@
-import { Entry, Search, SearchWorkerMessage } from "./types";
+import { Entry, Search, SearchWorkerCommand } from "./types";
 import { IDBPDatabase, openDB } from "idb";
 
 let db: IDBPDatabase;
@@ -11,20 +11,12 @@ async function queryDictionaries(query: string[], queryMode: string) {
     return query.some((q) => area?.includes(q));
   }
 
-  function push(entry: Entry, lect: string) {
-    // add the word to the result under its translation.
-    const t = entry.translation;
-    if (!results[t]) results[t] = {};
-    if (!results[t][lect]) results[t][lect] = [];
-    results[t][lect].push(entry as Entry);
-  }
-
   async function search(lect: string) {
     let cr = await db.transaction(lect).store.openCursor();
     while (cr) {
       console.log("Seaching in", lect);
       const entry = cr.value as Entry;
-      if (fits(entry)) push(entry, lect);
+      if (fits(entry)) postMessage({ lect, entry });
       cr = await cr.continue();
     }
   }
@@ -67,7 +59,7 @@ export async function search(
 
 onmessage = async (e) => {
   console.log(e.data);
-  const data = JSON.parse(e.data) as SearchWorkerMessage;
+  const data = JSON.parse(e.data) as SearchWorkerCommand;
   if (Array.isArray(data)) {
     db = await openDB("avzag", 1);
     lects = data;

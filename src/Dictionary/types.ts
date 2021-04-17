@@ -35,10 +35,15 @@ export type DBWorkerState =
   | "loading"
   | "ready";
 
-export type SearchWorkerMessage =
+export type SearchWorkerCommand =
   | string[]
   | {
       lect: string;
       query: string[];
       queryMode: string;
     };
+
+export type SearchWorkerResult = {
+  lect: string;
+  entry: Entry;
+};

@@ -1,5 +1,6 @@
 <template>
   <div class="section col small">
+    <button v-if="dbInfo.state === 'ready'" @click="search">Search</button>
     <h2 v-if="dbInfo.state !== 'ready'">{{ dbInfo.text }}...</h2>
     <div v-else class="row-1 lects fill">
       <div class="col lect">
@@ -60,12 +61,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, shallowRef, watchEffect } from "vue";
+import { defineComponent, reactive, ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
-import { dictionaryMeta, lects_, dbInfo, dbworker, searchworker } from "./main";
+import {
+  dictionaryMeta,
+  lects_,
+  dbInfo,
+  dbworker,
+  searchResult,
+  startSearch,
+} from "./main";
 import EntryCard from "./EntryCard.vue";
 import Flag from "@/components/Flag.vue";
-import { Search } from "./types";
 
 export default defineComponent({
   components: { EntryCard, Flag },
@@ -79,24 +86,31 @@ export default defineComponent({
       if (route.name === "Home") dbworker.postMessage("stop");
     });
 
-    watchEffect(async () => {
-      if (dbInfo.state === "ready")
-        searchworker.postMessage(
-          JSON.stringify({
-            lect: lect.value,
-            query:
-              queries[lect.value]
-                ?.toLowerCase()
-                .split(",")
-                .map((q) => q.trim())
-                .filter((q) => q) ?? [],
-            queryMode: queryMode.value,
-          })
-        );
-    });
-    const searchResult = shallowRef({} as Search);
-
-    searchworker.onmessage = (e) => (searchResult.value = JSON.parse(e.data));
+    function search() {
+      startSearch({
+        lect: lect.value,
+        query:
+          queries[lect.value]
+            ?.toLowerCase()
+            .split(",")
+            .map((q) => q.trim())
+            .filter((q) => q) ?? [],
+        queryMode: queryMode.value,
+      });
+    }
+    // watchEffect(async () => {
+    //   if (dbInfo.state === "ready")
+    //     startSearch({
+    //       lect: lect.value,
+    //       query:
+    //         queries[lect.value]
+    //           ?.toLowerCase()
+    //           .split(",")
+    //           .map((q) => q.trim())
+    //           .filter((q) => q) ?? [],
+    //       queryMode: queryMode.value,
+    //     });
+    // });
 
     const queryModes = [
       ["Translations", "bookmark_border"],
@@ -113,6 +127,7 @@ export default defineComponent({
       searchResult,
       dictionaryMeta,
       dbInfo,
+      search,
     };
   },
 });
