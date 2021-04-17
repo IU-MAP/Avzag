@@ -51,14 +51,15 @@ export async function search(
   query: string[],
   queryMode = "Translation"
 ) {
-  if (dbInfo.state !== "ready") return {};
-  // if no target language, then user gave meaning (translation);
-  // otherwise we need to get translation from the form first.
-  const results = !lect
-    ? await queryDictionaries(query, queryMode)
-    : await queryDictionaries(
-        await findTranslations(lect, query),
-        "Translation"
-      );
-  return results;
+  // if (dbInfo.state !== "ready") return {};
+  // // if no target language, then user gave meaning (translation);
+  // // otherwise we need to get translation from the form first.
+  // const results = !lect
+  //   ? await queryDictionaries(query, queryMode)
+  //   : await queryDictionaries(
+  //       await findTranslations(lect, query),
+  //       "Translation"
+  //     );
+  // return results;
+  return {};
 }

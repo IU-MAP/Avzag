@@ -5,7 +5,7 @@ import { IDBPDatabase, openDB } from "idb";
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from "worker-loader!./db.worker";
 
-const worker = new Worker();
+export const worker = new Worker();
 worker.onmessage = ({ data }) => {
   const { state, text } = JSON.parse(data);
   connect(state, text);
