@@ -66,12 +66,14 @@ export async function search(
 }
 
 onmessage = async (e) => {
+  console.log(e.data);
   const data = JSON.parse(e.data) as SearchWorkerMessage;
   if (Array.isArray(data)) {
     db = await openDB("avzag", 1);
     lects = data;
     return;
   }
+  if (!lects) return;
   const searchResult = await search(data.lect, data.query, data.queryMode);
   postMessage(JSON.stringify(searchResult));
 };

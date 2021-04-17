@@ -80,18 +80,19 @@ export default defineComponent({
     });
 
     watchEffect(async () => {
-      searchworker.postMessage(
-        JSON.stringify({
-          lect: lect.value,
-          query:
-            queries[lect.value]
-              ?.toLowerCase()
-              .split(",")
-              .map((q) => q.trim())
-              .filter((q) => q) ?? [],
-          queryMode: queryMode.value,
-        })
-      );
+      if (dbInfo.state === "ready")
+        searchworker.postMessage(
+          JSON.stringify({
+            lect: lect.value,
+            query:
+              queries[lect.value]
+                ?.toLowerCase()
+                .split(",")
+                .map((q) => q.trim())
+                .filter((q) => q) ?? [],
+            queryMode: queryMode.value,
+          })
+        );
     });
     const searchResult = shallowRef({} as Search);
 

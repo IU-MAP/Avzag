@@ -30,6 +30,7 @@ async function connect(state: DBWorkerState, text: string) {
   if (state === "fetched") lects_.value = text.split(",");
   else {
     dbInfo.text = text;
-    searchworker.postMessage("open");
+    if (state === "ready")
+      searchworker.postMessage(JSON.stringify(lects_.value));
   }
 }
