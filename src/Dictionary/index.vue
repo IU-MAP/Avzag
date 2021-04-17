@@ -49,7 +49,7 @@
           />
         </div>
       </div>
-      <div v-for="(ind, m) of searchInfo.result" :key="m" class="row-1 lects">
+      <div v-for="(ind, m) of searchInfo.results" :key="m" class="row-1 lects">
         <div class="col lect">
           <hr />
           <i class="text-faded translation">{{ m }}</i>
