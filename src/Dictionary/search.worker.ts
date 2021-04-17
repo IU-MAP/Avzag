@@ -1,5 +1,8 @@
-import { db, lects_, dbInfo } from "./main";
 import { Entry, Search } from "./types";
+import { IDBPDatabase, openDB } from "idb";
+
+let lects_: string;
+let db: IDBPDatabase;
 
 async function queryDictionaries(query: string[], queryMode: string) {
   function fits(entry: Entry) {
@@ -17,9 +20,9 @@ async function queryDictionaries(query: string[], queryMode: string) {
   }
 
   const search = {} as Search;
-  const tx = db.transaction(lects_.value);
+  const tx = (await db).transaction(lects_);
 
-  for (const l of lects_.value) {
+  for (const l of lects_) {
     console.log("Seaching in", l);
     let cr = await tx.objectStore(l).openCursor();
     while (cr) {
@@ -35,7 +38,7 @@ async function findTranslations(lect: string, query: string[]) {
   // look through all forms in the language and collect their translations.
   const translations = new Set<string>();
 
-  let cr = await db.transaction(lect).store.openCursor();
+  let cr = await (await db).transaction(lect).store.openCursor();
   while (cr) {
     const { forms, translation } = cr.value as Entry;
     if (forms.some(({ text }) => query.some((q) => text.plain.includes(q))))
@@ -51,7 +54,6 @@ export async function search(
   query: string[],
   queryMode = "Translation"
 ) {
-  if (dbInfo.state !== "ready") return {};
   // if no target language, then user gave meaning (translation);
   // otherwise we need to get translation from the form first.
   const results = !lect
@@ -62,3 +64,18 @@ export async function search(
       );
   return results;
 }
+
+onmessage = async ({ data }) => {
+  data = JSON.parse(data);
+  const from: string = data.from;
+  const args: [string, string[], string] = data.args;
+  const lects__: string = data.lects;
+
+  if (from === "main") {
+    db = await openDB("avzag");
+  } else if (from === "index" && db != null) {
+    lects_ = lects__;
+    const searchResult = await search(...args);
+    postMessage(JSON.stringify(searchResult));
+  }
+};

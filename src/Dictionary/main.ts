@@ -3,10 +3,14 @@ import { reactive, shallowRef, watch } from "vue";
 import { DictionaryMeta, DBWorkerState } from "./types";
 import { IDBPDatabase, openDB } from "idb";
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import Worker from "worker-loader!./db.worker";
+import DBWorker from "worker-loader!./db.worker";
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import SearchWorker from "worker-loader!./search.worker";
 
-const worker = new Worker();
-worker.onmessage = ({ data }) => {
+export const searchworker = new SearchWorker();
+
+const dbworker = new DBWorker();
+dbworker.onmessage = ({ data }) => {
   const { state, text } = JSON.parse(data);
   connect(state, text);
 };
@@ -22,7 +26,7 @@ export const lects_ = shallowRef([] as string[]);
 
 watch(lects, async () => {
   dictionaryMeta.value = await loadJSON("dictionary");
-  worker.postMessage(JSON.stringify(lects.value));
+  dbworker.postMessage(JSON.stringify(lects.value));
 });
 
 async function connect(state: DBWorkerState, text: string) {
@@ -33,5 +37,12 @@ async function connect(state: DBWorkerState, text: string) {
     dbInfo.text = "Opening database";
     db = await openDB("avzag", 1);
     dbInfo.state = "ready";
+    searchworker.postMessage(
+      JSON.stringify({
+        from: "main",
+        args: null,
+        lects: null,
+      })
+    );
   } else dbInfo.text = text;
 }

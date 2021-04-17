@@ -61,11 +61,10 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, shallowRef, watchEffect } from "vue";
-import { dictionaryMeta, lects_, dbInfo } from "./main";
+import { dictionaryMeta, lects_, dbInfo, searchworker } from "./main";
 import EntryCard from "./EntryCard.vue";
 import Flag from "@/components/Flag.vue";
 import { Search } from "./types";
-import { search } from "./search";
 
 export default defineComponent({
   components: { EntryCard, Flag },
@@ -75,17 +74,27 @@ export default defineComponent({
     const lect = ref("");
 
     watchEffect(async () => {
-      searchResult.value = await search(
-        lect.value,
-        queries[lect.value]
-          ?.toLowerCase()
-          .split(",")
-          .map((q) => q.trim())
-          .filter((q) => q) ?? [],
-        queryMode.value
+      searchworker.postMessage(
+        JSON.stringify({
+          from: "index",
+          args: [
+            lect.value,
+            queries[lect.value]
+              ?.toLowerCase()
+              .split(",")
+              .map((q) => q.trim())
+              .filter((q) => q) ?? [],
+            queryMode.value,
+          ],
+          lects: lects_.value,
+        })
       );
     });
     const searchResult = shallowRef({} as Search);
+
+    searchworker.onmessage = ({ data }) => {
+      searchResult.value = JSON.parse(data);
+    };
 
     const queryModes = [
       ["Translations", "bookmark_border"],
