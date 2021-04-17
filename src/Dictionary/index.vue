@@ -2,7 +2,7 @@
   <div class="section col small">
     <h2 v-if="dbInfo.state !== 'ready'">{{ dbInfo.text }}...</h2>
     <template v-else>
-      <h2 v-if="isSearching">Searching...</h2>
+      <h2 v-if="searchInfo.searching">Searching...</h2>
       <button v-else @click="search">Search</button>
       <div class="row-1 lects fill">
         <div class="col lect">
@@ -49,7 +49,7 @@
           />
         </div>
       </div>
-      <div v-for="(ind, m) of searchResult" :key="m" class="row-1 lects">
+      <div v-for="(ind, m) of searchInfo.result" :key="m" class="row-1 lects">
         <div class="col lect">
           <hr />
           <i class="text-faded translation">{{ m }}</i>
@@ -71,10 +71,9 @@ import {
   lects_,
   dbInfo,
   dbworker,
-  searchResult,
-  isSearching,
-  startSearch,
   searchworker,
+  searchInfo,
+  startSearch,
 } from "./main";
 import EntryCard from "./EntryCard.vue";
 import Flag from "@/components/Flag.vue";
@@ -89,7 +88,7 @@ export default defineComponent({
 
     watchEffect(() => {
       if (route.name === "Home") {
-        isSearching.value = false;
+        searchInfo.searching = false;
         searchworker.postMessage("stop");
         dbworker.postMessage("stop");
       }
@@ -133,11 +132,10 @@ export default defineComponent({
       queries,
       queryMode,
       lect,
-      searchResult,
+      searchInfo,
       dictionaryMeta,
       dbInfo,
       search,
-      isSearching,
     };
   },
 });
