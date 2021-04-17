@@ -1,5 +1,5 @@
 import { loadJSON, lects } from "@/store";
-import { reactive, shallowRef, watch } from "vue";
+import { reactive, ref, shallowRef, watch } from "vue";
 import {
   DictionaryMeta,
   DBWorkerState,
@@ -13,18 +13,19 @@ import SearchWorker from "worker-loader!./search.worker";
 
 export const searchworker = new SearchWorker();
 searchworker.onmessage = (e) => receiveSearch(e.data);
+export const searchResult = reactive({} as Search);
+export const isSearching = ref(false);
 
 export const dbworker = new DBWorker();
 dbworker.onmessage = (e) => {
   const { state, text } = JSON.parse(e.data);
   connectDB(state, text);
 };
-
 export const dbInfo = reactive({
   state: "loading" as DBWorkerState,
   text: "",
 });
-export const searchResult = reactive({} as Search);
+
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
 
@@ -34,18 +35,22 @@ watch(lects, async () => {
 });
 
 export async function startSearch(command: SearchWorkerCommand) {
+  isSearching.value = true;
   for (const t of Object.keys(searchResult)) delete searchResult[t];
   searchworker.postMessage(JSON.stringify(command));
 }
 
-async function receiveSearch(result: string) {
+async function receiveSearch(data: string) {
   // add the word to the result under its translation.
-  const { lect, entry } = JSON.parse(result) as SearchWorkerResult;
+  const { lect, entry } = JSON.parse(data) as SearchWorkerResult;
+  if (!lect) {
+    isSearching.value = false;
+    return;
+  }
   const t = entry.translation;
   if (!searchResult[t]) searchResult[t] = {};
   if (!searchResult[t][lect]) searchResult[t][lect] = [];
   searchResult[t][lect].push(entry);
-  console.log(lects);
 }
 
 async function connectDB(state: DBWorkerState, text: string) {

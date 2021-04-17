@@ -3,6 +3,7 @@ import { IDBPDatabase, openDB } from "idb";
 
 let db: IDBPDatabase;
 let lects: string[];
+let stopping: boolean;
 
 async function queryDictionaries(query: string[], queryMode = "Translation") {
   function fits(entry: Entry) {
@@ -13,6 +14,7 @@ async function queryDictionaries(query: string[], queryMode = "Translation") {
   async function search(lect: string) {
     let cr = await db.transaction(lect).store.openCursor();
     while (cr) {
+      if (stopping) return;
       const entry = cr.value as Entry;
       if (fits(entry)) postMessage(JSON.stringify({ lect, entry }));
       cr = await cr.continue();
@@ -20,6 +22,7 @@ async function queryDictionaries(query: string[], queryMode = "Translation") {
     console.log("Finished", lect);
   }
   await Promise.all(lects.map((l) => search(l)));
+  postMessage(JSON.stringify({ lect: "" }));
 }
 
 async function findTranslations(lect: string, query: string[]) {
@@ -27,6 +30,7 @@ async function findTranslations(lect: string, query: string[]) {
   const translations = new Set<string>();
   let cr = await db.transaction(lect).store.openCursor();
   while (cr) {
+    if (stopping) return [];
     const { forms, translation } = cr.value as Entry;
     if (forms.some(({ text }) => query.some((q) => text.plain.includes(q))))
       translations.add(translation);
@@ -36,7 +40,10 @@ async function findTranslations(lect: string, query: string[]) {
 }
 
 onmessage = async (e) => {
-  console.log(e.data);
+  if (e.data === "stop") {
+    stopping = true;
+    return;
+  }
   const data = JSON.parse(e.data) as SearchWorkerCommand;
   if (Array.isArray(data)) {
     db = await openDB("avzag", 1);
@@ -45,6 +52,7 @@ onmessage = async (e) => {
   }
   if (!lects) return;
 
+  stopping = false;
   const { lect, query, queryMode } = { ...data };
   if (lect) queryDictionaries(await findTranslations(lect, query));
   else queryDictionaries(query, queryMode);

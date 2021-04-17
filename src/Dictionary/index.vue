@@ -1,62 +1,65 @@
 <template>
   <div class="section col small">
-    <button v-if="dbInfo.state === 'ready'" @click="search">Search</button>
     <h2 v-if="dbInfo.state !== 'ready'">{{ dbInfo.text }}...</h2>
-    <div v-else class="row-1 lects fill">
-      <div class="col lect">
-        <div class="row">
-          <btn
-            v-for="[t, i] in queryModes"
-            :key="t"
-            :text="queryMode === t ? t : ''"
-            :icon="i"
-            :class="queryMode === t && 'highlight flex'"
-            @click="
-              () => {
-                queryMode = t;
-                lect = '';
-              }
-            "
+    <template v-else>
+      <h2 v-if="isSearching">Searching...</h2>
+      <button v-else @click="search">Search</button>
+      <div class="row-1 lects fill">
+        <div class="col lect">
+          <div class="row">
+            <btn
+              v-for="[t, i] in queryModes"
+              :key="t"
+              :text="queryMode === t ? t : ''"
+              :icon="i"
+              :class="queryMode === t && 'highlight flex'"
+              @click="
+                () => {
+                  queryMode = t;
+                  lect = '';
+                }
+              "
+            />
+          </div>
+          <select v-if="queryMode === 'Lists'" v-model="queries['']">
+            <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
+              {{ n }}
+            </option>
+          </select>
+          <input
+            v-else
+            v-model="queries['']"
+            class="selectable"
+            type="text"
+            placeholder="Search..."
+            :readonly="!!lect"
+            @click="lect = ''"
           />
         </div>
-        <select v-if="queryMode === 'Lists'" v-model="queries['']">
-          <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
-            {{ n }}
-          </option>
-        </select>
-        <input
-          v-else
-          v-model="queries['']"
-          class="selectable"
-          type="text"
-          placeholder="Search..."
-          :readonly="!!lect"
-          @click="lect = ''"
-        />
+        <div v-for="l in lects" :key="l" class="col lect flag">
+          <Flag :lect="l" class="blur" />
+          <h2 class="flex">{{ l }}</h2>
+          <input
+            v-model="queries[l]"
+            class="selectable"
+            type="text"
+            :placeholder="`Search by ${l} form...`"
+            :readonly="lect !== l"
+            @click="lect = l"
+          />
+        </div>
       </div>
-      <div v-for="l in lects" :key="l" class="col lect flag">
-        <Flag :lect="l" class="blur" />
-        <h2 class="flex">{{ l }}</h2>
-        <input
-          v-model="queries[l]"
-          class="selectable"
-          type="text"
-          :placeholder="`Search by ${l} form...`"
-          :readonly="lect !== l"
-          @click="lect = l"
-        />
+      <div v-for="(ind, m) of searchResult" :key="m" class="row-1 lects">
+        <div class="col lect">
+          <hr />
+          <i class="text-faded translation">{{ m }}</i>
+        </div>
+        <div v-for="l in lects" :key="l" class="col lect">
+          <hr />
+          <EntryCard v-for="(e, i) in ind[l]" :key="i" :entry="e" />
+        </div>
       </div>
-    </div>
-    <div v-for="(ind, m) of searchResult" :key="m" class="row-1 lects">
-      <div class="col lect">
-        <hr />
-        <i class="text-faded translation">{{ m }}</i>
-      </div>
-      <div v-for="l in lects" :key="l" class="col lect">
-        <hr />
-        <EntryCard v-for="(e, i) in ind[l]" :key="i" :entry="e" />
-      </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -69,7 +72,9 @@ import {
   dbInfo,
   dbworker,
   searchResult,
+  isSearching,
   startSearch,
+  searchworker,
 } from "./main";
 import EntryCard from "./EntryCard.vue";
 import Flag from "@/components/Flag.vue";
@@ -83,7 +88,11 @@ export default defineComponent({
     const route = useRoute();
 
     watchEffect(() => {
-      if (route.name === "Home") dbworker.postMessage("stop");
+      if (route.name === "Home") {
+        isSearching.value = false;
+        searchworker.postMessage("stop");
+        dbworker.postMessage("stop");
+      }
     });
 
     function search() {
@@ -128,6 +137,7 @@ export default defineComponent({
       dictionaryMeta,
       dbInfo,
       search,
+      isSearching,
     };
   },
 });
