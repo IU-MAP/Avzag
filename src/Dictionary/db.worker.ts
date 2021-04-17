@@ -1,18 +1,12 @@
-import { openDB, deleteDB, IDBPDatabase } from "idb";
+import { openDB, IDBPDatabase } from "idb";
 import { loadLectsJSON } from "@/store";
 import { Entry, DBWorkerState } from "./types";
 
 let db: IDBPDatabase;
 
 async function cleanDB(lects: string[]) {
-  if (pending) return;
-  console.log("sueta");
-  await deleteDB("avzag");
-  console.log("deleted");
-  if (pending) return;
   db = await openDB("avzag", 1, {
     upgrade(db) {
-      console.log("upgraded");
       for (const l of lects) {
         if (pending) return;
         if (db.objectStoreNames.contains(l)) db.deleteObjectStore(l);
@@ -20,6 +14,10 @@ async function cleanDB(lects: string[]) {
       }
     },
   });
+  for (const l of lects) {
+    if (pending) return;
+    await db.clear(l);
+  }
 }
 
 async function fillDB(dictionaries: Record<string, Entry[]>) {
@@ -72,14 +70,14 @@ let executing = false;
 
 onmessage = (e) => {
   const data = e.data as string;
-  console.log(data);
   const call = async () => {
     executing = true;
     if (data !== "stop") await load(JSON.parse(data));
     executing = false;
     if (pending) {
-      pending();
+      const p = pending;
       pending = undefined;
+      p();
     }
   };
   if (executing) pending = call;
