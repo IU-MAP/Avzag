@@ -28,10 +28,20 @@
         </p>
       </template>
       <template v-else-if="expand === 2">
-        <div v-for="(s, i) in entry.samples" :key="i" class="col-0">
-          <p>{{ s.text.plain }}</p>
-          <p class="text-faded text-caption">{{ s.translation }}</p>
-        </div>
+        <template v-for="(s, i) in entry.samples" :key="i">
+          <p class="col-0">
+            {{ s.text.plain }}
+            <span class="text-caption col-0">
+              {{ s.translation }}
+              <span class="text-faded col-0">
+                <span class="text-ipa">
+                  {{ s.text.ipa }}
+                </span>
+                {{ s.text.glossed }}
+              </span>
+            </span>
+          </p>
+        </template>
       </template>
     </div>
   </div>
