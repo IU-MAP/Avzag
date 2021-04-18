@@ -3,35 +3,37 @@
     <h2 v-if="dbInfo.state !== 'ready'">{{ dbInfo.text }}...</h2>
     <template v-else>
       <div class="row-1 lects fill">
-        <div class="col lect">
+        <div class="row lect">
           <!-- <select v-if="queryMode === 'Lists'" v-model="queries['']">
             <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
               {{ n }}
             </option>
           </select> -->
-          <h2 v-if="searchInfo.searching">Searching...</h2>
-          <btn v-else text="Search" icon="search" @click="search" />
-          <input
-            v-model="queries['']"
-            class="selectable"
-            type="text"
-            placeholder="Enter meaning..."
-            :readonly="!!lect"
-            @click="lect = ''"
-          />
+          <toggle v-model="lists" icon="star_outline" />
+          <btn class="flex" text="Meanings" :is-on="!lect" @click="lect = ''" />
         </div>
         <div v-for="l in lects" :key="l" class="col lect flag">
           <Flag :lect="l" class="blur" />
-          <h2 class="flex">{{ l }}</h2>
-          <input
+          <button :class="{ highlight: lect === l }" @click="lect = l">
+            <h2 class="flex">{{ l }}</h2>
+          </button>
+          <!-- <input
             v-model="queries[l]"
             class="selectable"
             type="text"
             :placeholder="`Search by ${l} form...`"
             :readonly="lect !== l"
             @click="lect = l"
-          />
+          /> -->
         </div>
+      </div>
+      <div class="row">
+        <btn :disabled="searchInfo.searching" icon="search" @click="search" />
+        <input
+          v-model="query"
+          type="text"
+          :placeholder="lect ? `Enter ${lect} form...` : 'Enter meaning...'"
+        />
       </div>
       <div v-for="(ind, m) of searchInfo.results" :key="m" class="row-1 lects">
         <div class="col lect">
@@ -48,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, watchEffect } from "vue";
+import { computed, defineComponent, reactive, ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import {
   dictionaryMeta,
@@ -61,12 +63,17 @@ import {
 import EntryCard from "./EntryCard.vue";
 import Flag from "@/components/Flag.vue";
 import { SearchCommand } from "./types";
+import Btn from "@/components/Btn.vue";
 
 export default defineComponent({
-  components: { EntryCard, Flag },
+  components: { EntryCard, Flag, Btn },
   setup() {
     const queries = reactive({} as Record<string, string>);
-    const queryMode = ref("Translations");
+    const query = computed({
+      get: () => queries[lect.value],
+      set: (q) => (queries[lect.value] = q),
+    });
+    const lists = ref(false);
     const lect = ref("");
     const route = useRoute();
 
@@ -79,12 +86,13 @@ export default defineComponent({
     });
 
     function search() {
+      if (!query.value) return;
       searchInfo.searching = true;
       searchInfo.results = {};
       searchworker.postMessage(
         JSON.stringify({
           lect: lect.value,
-          query: queries[lect.value].split(","),
+          query: query.value.split(","),
         } as SearchCommand)
       );
     }
@@ -92,8 +100,9 @@ export default defineComponent({
     return {
       lects: lects_,
       queries,
-      queryMode,
+      query,
       lect,
+      lists,
       searchInfo,
       dictionaryMeta,
       dbInfo,
