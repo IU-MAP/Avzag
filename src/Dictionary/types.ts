@@ -37,5 +37,5 @@ export type SearchCommand =
   | string[]
   | {
       lect: string;
-      query: string[];
+      query: string[][];
     };

@@ -5,29 +5,33 @@ let db: IDBPDatabase;
 let lects: string[];
 let key: symbol;
 
-function fits(entry: Entry, query: string, forms = false) {
-  if (query[0] === "#") return entry.tags?.includes(query.substr(1));
-  const area = forms ? entry.forms.map((f) => f.plain) : entry.meanings;
-  switch (query[0]) {
-    case "*":
-      return area.includes(query.substr(1));
-    case "+":
-      return area.some((a) => a.startsWith(query.substr(1)));
-    case "-":
-      return area.some((a) => a.endsWith(query.substr(1)));
-    default:
-      return area.some((a) => a.includes(query));
-  }
+function fits(entry: Entry, query: string[][], forms = false) {
+  return query.some((qs) =>
+    qs.every((q) => {
+      if (q[0] === "#") return entry.tags?.includes(q.substr(1));
+      const area = forms ? entry.forms.map((f) => f.plain) : entry.meanings;
+      switch (q[0]) {
+        case "*":
+          return area.includes(q.substr(1));
+        case "+":
+          return area.some((a) => a.startsWith(q.substr(1)));
+        case "-":
+          return area.some((a) => a.endsWith(q.substr(1)));
+        default:
+          return area.some((a) => a.includes(q));
+      }
+    })
+  );
 }
 
-async function queryDictionaries(key_: symbol, query: string[]) {
+async function queryDictionaries(key_: symbol, query: string[][]) {
+  if (!query.length) return;
   async function search(lect: string) {
     let cr = await db.transaction(lect).store.openCursor();
     while (cr) {
       if (key !== key_) return;
       const entry = cr.value as Entry;
-      if (query.every((q) => fits(entry, q)))
-        postMessage(JSON.stringify({ lect, entry }));
+      if (fits(entry, query)) postMessage(JSON.stringify({ lect, entry }));
       cr = await cr.continue();
     }
   }
@@ -36,18 +40,17 @@ async function queryDictionaries(key_: symbol, query: string[]) {
   postMessage(JSON.stringify({ lect: "" }));
 }
 
-async function findTranslations(key_: symbol, lect: string, query: string[]) {
+async function findMeanings(key_: symbol, lect: string, query: string[][]) {
   // look through all forms in the language and collect their translations.
-  const translations = new Set<string>();
+  const meanings = new Set<string>();
   let cr = await db.transaction(lect).store.openCursor();
   while (cr) {
     if (key !== key_) return [];
     const entry = cr.value as Entry;
-    if (query.every((q) => fits(entry, q, true)))
-      translations.add(entry.meanings[0]);
+    if (fits(entry, query, true)) meanings.add(entry.meanings[0]);
     cr = await cr.continue();
   }
-  return [...translations];
+  return [...meanings].map((m) => ["*" + m]);
 }
 
 onmessage = async (e) => {
@@ -62,9 +65,8 @@ onmessage = async (e) => {
     lects = data;
     return;
   }
-
   key = Symbol("sk");
   const { lect, query } = { ...data };
-  if (lect) queryDictionaries(key, await findTranslations(key, lect, query));
+  if (lect) queryDictionaries(key, await findMeanings(key, lect, query));
   else queryDictionaries(key, query);
 };
