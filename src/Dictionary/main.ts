@@ -2,10 +2,10 @@ import { loadJSON, lects } from "@/store";
 import { reactive, shallowRef, watch } from "vue";
 import {
   DictionaryMeta,
-  DBWorkerState,
+  DBState,
   Search,
-  SearchWorkerResult,
-  SearchWorkerCommand,
+  SearchResult,
+  SearchCommand,
 } from "./types";
 /* eslint-disable import/no-webpack-loader-syntax */
 import DBWorker from "worker-loader!./db.worker";
@@ -24,7 +24,7 @@ dbworker.onmessage = (e) => {
   connectDB(state, text);
 };
 export const dbInfo = reactive({
-  state: "loading" as DBWorkerState,
+  state: "loading" as DBState,
   text: "",
 });
 
@@ -36,7 +36,7 @@ watch(lects, async () => {
   dbworker.postMessage(JSON.stringify(lects.value));
 });
 
-export async function startSearch(command: SearchWorkerCommand) {
+export async function startSearch(command: SearchCommand) {
   searchInfo.searching = true;
   searchInfo.results = {};
   searchworker.postMessage(JSON.stringify(command));
@@ -44,7 +44,7 @@ export async function startSearch(command: SearchWorkerCommand) {
 
 async function receiveSearch(data: string) {
   // add the word to the result under its translation.
-  const { lect, entry } = JSON.parse(data) as SearchWorkerResult;
+  const { lect, entry } = JSON.parse(data) as SearchResult;
   if (!lect) {
     searchInfo.searching = false;
     return;
@@ -55,7 +55,7 @@ async function receiveSearch(data: string) {
   searchInfo.results[t][lect].push(entry);
 }
 
-async function connectDB(state: DBWorkerState, text: string) {
+async function connectDB(state: DBState, text: string) {
   dbInfo.state = state;
   if (state === "fetched") lects_.value = text.split(",");
   else {

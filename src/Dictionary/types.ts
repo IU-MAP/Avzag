@@ -17,18 +17,16 @@ export type Entry = {
   notes?: string[];
 };
 
-export type DictionaryMeta = { lists: Record<string, string[]> };
-
 export type Search = Record<string, Record<string, Entry[]>>;
 
-export type DBWorkerState =
+export type DBState =
   | "preparing"
   | "fetching"
   | "fetched"
   | "loading"
   | "ready";
 
-export type SearchWorkerCommand =
+export type SearchCommand =
   | string[]
   | {
       lect: string;
@@ -36,7 +34,7 @@ export type SearchWorkerCommand =
       queryMode: string;
     };
 
-export type SearchWorkerResult = {
+export type SearchResult = {
   lect: string;
   entry: Entry;
 };

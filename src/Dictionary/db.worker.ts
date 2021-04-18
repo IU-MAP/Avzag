@@ -1,6 +1,6 @@
 import { openDB, IDBPDatabase, deleteDB } from "idb";
 import { loadLectsJSON } from "@/store";
-import { Entry, DBWorkerState } from "./types";
+import { Entry, DBState } from "./types";
 
 let db: IDBPDatabase;
 
@@ -58,7 +58,7 @@ async function load(lects: string[]) {
   postState("ready");
 }
 
-function postState(state: DBWorkerState, text: string | string[] = "Loading") {
+function postState(state: DBState, text: string | string[] = "Loading") {
   postMessage(JSON.stringify({ state, text }));
 }
 

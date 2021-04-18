@@ -1,4 +1,4 @@
-import { Entry, SearchWorkerCommand } from "./types";
+import { Entry, SearchCommand } from "./types";
 import { IDBPDatabase, openDB } from "idb";
 
 let db: IDBPDatabase;
@@ -43,7 +43,7 @@ onmessage = async (e) => {
     stopping = true;
     return;
   }
-  const data = JSON.parse(e.data) as SearchWorkerCommand;
+  const data = JSON.parse(e.data) as SearchCommand;
   if (Array.isArray(data)) {
     db = await openDB("avzag", 1);
     lects = data;
