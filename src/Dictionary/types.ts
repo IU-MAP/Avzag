@@ -4,8 +4,7 @@ export type Text = {
   glossed?: string;
 };
 
-export type Sample = {
-  text: Text;
+export type Sample = Text & {
   translation: string;
 };
 

@@ -30,14 +30,14 @@
       <template v-else-if="expand === 2">
         <template v-for="(s, i) in entry.samples" :key="i">
           <p class="col-0">
-            {{ s.text.plain }}
+            {{ s.plain }}
             <span class="text-caption col-0">
               {{ s.translation }}
               <span class="text-faded col-0">
                 <span class="text-ipa">
-                  {{ s.text.ipa }}
+                  {{ s.ipa }}
                 </span>
-                {{ s.text.glossed }}
+                {{ s.glossed }}
               </span>
             </span>
           </p>
