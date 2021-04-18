@@ -13,17 +13,16 @@
     <div v-if="expand >= 0" class="col card">
       <template v-if="expand === 0">
         <p class="col-0">
-          {{ entry.forms[0].text.plain }}
-          <span class="text-ipa">{{ entry.forms[0].text.ipa }}</span>
+          {{ entry.forms[0].plain }}
+          <span class="text-ipa">{{ entry.forms[0].ipa }}</span>
         </p>
         <p v-if="entry.explanation">{{ entry.explanation }}</p>
       </template>
       <template v-else-if="expand === 1">
         <div v-for="(f, i) in entry.forms" :key="i" class="col-0">
-          {{ f.text.plain }}
-          <!-- <span class="text-ipa">{{ f.text.ipa }}</span> -->
-          {{ f.text.glossed }}
-          <span class="text-faded text-caption">{{ f.grammar }}</span>
+          {{ f.plain }}
+          <span class="text-ipa">{{ f.ipa }}</span>
+          {{ f.glossed }}
         </div>
       </template>
       <template v-else-if="expand === 2">
@@ -51,7 +50,7 @@ export default defineComponent({
       ["Forms", "tune"],
       ["Samples", "speaker_notes"],
     ];
-    const plain = computed(() => props.entry?.forms[0].text.plain);
+    const plain = computed(() => props.entry?.forms[0].plain);
     return { expand, plain, views };
   },
 });
