@@ -26,7 +26,7 @@ async function queryDictionaries(query: string[]) {
     while (cr) {
       if (stopping) return;
       const entry = cr.value as Entry;
-      if (query.some((q) => fits(entry, q, true)))
+      if (query.some((q) => fits(entry, q)))
         postMessage(JSON.stringify({ lect, entry }));
       cr = await cr.continue();
     }
@@ -42,7 +42,8 @@ async function findTranslations(lect: string, query: string[]) {
   while (cr) {
     if (stopping) return [];
     const entry = cr.value as Entry;
-    if (query.some((q) => fits(entry, q))) translations.add(entry.meanings[0]);
+    if (query.some((q) => fits(entry, q, true)))
+      translations.add(entry.meanings[0]);
     cr = await cr.continue();
   }
   return [...translations];
