@@ -81,10 +81,12 @@ export default defineComponent({
     function search() {
       searchInfo.searching = true;
       searchInfo.results = {};
-      searchworker.postMessage({
-        lect: lect.value,
-        query: queries[lect.value].split(","),
-      } as SearchCommand);
+      searchworker.postMessage(
+        JSON.stringify({
+          lect: lect.value,
+          query: queries[lect.value].split(","),
+        } as SearchCommand)
+      );
     }
 
     return {
