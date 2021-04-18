@@ -50,6 +50,7 @@ async function findTranslations(lect: string, query: string[]) {
 
 onmessage = async (e) => {
   if (e.data === "stop") {
+    db?.close();
     stopping = true;
     return;
   }

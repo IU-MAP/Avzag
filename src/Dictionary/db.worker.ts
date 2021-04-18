@@ -6,14 +6,9 @@ let db: IDBPDatabase;
 
 async function cleanDB(lects: string[]) {
   await deleteDB("avzag");
-  if (pending) return;
   db = await openDB("avzag", 1, {
     upgrade(db) {
-      for (const l of lects) {
-        if (pending) return;
-        if (db.objectStoreNames.contains(l)) db.deleteObjectStore(l);
-        db.createObjectStore(l, { autoIncrement: true });
-      }
+      lects.map((l) => db.createObjectStore(l, { autoIncrement: true }));
     },
   });
 }
@@ -69,7 +64,8 @@ onmessage = (e) => {
   const data = e.data as string;
   const call = async () => {
     executing = true;
-    if (data !== "stop") await load(JSON.parse(data));
+    if (data === "stop") db?.close();
+    else await load(JSON.parse(data));
     executing = false;
     if (pending) {
       const p = pending;
