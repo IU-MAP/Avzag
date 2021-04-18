@@ -9,19 +9,12 @@ export type Sample = {
   translation: string;
 };
 
-export type Form = {
-  text: Text;
-  grammar: string;
-};
-
 export type Entry = {
-  translation: string;
-  forms: Form[];
+  forms: Text[];
+  meanings?: string[];
+  tags?: string[];
   samples?: Sample[];
-  tags?: string;
-  explanation?: string;
-  etymology?: string;
-  related?: string[];
+  notes?: string[];
 };
 
 export type DictionaryMeta = { lists: Record<string, string[]> };
