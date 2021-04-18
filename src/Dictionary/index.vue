@@ -2,8 +2,6 @@
   <div class="section col small">
     <h2 v-if="dbInfo.state !== 'ready'">{{ dbInfo.text }}...</h2>
     <template v-else>
-      <h2 v-if="searchInfo.searching">Searching...</h2>
-      <button v-else @click="search">Search</button>
       <div class="row-1 lects fill">
         <div class="col lect">
           <!-- <select v-if="queryMode === 'Lists'" v-model="queries['']">
@@ -11,11 +9,13 @@
               {{ n }}
             </option>
           </select> -->
+          <h2 v-if="searchInfo.searching">Searching...</h2>
+          <btn v-else text="Search" icon="search" @click="search" />
           <input
             v-model="queries['']"
             class="selectable"
             type="text"
-            placeholder="Search..."
+            placeholder="Enter meaning..."
             :readonly="!!lect"
             @click="lect = ''"
           />
