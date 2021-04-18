@@ -21,7 +21,7 @@
 .text-tags,
 .text-tags * {
   @extend .text-caption;
-  // @extend .text-faded;
+  @extend .text-faded;
   word-spacing: map-get($margins, "half");
 }
 
