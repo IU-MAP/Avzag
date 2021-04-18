@@ -11,13 +11,18 @@ export type Sample = {
 
 export type Entry = {
   forms: Text[];
-  meanings?: string[];
+  meanings: string[];
   tags?: string[];
   samples?: Sample[];
   notes?: string[];
 };
 
-export type Search = Record<string, Record<string, Entry[]>>;
+export type SearchResults = Record<string, Record<string, Entry[]>>;
+
+export type SearchOccurence = {
+  lect: string;
+  entry: Entry;
+};
 
 export type DictionaryMeta = { lists: Record<string, string[]> };
 
@@ -33,10 +38,4 @@ export type SearchCommand =
   | {
       lect: string;
       query: string[];
-      queryMode: string;
     };
-
-export type SearchResult = {
-  lect: string;
-  entry: Entry;
-};

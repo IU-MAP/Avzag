@@ -6,28 +6,12 @@
       <button v-else @click="search">Search</button>
       <div class="row-1 lects fill">
         <div class="col lect">
-          <div class="row">
-            <btn
-              v-for="[t, i] in queryModes"
-              :key="t"
-              :text="queryMode === t ? t : ''"
-              :icon="i"
-              :class="queryMode === t && 'highlight flex'"
-              @click="
-                () => {
-                  queryMode = t;
-                  lect = '';
-                }
-              "
-            />
-          </div>
-          <select v-if="queryMode === 'Lists'" v-model="queries['']">
+          <!-- <select v-if="queryMode === 'Lists'" v-model="queries['']">
             <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
               {{ n }}
             </option>
-          </select>
+          </select> -->
           <input
-            v-else
             v-model="queries['']"
             class="selectable"
             type="text"
@@ -73,10 +57,10 @@ import {
   dbworker,
   searchworker,
   searchInfo,
-  startSearch,
 } from "./main";
 import EntryCard from "./EntryCard.vue";
 import Flag from "@/components/Flag.vue";
+import { SearchCommand } from "./types";
 
 export default defineComponent({
   components: { EntryCard, Flag },
@@ -95,39 +79,15 @@ export default defineComponent({
     });
 
     function search() {
-      startSearch({
+      searchInfo.searching = true;
+      searchInfo.results = {};
+      searchworker.postMessage({
         lect: lect.value,
-        query:
-          queries[lect.value]
-            ?.toLowerCase()
-            .split(",")
-            .map((q) => q.trim())
-            .filter((q) => q) ?? [],
-        queryMode: queryMode.value,
-      });
+        query: queries[lect.value].split(","),
+      } as SearchCommand);
     }
-    // watchEffect(async () => {
-    //   if (dbInfo.state === "ready")
-    //     startSearch({
-    //       lect: lect.value,
-    //       query:
-    //         queries[lect.value]
-    //           ?.toLowerCase()
-    //           .split(",")
-    //           .map((q) => q.trim())
-    //           .filter((q) => q) ?? [],
-    //       queryMode: queryMode.value,
-    //     });
-    // });
-
-    const queryModes = [
-      ["Translations", "bookmark_border"],
-      ["Tags", "label"],
-      ["Lists", "format_list_bulleted"],
-    ];
 
     return {
-      queryModes,
       lects: lects_,
       queries,
       queryMode,

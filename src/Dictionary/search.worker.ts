@@ -5,18 +5,29 @@ let db: IDBPDatabase;
 let lects: string[];
 let stopping: boolean;
 
-async function queryDictionaries(query: string[], queryMode = "Translation") {
-  function fits(entry: Entry) {
-    // check if the word fits in the query.
-    const area = queryMode === "Tags" ? entry.tags ?? "" : entry.translation;
-    return query.some((q) => area?.includes(q));
+function fits(entry: Entry, query: string, forms = false) {
+  if (query[0] === "#") return entry.tags?.includes(query.substr(1));
+  const area = forms ? entry.forms.map((f) => f.plain) : entry.meanings;
+  switch (query[0]) {
+    case "*":
+      return area.includes(query.substr(1));
+    case "+":
+      return area.some((a) => a.startsWith(query.substr(1)));
+    case "-":
+      return area.some((a) => a.endsWith(query.substr(1)));
+    default:
+      return area.some((a) => a.includes(query));
   }
+}
+
+async function queryDictionaries(query: string[]) {
   async function search(lect: string) {
     let cr = await db.transaction(lect).store.openCursor();
     while (cr) {
       if (stopping) return;
       const entry = cr.value as Entry;
-      if (fits(entry)) postMessage(JSON.stringify({ lect, entry }));
+      if (query.some((q) => fits(entry, q, true)))
+        postMessage(JSON.stringify({ lect, entry }));
       cr = await cr.continue();
     }
   }
@@ -30,9 +41,8 @@ async function findTranslations(lect: string, query: string[]) {
   let cr = await db.transaction(lect).store.openCursor();
   while (cr) {
     if (stopping) return [];
-    const { forms, translation } = cr.value as Entry;
-    if (forms.some(({ text }) => query.some((q) => text.plain.includes(q))))
-      translations.add(translation);
+    const entry = cr.value as Entry;
+    if (query.some((q) => fits(entry, q))) translations.add(entry.meanings[0]);
     cr = await cr.continue();
   }
   return [...translations];
@@ -52,7 +62,7 @@ onmessage = async (e) => {
   if (!lects) return;
 
   stopping = false;
-  const { lect, query, queryMode } = { ...data };
+  const { lect, query } = { ...data };
   if (lect) queryDictionaries(await findTranslations(lect, query));
-  else queryDictionaries(query, queryMode);
+  else queryDictionaries(query);
 };
