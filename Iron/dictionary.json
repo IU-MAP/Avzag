@@ -7,7 +7,7 @@
         }
       }
     ],
-    "translation": "I"
+    "translation": "Me(test)"
   },
   {
     "forms": [
@@ -159,7 +159,7 @@
         }
       }
     ],
-    "translation": "where"
+    "translation": "where(test)"
   },
   {
     "forms": [
@@ -405,7 +405,7 @@
     "forms": [
       {
         "text": {
-          "plain": "мургул"
+          "plain": "тургул"
         }
       }
     ],
@@ -553,7 +553,7 @@
     "forms": [
       {
         "text": {
-          "plain": "нез"
+          "plain": "мез"
         }
       }
     ],
