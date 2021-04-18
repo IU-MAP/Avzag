@@ -83,7 +83,10 @@ export default defineComponent({
     });
 
     watchEffect(() => {
-      if (!query.value) return;
+      if (!query.value) {
+        searchInfo.results = {};
+        return;
+      }
       searchInfo.searching = true;
       searchInfo.results = {};
       searchworker.postMessage(

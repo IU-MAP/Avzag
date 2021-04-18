@@ -3,7 +3,7 @@ import { IDBPDatabase, openDB } from "idb";
 
 let db: IDBPDatabase;
 let lects: string[];
-let stopping: boolean;
+let key: symbol;
 
 function fits(entry: Entry, query: string, forms = false) {
   if (query[0] === "#") return entry.tags?.includes(query.substr(1));
@@ -49,8 +49,6 @@ async function findTranslations(key_: symbol, lect: string, query: string[]) {
   }
   return [...translations];
 }
-
-let key: symbol;
 
 onmessage = async (e) => {
   if (e.data === "stop") {
