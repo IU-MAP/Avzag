@@ -19,6 +19,8 @@ export type Entry = {
 
 export type Search = Record<string, Record<string, Entry[]>>;
 
+export type DictionaryMeta = { lists: Record<string, string[]> };
+
 export type DBState =
   | "preparing"
   | "fetching"
