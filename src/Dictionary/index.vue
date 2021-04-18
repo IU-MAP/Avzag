@@ -32,16 +32,13 @@
         type="text"
         :placeholder="lect ? `Enter ${lect} form...` : 'Enter meaning...'"
       />
-      <div v-for="(ind, m) of searchInfo.results" :key="m" class="row-1 lects">
-        <div class="col lect">
-          <hr />
-          <i class="text-faded translation">{{ m }}</i>
-        </div>
-        <div v-for="l in lects" :key="l" class="col lect">
-          <hr />
-          <EntryCard v-for="(e, i) in ind[l]" :key="i" :entry="e" />
-        </div>
-      </div>
+      <MeaningRow
+        v-for="(es, m) of searchInfo.results"
+        :key="m"
+        :lects="lects"
+        :meaning="m"
+        :entries="es"
+      />
     </template>
   </div>
 </template>
@@ -57,13 +54,13 @@ import {
   searchworker,
   searchInfo,
 } from "./main";
-import EntryCard from "./EntryCard.vue";
+import MeaningRow from "./MeaningRow.vue";
 import Flag from "@/components/Flag.vue";
 import { SearchCommand } from "./types";
 import Btn from "@/components/Btn.vue";
 
 export default defineComponent({
-  components: { EntryCard, Flag, Btn },
+  components: { MeaningRow, Flag, Btn },
   setup() {
     const queries = reactive({} as Record<string, string>);
     const query = computed({
