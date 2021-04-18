@@ -33,5 +33,17 @@ export type DBWorkerState =
   | "fetching"
   | "fetched"
   | "loading"
-  | "opening"
   | "ready";
+
+export type SearchWorkerCommand =
+  | string[]
+  | {
+      lect: string;
+      query: string[];
+      queryMode: string;
+    };
+
+export type SearchWorkerResult = {
+  lect: string;
+  entry: Entry;
+};
