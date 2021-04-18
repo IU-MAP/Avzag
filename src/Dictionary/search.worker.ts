@@ -20,39 +20,42 @@ function fits(entry: Entry, query: string, forms = false) {
   }
 }
 
-async function queryDictionaries(query: string[]) {
+async function queryDictionaries(key_: symbol, query: string[]) {
   async function search(lect: string) {
     let cr = await db.transaction(lect).store.openCursor();
     while (cr) {
-      if (stopping) return;
+      if (key !== key_) return;
       const entry = cr.value as Entry;
-      if (query.some((q) => fits(entry, q)))
+      if (query.every((q) => fits(entry, q)))
         postMessage(JSON.stringify({ lect, entry }));
       cr = await cr.continue();
     }
   }
   await Promise.all(lects.map((l) => search(l)));
+  if (key !== key_) return;
   postMessage(JSON.stringify({ lect: "" }));
 }
 
-async function findTranslations(lect: string, query: string[]) {
+async function findTranslations(key_: symbol, lect: string, query: string[]) {
   // look through all forms in the language and collect their translations.
   const translations = new Set<string>();
   let cr = await db.transaction(lect).store.openCursor();
   while (cr) {
-    if (stopping) return [];
+    if (key !== key_) return [];
     const entry = cr.value as Entry;
-    if (query.some((q) => fits(entry, q, true)))
+    if (query.every((q) => fits(entry, q, true)))
       translations.add(entry.meanings[0]);
     cr = await cr.continue();
   }
   return [...translations];
 }
 
+let key: symbol;
+
 onmessage = async (e) => {
   if (e.data === "stop") {
     db?.close();
-    stopping = true;
+    key = Symbol("sk");
     return;
   }
   const data = JSON.parse(e.data) as SearchCommand;
@@ -61,10 +64,9 @@ onmessage = async (e) => {
     lects = data;
     return;
   }
-  if (!lects) return;
 
-  stopping = false;
+  key = Symbol("sk");
   const { lect, query } = { ...data };
-  if (lect) queryDictionaries(await findTranslations(lect, query));
-  else queryDictionaries(query);
+  if (lect) queryDictionaries(key, await findTranslations(key, lect, query));
+  else queryDictionaries(key, query);
 };

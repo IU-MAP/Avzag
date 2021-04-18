@@ -27,14 +27,11 @@
           /> -->
         </div>
       </div>
-      <div class="row">
-        <btn :disabled="searchInfo.searching" icon="search" @click="search" />
-        <input
-          v-model="query"
-          type="text"
-          :placeholder="lect ? `Enter ${lect} form...` : 'Enter meaning...'"
-        />
-      </div>
+      <input
+        v-model="query"
+        type="text"
+        :placeholder="lect ? `Enter ${lect} form...` : 'Enter meaning...'"
+      />
       <div v-for="(ind, m) of searchInfo.results" :key="m" class="row-1 lects">
         <div class="col lect">
           <hr />
@@ -85,17 +82,17 @@ export default defineComponent({
       }
     });
 
-    function search() {
+    watchEffect(() => {
       if (!query.value) return;
       searchInfo.searching = true;
       searchInfo.results = {};
       searchworker.postMessage(
         JSON.stringify({
           lect: lect.value,
-          query: query.value.split(","),
+          query: query.value.split(" "),
         } as SearchCommand)
       );
-    }
+    });
 
     return {
       lects: lects_,
@@ -106,7 +103,6 @@ export default defineComponent({
       searchInfo,
       dictionaryMeta,
       dbInfo,
-      search,
     };
   },
 });
