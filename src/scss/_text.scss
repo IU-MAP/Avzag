@@ -22,9 +22,7 @@
 .text-tags * {
   @extend .text-caption;
   @extend .text-faded;
-  font-style: italic;
-  font-weight: bold;
-  word-spacing: map-get($margins, "half");
+  word-spacing: map-get($margins, "quarter");
 }
 
 .text-ipa,

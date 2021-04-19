@@ -17,7 +17,13 @@
     <div v-if="expand >= 0" class="col">
       <template v-if="expand === 0">
         <div v-for="c in entry.concepts" :key="c.meaning" class="col">
-          <h2>{{ c.meaning }}</h2>
+          <div>
+            <h2 style="user-select: auto; display: inline">{{ c.meaning }}</h2>
+            <span>&nbsp;</span>
+            <span v-if="scholar" class="text-tags">
+              {{ c.tags?.join(" ") }}
+            </span>
+          </div>
           <Notes :notes="c.notes" />
           <template v-for="(s, i) in c.samples" :key="i">
             <div class="col-0 card-0">
