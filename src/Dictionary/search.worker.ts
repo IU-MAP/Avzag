@@ -40,19 +40,14 @@ function checkQuery(entry: Entry, query: string[][], forms = false) {
           ms.clear();
           break;
         }
-      } else if (forms) {
-        console.log(
-          entry.forms,
-          q,
-          entry.forms.some((f) => checkSegment(f.plain, q))
-        );
+      } else if (forms)
         if (entry.forms.some((f) => checkSegment(f.plain, q)))
           entry.concepts.forEach((c) => ms.add(c.meaning));
         else {
           ms.clear();
           break;
         }
-      } else {
+      else {
         const m = entry.concepts
           .map((c) => c.meaning)
           .filter((m) => checkSegment(m, q));
