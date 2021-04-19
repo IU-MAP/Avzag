@@ -36,12 +36,16 @@ export default defineComponent({
 <style lang="scss" scoped>
 .lects {
   align-items: flex-start;
-  border-top: var(--color-active) dashed $border-width;
-  padding-top: map-get($margins, "half");
 }
 .lect {
+  border-top: var(--color-active) dashed $border-width;
+  padding-top: map-get($margins, "half");
   width: 192px;
   min-width: 192px;
+  &:first-child {
+    width: 128px;
+    min-width: 128px;
+  }
 }
 .translation {
   height: map-get($button-height, "small");

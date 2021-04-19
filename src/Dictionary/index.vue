@@ -128,18 +128,27 @@ export default defineComponent({
 <style lang="scss" scoped>
 .section {
   margin-bottom: map-get($margins, "half");
+  margin-top: -1 * map-get($margins, "normal");
 }
 .lect {
   width: 192px;
   min-width: 192px;
+  &:first-child {
+    width: 128px;
+    min-width: 128px;
+  }
 }
 .flag h2 {
   line-height: map-get($button-height, "small");
 }
 .scroll-area {
-  margin: 0 0;
+  padding-left: map-get($margins, "normal");
+  padding-right: map-get($margins, "normal");
+  padding-top: map-get($margins, "half");
+  margin-left: -1 * map-get($margins, "normal");
   overflow: auto;
-  height: 100%;
+  height: calc(100vh - 84px);
+  width: 100vw;
 }
 </style>
 
