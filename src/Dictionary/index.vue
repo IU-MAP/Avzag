@@ -2,29 +2,29 @@
   <div class="section col small">
     <h2 v-if="dbInfo.state !== 'ready'">{{ dbInfo.text }}...</h2>
     <template v-else>
-      <select v-if="lists && !lect" v-model="queries['']">
-        <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
-          {{ n }}
-        </option>
-      </select>
-      <div v-else class="row">
-        <input
-          v-model="query"
-          type="text"
-          :placeholder="lect ? `Enter ${lect} form...` : 'Enter meaning...'"
-        />
-        <btn icon="clear" @click="query = ''" />
+      <div class="row">
+        <toggle v-model="lists" icon="format_list_bulleted" />
+        <select v-if="lists && !lect" v-model="queries['']">
+          <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
+            {{ n }}
+          </option>
+        </select>
+        <template v-else>
+          <input
+            v-model="query"
+            type="text"
+            :placeholder="lect ? `Enter ${lect} form...` : 'Enter meaning...'"
+          />
+          <btn icon="clear" @click="query = ''" />
+        </template>
       </div>
       <div class="row-1 lects fill">
-        <div class="row lect">
-          <toggle v-model="lists" icon="format_list_bulleted" />
-          <btn
-            class="flex"
-            :text="lists ? 'Lists' : 'Meanings'"
-            :is-on="!lect"
-            @click="lect = ''"
-          />
-        </div>
+        <btn
+          class="lect"
+          :text="lists ? 'Lists' : 'Meanings'"
+          :is-on="!lect"
+          @click="lect = ''"
+        />
         <div v-for="l in lects" :key="l" class="col lect flag">
           <Flag :lect="l" class="blur" />
           <button :class="{ highlight: lect === l }" @click="lect = l">
