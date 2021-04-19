@@ -18,6 +18,7 @@ After donwloading the repo for the first time `yarn install`. To run the app loc
 ## Sprints
 
 You can find sprints-related information (including burndown chart) in [this discussion](https://github.com/IU-MAP/avzag/discussions/20).
+
 You can find our backlog and sprints board [here](https://github.com/IU-MAP/avzag/projects/1). Note that we have one board for all sprints, each task has a tag with a sprint number.
 
 ### Sprint 0
@@ -28,12 +29,18 @@ We've completed knowledge acquisition:
 
 ### Sprint 1
 We've implemented cleaning and loading of DB with web-workers.
+
 We've failed to set up documentation generationg with jsdoc because vue plugins for jsdoc don't support Vue 3.0.
 
 ### Sprint 2
 We've optimized search.
+
 We've moved search to another dbworker.
+
 We've implemented parallel search.
+
 We've managed workers' communication and lifecycle.
+
 We've created a separate branch `dev` for development which is merged to main after each sprint.
+
 We've made little progress in generating documentation as no plugins worked. We've found another tool - tsdoc.
