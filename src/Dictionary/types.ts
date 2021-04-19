@@ -23,7 +23,7 @@ export type SearchOccurence = {
   entry: Entry;
 };
 
-export type DictionaryMeta = { lists: Record<string, string[]> };
+export type DictionaryMeta = { lists: Record<string, string> };
 
 export type DBState =
   | "preparing"

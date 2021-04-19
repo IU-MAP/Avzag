@@ -2,36 +2,36 @@
   <div class="section col small">
     <h2 v-if="dbInfo.state !== 'ready'">{{ dbInfo.text }}...</h2>
     <template v-else>
+      <select v-if="lists && !lect" v-model="queries['']">
+        <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
+          {{ n }}
+        </option>
+      </select>
+      <div v-else class="row">
+        <input
+          v-model="query"
+          type="text"
+          :placeholder="lect ? `Enter ${lect} form...` : 'Enter meaning...'"
+        />
+        <btn icon="clear" @click="query = ''" />
+      </div>
       <div class="row-1 lects fill">
         <div class="row lect">
-          <!-- <select v-if="queryMode === 'Lists'" v-model="queries['']">
-            <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
-              {{ n }}
-            </option>
-          </select> -->
-          <toggle v-model="lists" icon="star_outline" />
-          <btn class="flex" text="Meanings" :is-on="!lect" @click="lect = ''" />
+          <toggle v-model="lists" icon="format_list_bulleted" />
+          <btn
+            class="flex"
+            :text="lists ? 'Lists' : 'Meanings'"
+            :is-on="!lect"
+            @click="lect = ''"
+          />
         </div>
         <div v-for="l in lects" :key="l" class="col lect flag">
           <Flag :lect="l" class="blur" />
           <button :class="{ highlight: lect === l }" @click="lect = l">
             <h2 class="flex">{{ l }}</h2>
           </button>
-          <!-- <input
-            v-model="queries[l]"
-            class="selectable"
-            type="text"
-            :placeholder="`Search by ${l} form...`"
-            :readonly="lect !== l"
-            @click="lect = l"
-          /> -->
         </div>
       </div>
-      <input
-        v-model="query"
-        type="text"
-        :placeholder="lect ? `Enter ${lect} form...` : 'Enter meaning...'"
-      />
       <MeaningRow
         v-for="(es, m) of searchInfo.results"
         :key="m"
@@ -70,6 +70,14 @@ export default defineComponent({
     const lists = ref(false);
     const lect = ref("");
     const route = useRoute();
+
+    watchEffect(() => {
+      if (lists.value)
+        if (dictionaryMeta.value)
+          queries[""] = Object.values(dictionaryMeta.value.lists)[0] ?? "";
+        else lists.value = false;
+      else queries[""] = "";
+    });
 
     watchEffect(() => {
       if (route.name === "Home") {
