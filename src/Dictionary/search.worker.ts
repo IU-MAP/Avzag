@@ -47,7 +47,8 @@ async function findMeanings(key_: symbol, lect: string, query: string[][]) {
   while (cr) {
     if (key !== key_) return [];
     const entry = cr.value as Entry;
-    if (fits(entry, query, true)) meanings.add(entry.meanings[0]);
+    if (fits(entry, query, true))
+      entry.meanings.forEach((m) => meanings.add(m));
     cr = await cr.continue();
   }
   return [...meanings].map((m) => ["*" + m]);
