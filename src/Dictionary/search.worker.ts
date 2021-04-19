@@ -7,9 +7,12 @@ let key: symbol;
 
 function checkTag(entry: Entry, tag: string) {
   tag = tag.substr(1);
-  return entry.tags?.includes(tag)
-    ? true
-    : entry.concepts.find((c) => c.tags?.includes(tag))?.meaning;
+  if (entry.tags?.includes(tag)) return true;
+  const meanings = entry.concepts
+    .filter((c) => c.tags?.includes(tag))
+    .map((c) => c.meaning);
+  if (meanings.length) return meanings;
+  return false;
 }
 
 function checkSegment(area: string, segment: string) {
@@ -31,9 +34,9 @@ function checkQuery(entry: Entry, query: string[][], forms = false) {
     const ms = new Set<string>();
     for (const q of qs) {
       if (q[0] === "#") {
-        const tr = checkTag(entry, q.substr(1));
-        if (typeof tr === "string") ms.add(tr);
-        else if (!tr) {
+        const m = checkTag(entry, q);
+        if (Array.isArray(m)) m.forEach((m) => ms.add(m));
+        else if (!m) {
           ms.clear();
           break;
         }

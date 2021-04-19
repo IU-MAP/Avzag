@@ -16,37 +16,36 @@
     </div>
     <div v-if="expand >= 0" class="col">
       <template v-if="expand === 0">
-        <div v-for="c in entry.concepts" :key="c.meaning" class="col-0">
-          <p>
-            {{ c.meaning }}
-            <span class="text-tags">{{ c.tags?.join(" ") }}</span>
-          </p>
+        <div v-for="c in entry.concepts" :key="c.meaning" class="col">
+          <h2>{{ c.meaning }}</h2>
+          <Notes :notes="c.notes" />
           <template v-for="(s, i) in c.samples" :key="i">
-            <p class="col-0">
+            <div class="col-0 card-0">
               {{ s.plain }}
-              <span class="text-caption col-0">
+              <span class="col-0 text-faded">
                 {{ s.translation }}
-                <span class="text-faded col-0">
+                <span class="text-caption col-0">
                   <span class="text-ipa">
                     {{ s.ipa }}
                   </span>
                   {{ s.glossed }}
                 </span>
               </span>
-            </p>
+            </div>
           </template>
-          <Notes :notes="c.notes" />
         </div>
       </template>
       <template v-else-if="expand === 1">
         <p class="text-tags">{{ entry.tags?.join(" ") }}</p>
-        <p v-for="(f, i) in entry.forms" :key="i">
-          {{ f.plain }}
-          <span class="text-caption text-faded">
-            <span class="text-ipa">{{ f.ipa }}</span>
-            {{ f.glossed }}
-          </span>
-        </p>
+        <div class="col-0 card-0">
+          <p v-for="(f, i) in entry.forms" :key="i">
+            {{ f.plain }}
+            <span class="text-caption text-faded">
+              <span class="text-ipa">{{ f.ipa }}</span>
+              {{ f.glossed }}
+            </span>
+          </p>
+        </div>
         <Notes :notes="entry.notes" />
       </template>
     </div>
@@ -70,8 +69,8 @@ export default defineComponent({
   setup(props) {
     const expand = ref(-1);
     const views = [
-      ["Samples", "speaker_notes"],
-      ["Forms", "tune"],
+      ["Usage", "textsms"],
+      ["Info", "info"],
     ];
     const plain = computed(() => props.entry?.forms[0].plain);
     return { expand, plain, views };

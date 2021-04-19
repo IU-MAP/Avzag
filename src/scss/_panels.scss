@@ -51,3 +51,9 @@
   box-shadow: map-get($shadows, "normal");
   padding: map-get($margins, "normal");
 }
+
+.card-0 {
+  background-color: var(--color-foreground);
+  // box-shadow: map-get($shadows, "half");
+  padding: map-get($margins, "half");
+}
