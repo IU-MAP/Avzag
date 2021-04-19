@@ -8,11 +8,17 @@ export type Sample = Text & {
   translation: string;
 };
 
-export type Entry = {
-  forms: Text[];
-  meanings: string[];
+export type Concept = {
+  meaning: string;
   tags?: string[];
   samples?: Sample[];
+  notes?: string[];
+};
+
+export type Entry = {
+  forms: Text[];
+  concepts: Concept[];
+  tags?: string[];
   notes?: string[];
 };
 
@@ -20,6 +26,7 @@ export type SearchResults = Record<string, Record<string, Entry[]>>;
 
 export type SearchOccurence = {
   lect: string;
+  meanings: string[];
   entry: Entry;
 };
 

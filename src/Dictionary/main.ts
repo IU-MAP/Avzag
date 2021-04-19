@@ -37,12 +37,12 @@ watch(lects, async () => {
 
 async function receiveSearch(data: string) {
   // add the word to the result under its translation.
-  const { lect, entry } = JSON.parse(data) as SearchOccurence;
+  const { lect, meanings, entry } = JSON.parse(data) as SearchOccurence;
   if (!lect) {
     searchInfo.searching = false;
     return;
   }
-  for (const t of entry.meanings) {
+  for (const t of meanings) {
     if (!searchInfo.results[t]) searchInfo.results[t] = {};
     if (!searchInfo.results[t][lect]) searchInfo.results[t][lect] = [];
     searchInfo.results[t][lect].push(entry);
