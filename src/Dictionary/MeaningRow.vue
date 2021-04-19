@@ -5,8 +5,9 @@
     </div>
     <div v-for="l in lects" :key="l" class="col lect">
       <EntryCard
-        v-for="(e, i) in entries[l]"
-        :key="i"
+        v-for="e in entries[l]"
+        :key="e.forms[0].plain"
+        :lect="l"
         :entry="e"
         class="appear"
       />

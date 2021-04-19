@@ -1,6 +1,9 @@
 <template>
   <div v-if="entry && expand >= 0" class="col">
-    <h2 class="card" @click="expand = -1">{{ plain }}</h2>
+    <h2 class="card flag" @click="expand = -1">
+      <Flag :lect="lect" class="blur" />
+      {{ plain }}
+    </h2>
     <div class="row">
       <btn
         v-for="([t, i], j) in views"
@@ -51,12 +54,16 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from "vue";
 import { Entry } from "./types";
+import Flag from "@/components/Flag.vue";
 import Notes from "@/components/Notes/index.vue";
 
 export default defineComponent({
   name: "EntryCard",
-  components: { Notes },
-  props: { entry: { type: Object as PropType<Entry>, default: undefined } },
+  components: { Notes, Flag },
+  props: {
+    lect: { type: String, default: "" },
+    entry: { type: Object as PropType<Entry>, default: undefined },
+  },
   setup(props) {
     const expand = ref(-1);
     const views = [
