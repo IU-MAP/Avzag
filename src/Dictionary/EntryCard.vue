@@ -1,6 +1,6 @@
 <template>
   <div v-if="entry && expand >= 0" class="col">
-    <div class="card">{{ plain }}</div>
+    <h2 class="card" @click="expand = -1">{{ plain }}</h2>
     <div class="row">
       <btn
         v-for="([t, i], j) in views"
@@ -8,7 +8,7 @@
         :icon="i"
         :text="expand === j ? t : ''"
         :class="expand === j && 'highlight flex'"
-        @click="expand = expand === j ? -1 : j"
+        @click="expand = j"
       />
     </div>
     <div v-if="expand >= 0" class="col">
