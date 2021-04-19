@@ -10,7 +10,7 @@
             {{ text }}
           </option>
         </select>
-        <a href="https://github.com/alkaitagi/Avzag/wiki" class="wrap">
+        <a href="https://github.com/alkaitagi/avzag/wiki" class="wrap">
           <btn icon="help_outline" />
         </a>
       </div>

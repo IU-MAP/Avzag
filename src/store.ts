@@ -3,7 +3,7 @@ import { ref } from "vue";
 export const lects = ref<string[]>([]);
 export const root =
   process.env.VUE_APP_STORE ??
-  "https://raw.githubusercontent.com/alkaitagi/Avzag/store/";
+  "https://raw.githubusercontent.com/alkaitagi/avzag/store/";
 
 export async function loadJSON(filename: string, defaultValue?: unknown) {
   return await fetch(root + filename + ".json")

@@ -40,10 +40,10 @@
             <a href="https://t.me/avzag" class="wrap">
               <btn icon="forum" text="Channel" />
             </a>
-            <a href="https://github.com/alkaitagi/Avzag#credits" class="wrap">
+            <a href="https://github.com/alkaitagi/avzag#credits" class="wrap">
               <btn icon="groups" text="Credits" />
             </a>
-            <a href="https://github.com/alkaitagi/Avzag" class="wrap">
+            <a href="https://github.com/alkaitagi/avzag" class="wrap">
               <btn icon="code" text="Repository" />
             </a>
           </div>
