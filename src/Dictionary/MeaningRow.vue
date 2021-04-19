@@ -1,11 +1,9 @@
 <template>
-  <div class="row-1 appear lects">
-    <div class="col lect">
-      <hr />
-      <i class="text-faded translation">{{ meaning }}</i>
+  <div class="row-1 appear lects small">
+    <div class="translation lect col">
+      <i class="text-faded">{{ meaning }}</i>
     </div>
     <div v-for="l in lects" :key="l" class="col lect">
-      <hr />
       <EntryCard
         v-for="(e, i) in entries[l]"
         :key="i"
@@ -37,16 +35,18 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .lects {
-  align-items: baseline;
-  &.fill {
-    align-items: stretch;
-  }
+  align-items: flex-start;
+  border-top: var(--color-active) dashed $border-width;
+  padding-top: map-get($margins, "half");
 }
 .lect {
   width: 192px;
   min-width: 192px;
 }
-
+.translation {
+  height: map-get($button-height, "small");
+  justify-content: center;
+}
 .appear {
   animation: appear $transition;
 }

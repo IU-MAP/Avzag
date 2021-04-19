@@ -1,24 +1,24 @@
 <template>
-  <div class="section col small">
-    <h2 v-if="dbInfo.state !== 'ready'">{{ dbInfo.text }}...</h2>
-    <template v-else>
-      <div class="row">
-        <toggle v-model="lists" icon="format_list_bulleted" />
-        <select v-if="lists && !lect" v-model="queries['']">
-          <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
-            {{ n }}
-          </option>
-        </select>
-        <template v-else>
-          <input
-            v-model="query"
-            type="text"
-            :placeholder="lect ? `Enter ${lect} form...` : 'Enter meaning...'"
-          />
-          <btn icon="clear" @click="query = ''" />
-        </template>
-      </div>
-      <div class="row-1 lects fill">
+  <h2 v-if="dbInfo.state !== 'ready'" class="section">{{ dbInfo.text }}...</h2>
+  <template v-else>
+    <div class="section row">
+      <toggle v-model="lists" icon="format_list_bulleted" />
+      <select v-if="lists && !lect" v-model="queries['']">
+        <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
+          {{ n }}
+        </option>
+      </select>
+      <template v-else>
+        <input
+          v-model="query"
+          type="text"
+          :placeholder="lect ? `Enter ${lect} form...` : 'Enter meaning...'"
+        />
+        <btn icon="clear" @click="query = ''" />
+      </template>
+    </div>
+    <div class="scroll-area col">
+      <div class="row-1 lects">
         <btn
           class="lect"
           :text="lists ? 'Lists' : 'Meanings'"
@@ -39,8 +39,8 @@
         :meaning="m"
         :entries="es"
       />
-    </template>
-  </div>
+    </div>
+  </template>
 </template>
 
 <script lang="ts">
@@ -77,6 +77,7 @@ export default defineComponent({
           queries[""] = Object.values(dictionaryMeta.value.lists)[0] ?? "";
         else lists.value = false;
       else queries[""] = "";
+      lect.value = "";
     });
 
     watchEffect(() => {
@@ -125,19 +126,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.translation {
-  line-height: map-get($button-height, "small");
-}
-@media only screen and (max-width: $mobile-width) {
-  .section {
-    overflow-x: auto;
-  }
-}
-.lects {
-  align-items: baseline;
-  &.fill {
-    align-items: stretch;
-  }
+.section {
+  margin-bottom: map-get($margins, "half");
 }
 .lect {
   width: 192px;
@@ -145,5 +135,17 @@ export default defineComponent({
 }
 .flag h2 {
   line-height: map-get($button-height, "small");
+}
+.scroll-area {
+  margin: 0 0;
+  overflow: auto;
+  height: 100%;
+}
+</style>
+
+<style lang="scss">
+html,
+body {
+  height: 100vh;
 }
 </style>
