@@ -1,6 +1,6 @@
 <template>
   <div class="row-1 appear lects small">
-    <div class="translation lect col">
+    <div class="meaning lect col">
       <i class="text-faded">{{ meaning }}</i>
     </div>
     <div v-for="l in lects" :key="l" class="col lect">
@@ -48,8 +48,10 @@ export default defineComponent({
     min-width: 128px;
   }
 }
-.translation {
-  height: map-get($button-height, "small");
+.meaning {
+  $h: 6 + map-get($button-height, "small");
+  height: $h;
+  min-height: $h;
   justify-content: center;
 }
 .appear {
