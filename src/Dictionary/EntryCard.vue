@@ -24,7 +24,7 @@
               {{ s.plain }}
               <span class="col-0 text-faded">
                 {{ s.translation }}
-                <span class="text-caption col-0">
+                <span v-if="scholar" class="text-caption col-0">
                   <span class="text-ipa">
                     {{ s.ipa }}
                   </span>
@@ -36,11 +36,11 @@
         </div>
       </template>
       <template v-else-if="expand === 1">
-        <p class="text-tags">{{ entry.tags?.join(" ") }}</p>
+        <p v-if="scholar" class="text-tags">{{ entry.tags?.join(" ") }}</p>
         <div class="col-0 card-0">
           <p v-for="(f, i) in entry.forms" :key="i">
             {{ f.plain }}
-            <span class="text-caption text-faded">
+            <span v-if="scholar" class="text-caption text-faded">
               <span class="text-ipa">{{ f.ipa }}</span>
               {{ f.glossed }}
             </span>
@@ -65,6 +65,7 @@ export default defineComponent({
   props: {
     lect: { type: String, default: "" },
     entry: { type: Object as PropType<Entry>, default: undefined },
+    scholar: Boolean,
   },
   setup(props) {
     const expand = ref(-1);

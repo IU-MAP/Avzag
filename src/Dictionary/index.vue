@@ -2,6 +2,7 @@
   <h2 v-if="dbInfo.state !== 'ready'" class="section">{{ dbInfo.text }}...</h2>
   <template v-else>
     <div class="section row">
+      <toggle v-model="scholar" icon="school" />
       <toggle v-model="lists" icon="format_list_bulleted" />
       <select v-if="lists && !lect" v-model="queries['']">
         <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
@@ -36,6 +37,7 @@
         v-for="(es, m) of searchInfo.results"
         :key="m"
         :lects="lects"
+        :scholar="scholar"
         :meaning="m"
         :entries="es"
       />
@@ -67,6 +69,7 @@ export default defineComponent({
       get: () => queries[lect.value],
       set: (q) => (queries[lect.value] = q),
     });
+    const scholar = ref(false);
     const lists = ref(false);
     const lect = ref("");
     const route = useRoute();
@@ -113,6 +116,7 @@ export default defineComponent({
 
     return {
       lects: lects_,
+      scholar,
       queries,
       query,
       lect,

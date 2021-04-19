@@ -9,6 +9,7 @@
         :key="e.forms[0].plain"
         :lect="l"
         :entry="e"
+        :scholar="scholar"
         class="appear"
       />
     </div>
@@ -26,6 +27,7 @@ export default defineComponent({
   props: {
     meaning: { type: String, default: "" },
     lects: { type: Array as PropType<string[]>, default: () => [] },
+    scholar: Boolean,
     entries: {
       type: Object as PropType<Record<string, Entry[]>>,
       default: () => ({}),
