@@ -14,20 +14,23 @@ Our backlog can be found in the ["Projects" -> "Dictionary"](https://github.com/
 
 After donwloading the repo for the first time `yarn install`. To run the app locally `yarn serve`.
 
-You can see sprints-related information (including burndown chart) in [this discussion](https://github.com/IU-MAP/avzag/discussions/20).
-You can see our backlog and sprints board [here](https://github.com/IU-MAP/avzag/projects/1). Note that we have one board for all sprints, each task has a tag with a sprint number.
 
-## Sprint 0
+## Sprints
+
+You can find sprints-related information (including burndown chart) in [this discussion](https://github.com/IU-MAP/avzag/discussions/20).
+You can find our backlog and sprints board [here](https://github.com/IU-MAP/avzag/projects/1). Note that we have one board for all sprints, each task has a tag with a sprint number.
+
+### Sprint 0
 
 We've completed knowledge acquisition: 
 - decided to use web workers for loading DB and searching; 
 - decided to use jsdoc to generate documentation for our project;
 
-## Sprint 1
+### Sprint 1
 We've implemented cleaning and loading of DB with web-workers.
 We've failed to set up documentation generationg with jsdoc because vue plugins for jsdoc don't support Vue 3.0.
 
-## Sprint 2
+### Sprint 2
 We've optimized search.
 We've moved search to another dbworker.
 We've implemented parallel search.
