@@ -1,58 +1,73 @@
-import { Entry, SearchWorkerCommand } from "./types";
+import { Entry, SearchCommand } from "./types";
 import { IDBPDatabase, openDB } from "idb";
 
 let db: IDBPDatabase;
 let lects: string[];
-let stopping: boolean;
+let key: symbol;
 
-async function queryDictionaries(query: string[], queryMode = "Translation") {
-  function fits(entry: Entry) {
-    // check if the word fits in the query.
-    const area = queryMode === "Tags" ? entry.tags ?? "" : entry.translation;
-    return query.some((q) => area?.includes(q));
-  }
+function fits(entry: Entry, query: string[][], forms = false) {
+  return query.some((qs) =>
+    qs.every((q) => {
+      if (q[0] === "#") return entry.tags?.includes(q.substr(1));
+      const area = forms ? entry.forms.map((f) => f.plain) : entry.meanings;
+      switch (q[0]) {
+        case "*":
+          return area.includes(q.substr(1));
+        case "+":
+          return area.some((a) => a.startsWith(q.substr(1)));
+        case "-":
+          return area.some((a) => a.endsWith(q.substr(1)));
+        default:
+          return area.some((a) => a.includes(q));
+      }
+    })
+  );
+}
+
+async function queryDictionaries(key_: symbol, query: string[][]) {
+  if (!query.length) return;
   async function search(lect: string) {
     let cr = await db.transaction(lect).store.openCursor();
     while (cr) {
-      if (stopping) return;
+      if (key !== key_) return;
       const entry = cr.value as Entry;
-      if (fits(entry)) postMessage(JSON.stringify({ lect, entry }));
+      if (fits(entry, query)) postMessage(JSON.stringify({ lect, entry }));
       cr = await cr.continue();
     }
   }
   await Promise.all(lects.map((l) => search(l)));
+  if (key !== key_) return;
   postMessage(JSON.stringify({ lect: "" }));
 }
 
-async function findTranslations(lect: string, query: string[]) {
+async function findMeanings(key_: symbol, lect: string, query: string[][]) {
   // look through all forms in the language and collect their translations.
-  const translations = new Set<string>();
+  const meanings = new Set<string>();
   let cr = await db.transaction(lect).store.openCursor();
   while (cr) {
-    if (stopping) return [];
-    const { forms, translation } = cr.value as Entry;
-    if (forms.some(({ text }) => query.some((q) => text.plain.includes(q))))
-      translations.add(translation);
+    if (key !== key_) return [];
+    const entry = cr.value as Entry;
+    if (fits(entry, query, true))
+      entry.meanings.forEach((m) => meanings.add(m));
     cr = await cr.continue();
   }
-  return [...translations];
+  return [...meanings].map((m) => ["*" + m]);
 }
 
 onmessage = async (e) => {
   if (e.data === "stop") {
-    stopping = true;
+    db?.close();
+    key = Symbol("sk");
     return;
   }
-  const data = JSON.parse(e.data) as SearchWorkerCommand;
+  const data = JSON.parse(e.data) as SearchCommand;
   if (Array.isArray(data)) {
     db = await openDB("avzag", 1);
     lects = data;
     return;
   }
-  if (!lects) return;
-
-  stopping = false;
-  const { lect, query, queryMode } = { ...data };
-  if (lect) queryDictionaries(await findTranslations(lect, query));
-  else queryDictionaries(query, queryMode);
+  key = Symbol("sk");
+  const { lect, query } = { ...data };
+  if (lect) queryDictionaries(key, await findMeanings(key, lect, query));
+  else queryDictionaries(key, query);
 };

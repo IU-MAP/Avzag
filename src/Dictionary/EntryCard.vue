@@ -1,5 +1,9 @@
 <template>
   <div v-if="entry && expand >= 0" class="col">
+    <h2 class="card flag" @click="expand = -1">
+      <Flag :lect="lect" class="blur" />
+      {{ plain }}
+    </h2>
     <div class="row">
       <btn
         v-for="([t, i], j) in views"
@@ -7,30 +11,40 @@
         :icon="i"
         :text="expand === j ? t : ''"
         :class="expand === j && 'highlight flex'"
-        @click="expand = expand === j ? -1 : j"
+        @click="expand = j"
       />
     </div>
-    <div v-if="expand >= 0" class="col card">
+    <div v-if="expand >= 0" class="col">
       <template v-if="expand === 0">
-        <p class="col-0">
-          {{ entry.forms[0].text.plain }}
-          <span class="text-ipa">{{ entry.forms[0].text.ipa }}</span>
-        </p>
-        <p v-if="entry.explanation">{{ entry.explanation }}</p>
+        <b>
+          <i class="text-tags"> {{ entry.tags?.join(" ") }} </i>
+        </b>
+        <Notes :notes="entry.notes" />
       </template>
       <template v-else-if="expand === 1">
-        <div v-for="(f, i) in entry.forms" :key="i" class="col-0">
-          {{ f.text.plain }}
-          <!-- <span class="text-ipa">{{ f.text.ipa }}</span> -->
-          {{ f.text.glossed }}
-          <span class="text-faded text-caption">{{ f.grammar }}</span>
-        </div>
+        <p v-for="(f, i) in entry.forms" :key="i">
+          {{ f.plain }}
+          <span class="text-caption text-faded">
+            <span class="text-ipa">{{ f.ipa }}</span>
+            {{ f.glossed }}
+          </span>
+        </p>
       </template>
       <template v-else-if="expand === 2">
-        <div v-for="(s, i) in entry.samples" :key="i" class="col-0">
-          <p>{{ s.text.plain }}</p>
-          <p class="text-faded text-caption">{{ s.translation }}</p>
-        </div>
+        <template v-for="(s, i) in entry.samples" :key="i">
+          <p class="col-0">
+            {{ s.plain }}
+            <span class="text-caption col-0">
+              {{ s.translation }}
+              <span class="text-faded col-0">
+                <span class="text-ipa">
+                  {{ s.ipa }}
+                </span>
+                {{ s.glossed }}
+              </span>
+            </span>
+          </p>
+        </template>
       </template>
     </div>
   </div>
@@ -40,10 +54,16 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from "vue";
 import { Entry } from "./types";
+import Flag from "@/components/Flag.vue";
+import Notes from "@/components/Notes/index.vue";
 
 export default defineComponent({
   name: "EntryCard",
-  props: { entry: { type: Object as PropType<Entry>, default: undefined } },
+  components: { Notes, Flag },
+  props: {
+    lect: { type: String, default: "" },
+    entry: { type: Object as PropType<Entry>, default: undefined },
+  },
   setup(props) {
     const expand = ref(-1);
     const views = [
@@ -51,14 +71,8 @@ export default defineComponent({
       ["Forms", "tune"],
       ["Samples", "speaker_notes"],
     ];
-    const plain = computed(() => props.entry?.forms[0].text.plain);
+    const plain = computed(() => props.entry?.forms[0].plain);
     return { expand, plain, views };
   },
 });
 </script>
-
-<style lang="scss" scoped>
-.entry-item {
-  align-items: normal;
-}
-</style>

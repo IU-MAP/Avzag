@@ -18,6 +18,13 @@
   text-align: center;
 }
 
+.text-tags,
+.text-tags * {
+  @extend .text-caption;
+  @extend .text-faded;
+  word-spacing: map-get($margins, "half");
+}
+
 .text-ipa,
 .text-ipa * {
   flex-direction: row !important;

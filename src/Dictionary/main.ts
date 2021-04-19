@@ -2,10 +2,9 @@ import { loadJSON, lects } from "@/store";
 import { reactive, shallowRef, watch } from "vue";
 import {
   DictionaryMeta,
-  DBWorkerState,
-  Search,
-  SearchWorkerResult,
-  SearchWorkerCommand,
+  DBState,
+  SearchResults,
+  SearchOccurence,
 } from "./types";
 /* eslint-disable import/no-webpack-loader-syntax */
 import DBWorker from "worker-loader!./db.worker";
@@ -15,7 +14,7 @@ export const searchworker = new SearchWorker();
 searchworker.onmessage = (e) => receiveSearch(e.data);
 export const searchInfo = reactive({
   searching: false,
-  results: {} as Search,
+  results: {} as SearchResults,
 });
 
 export const dbworker = new DBWorker();
@@ -24,7 +23,7 @@ dbworker.onmessage = (e) => {
   connectDB(state, text);
 };
 export const dbInfo = reactive({
-  state: "loading" as DBWorkerState,
+  state: "loading" as DBState,
   text: "",
 });
 
@@ -36,26 +35,21 @@ watch(lects, async () => {
   dbworker.postMessage(JSON.stringify(lects.value));
 });
 
-export async function startSearch(command: SearchWorkerCommand) {
-  searchInfo.searching = true;
-  searchInfo.results = {};
-  searchworker.postMessage(JSON.stringify(command));
-}
-
 async function receiveSearch(data: string) {
   // add the word to the result under its translation.
-  const { lect, entry } = JSON.parse(data) as SearchWorkerResult;
+  const { lect, entry } = JSON.parse(data) as SearchOccurence;
   if (!lect) {
     searchInfo.searching = false;
     return;
   }
-  const t = entry.translation;
-  if (!searchInfo.results[t]) searchInfo.results[t] = {};
-  if (!searchInfo.results[t][lect]) searchInfo.results[t][lect] = [];
-  searchInfo.results[t][lect].push(entry);
+  for (const t of entry.meanings) {
+    if (!searchInfo.results[t]) searchInfo.results[t] = {};
+    if (!searchInfo.results[t][lect]) searchInfo.results[t][lect] = [];
+    searchInfo.results[t][lect].push(entry);
+  }
 }
 
-async function connectDB(state: DBWorkerState, text: string) {
+async function connectDB(state: DBState, text: string) {
   dbInfo.state = state;
   if (state === "fetched") lects_.value = text.split(",");
   else {
