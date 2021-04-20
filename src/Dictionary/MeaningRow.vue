@@ -4,14 +4,17 @@
       <i class="text-faded">{{ meaning }}</i>
     </div>
     <div v-for="l in lects" :key="l" class="col lect">
-      <EntryCard
-        v-for="e in entries[l]"
-        :key="e.forms[0].plain"
-        :lect="l"
-        :entry="e"
-        :scholar="scholar"
-        class="appear"
-      />
+      <template v-if="entries[l]">
+        <EntryCard
+          v-for="e in entries[l]"
+          :key="e.forms[0].plain"
+          :lect="l"
+          :entry="e"
+          :scholar="scholar"
+          class="appear"
+        />
+      </template>
+      <span v-else />
     </div>
   </div>
 </template>
