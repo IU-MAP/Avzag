@@ -7,12 +7,10 @@ let key: symbol;
 
 function checkTag(entry: Entry, tag: string) {
   tag = tag.substr(1);
-  if (entry.tags?.includes(tag)) return [];
-
-  const meanings = entry.concepts
+  if (entry.tags?.includes(tag)) return entry.concepts.map((c) => c.meaning);
+  return entry.concepts
     .filter((c) => c.tags?.includes(tag))
     .map((c) => c.meaning);
-  return meanings.length ? meanings : undefined;
 }
 
 function checkSegment(area: string, segment: string) {
@@ -30,49 +28,24 @@ function checkSegment(area: string, segment: string) {
 
 function checkToken(entry: Entry, token: string, forms: boolean) {
   if (token[0] === "#") return checkTag(entry, token);
-  else if (forms)
+  if (forms)
     return entry.forms.some((f) => checkSegment(f.plain, token))
       ? entry.concepts.map((c) => c.meaning)
-      : undefined;
-  else {
-    const meanings = entry.concepts
-      .map((c) => c.meaning)
-      .filter((m) => checkSegment(m, token));
-    return meanings.length ? meanings : undefined;
-  }
+      : [];
+  return entry.concepts
+    .map((c) => c.meaning)
+    .filter((m) => checkSegment(m, token));
 }
 
 function checkQueries(entry: Entry, queries: string[][], forms = false) {
   const meanings = new Set<string>();
   for (const query of queries) {
-    const ms = new Set<string>();
+    let meanings_ = entry.concepts.map((c) => c.meaning);
     for (const token of query) {
-      if (token[0] === "#") {
-        const m = checkTag(entry, token);
-        if (Array.isArray(m)) m.forEach((m) => ms.add(m));
-        else if (!m) {
-          ms.clear();
-          break;
-        }
-      } else if (forms)
-        if (entry.forms.some((f) => checkSegment(f.plain, token)))
-          entry.concepts.forEach((c) => ms.add(c.meaning));
-        else {
-          ms.clear();
-          break;
-        }
-      else {
-        const m = entry.concepts
-          .map((c) => c.meaning)
-          .filter((m) => checkSegment(m, token));
-        if (m.length) m.forEach((m) => ms.add(m));
-        else {
-          ms.clear();
-          break;
-        }
-      }
+      const fits = checkToken(entry, token, forms);
+      meanings_ = meanings_.filter((m) => fits.includes(m));
     }
-    if (ms.size) ms.forEach((m) => meanings.add(m));
+    meanings_.forEach((m) => meanings.add(m));
   }
   return [...meanings];
 }
