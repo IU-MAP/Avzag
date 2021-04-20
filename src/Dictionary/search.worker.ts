@@ -103,7 +103,7 @@ onmessage = async (e) => {
         .map((t) => t.trim())
         .filter((t) => t)
     )
-    .filter((q) => q);
+    .filter((q) => q.length);
 
   if (data.lect) {
     const meanings = await findMeanings(key, data.lect, queries);
