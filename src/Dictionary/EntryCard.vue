@@ -28,9 +28,9 @@
           <template v-for="(s, i) in c.samples" :key="i">
             <div class="col-0 card-0">
               {{ s.plain }}
-              <span class="col-0 text-faded">
+              <span class="col-0">
                 {{ s.translation }}
-                <span v-if="scholar" class="text-caption col-0">
+                <span v-if="scholar" class="col-0">
                   <span class="text-ipa">
                     {{ s.ipa }}
                   </span>
@@ -46,7 +46,7 @@
         <div class="col-0 card-0">
           <p v-for="(f, i) in entry.forms" :key="i">
             {{ f.plain }}
-            <span v-if="scholar" class="text-caption text-faded">
+            <span v-if="scholar">
               <span class="text-ipa">{{ f.ipa }}</span>
               {{ f.glossed }}
             </span>
