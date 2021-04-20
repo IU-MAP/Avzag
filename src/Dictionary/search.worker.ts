@@ -7,12 +7,12 @@ let key: symbol;
 
 function checkTag(entry: Entry, tag: string) {
   tag = tag.substr(1);
-  if (entry.tags?.includes(tag)) return true;
+  if (entry.tags?.includes(tag)) return [];
 
   const meanings = entry.concepts
     .filter((c) => c.tags?.includes(tag))
     .map((c) => c.meaning);
-  return meanings.length ? meanings : false;
+  return meanings.length ? meanings : undefined;
 }
 
 function checkSegment(area: string, segment: string) {
@@ -28,20 +28,20 @@ function checkSegment(area: string, segment: string) {
   }
 }
 
-function checkQuery(entry: Entry, query: string[][], forms = false) {
+function checkQueries(entry: Entry, queries: string[][], forms = false) {
   const meanings = new Set<string>();
-  for (const qs of query) {
+  for (const query of queries) {
     const ms = new Set<string>();
-    for (const q of qs) {
-      if (q[0] === "#") {
-        const m = checkTag(entry, q);
+    for (const token of query) {
+      if (token[0] === "#") {
+        const m = checkTag(entry, token);
         if (Array.isArray(m)) m.forEach((m) => ms.add(m));
         else if (!m) {
           ms.clear();
           break;
         }
       } else if (forms)
-        if (entry.forms.some((f) => checkSegment(f.plain, q)))
+        if (entry.forms.some((f) => checkSegment(f.plain, token)))
           entry.concepts.forEach((c) => ms.add(c.meaning));
         else {
           ms.clear();
@@ -50,7 +50,7 @@ function checkQuery(entry: Entry, query: string[][], forms = false) {
       else {
         const m = entry.concepts
           .map((c) => c.meaning)
-          .filter((m) => checkSegment(m, q));
+          .filter((m) => checkSegment(m, token));
         if (m.length) m.forEach((m) => ms.add(m));
         else {
           ms.clear();
@@ -63,14 +63,14 @@ function checkQuery(entry: Entry, query: string[][], forms = false) {
   return [...meanings];
 }
 
-async function queryDictionaries(key_: symbol, query: string[][]) {
-  if (!query.length) return;
+async function queryDictionaries(key_: symbol, queries: string[][]) {
+  if (!queries.length) return;
   async function search(lect: string) {
     let cr = await db.transaction(lect).store.openCursor();
     while (cr) {
       if (key !== key_) return;
       const entry = cr.value as Entry;
-      const meanings = checkQuery(entry, query);
+      const meanings = checkQueries(entry, queries);
       if (meanings.length)
         postMessage(JSON.stringify({ lect, meanings, entry }));
       cr = await cr.continue();
@@ -81,14 +81,14 @@ async function queryDictionaries(key_: symbol, query: string[][]) {
   postMessage(JSON.stringify({ lect: "" }));
 }
 
-async function findMeanings(key_: symbol, lect: string, query: string[][]) {
+async function findMeanings(key_: symbol, lect: string, queries: string[][]) {
   // look through all forms in the language and collect their translations.
   const meanings = new Set<string>();
   let cr = await db.transaction(lect).store.openCursor();
   while (cr) {
     if (key !== key_) return [];
     const entry = cr.value as Entry;
-    checkQuery(entry, query, true).forEach((m) => meanings.add(m));
+    checkQueries(entry, queries, true).forEach((m) => meanings.add(m));
     cr = await cr.continue();
   }
   return [...meanings].map((m) => ["*" + m]);
@@ -108,7 +108,7 @@ onmessage = async (e) => {
   }
   key = Symbol("sk");
 
-  const query = data.query
+  const queries = data.query
     .split(".")
     .map((q) =>
       q
@@ -116,10 +116,10 @@ onmessage = async (e) => {
         .map((t) => t.trim())
         .filter((t) => t)
     )
-    .filter((q) => q.length);
+    .filter((q) => q);
 
   if (data.lect) {
-    const meanings = await findMeanings(key, data.lect, query);
+    const meanings = await findMeanings(key, data.lect, queries);
     queryDictionaries(key, meanings);
-  } else queryDictionaries(key, query);
+  } else queryDictionaries(key, queries);
 };
