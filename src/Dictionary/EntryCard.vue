@@ -9,8 +9,9 @@
         v-for="([t, i], j) in views"
         :key="i"
         :icon="i"
-        :text="expand === j ? t : ''"
-        :class="expand === j && 'highlight flex'"
+        :text="t"
+        :class="{ highlight: expand === j }"
+        class="flex"
         @click="expand = j"
       />
     </div>

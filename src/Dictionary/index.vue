@@ -151,8 +151,12 @@ export default defineComponent({
   margin-top: -1 * map-get($margins, "normal");
 }
 .lect {
-  width: 192px;
-  min-width: 192px;
+  width: 256px;
+  min-width: 256px;
+  @media only screen and (max-width: $mobile-width) {
+    width: 192px;
+    min-width: 192px;
+  }
   &:first-child {
     width: 128px;
     min-width: 128px;
