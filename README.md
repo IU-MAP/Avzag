@@ -46,3 +46,5 @@ We've managed workers' communication and lifecycle.
 We've created a separate branch `dev` for development which is merged to main after each sprint.
 
 We've made little progress in generating documentation as no plugins worked. We've found another tool - tsdoc.
+
+We haven't created any automated testing. Nevertheless, we've done some manual testing for features we added and for features we had before to make sure we didn't break anything. One of the criteria for a "passed test" is to have no errors in the console and correct output messages if any. We are planning to use jest and/or selenium to do auto-testing.
