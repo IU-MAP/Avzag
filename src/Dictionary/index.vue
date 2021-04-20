@@ -46,7 +46,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, watchEffect } from "vue";
+import {
+  computed,
+  defineComponent,
+  reactive,
+  ref,
+  watchEffect,
+  provide,
+} from "vue";
 import { useRoute } from "vue-router";
 import {
   dictionaryMeta,
@@ -58,7 +65,7 @@ import {
 } from "./main";
 import MeaningRow from "./MeaningRow.vue";
 import Flag from "@/components/Flag.vue";
-import { SearchCommand } from "./types";
+import { Entry, SearchCommand } from "./types";
 import Btn from "@/components/Btn.vue";
 
 export default defineComponent({
@@ -74,6 +81,14 @@ export default defineComponent({
     const lect = ref("");
     const route = useRoute();
 
+    const expanded = reactive(new Map<Entry, number>());
+    const toggleExpanded = (en: Entry, ex: boolean) => {
+      expanded.set(en, (expanded.get(en) ?? 0) + (ex ? 1 : -1));
+      if ((expanded.get(en) ?? 0) <= 0) expanded.delete(en);
+    };
+    provide("expanded", expanded);
+    provide("toggleExpanded", toggleExpanded);
+
     watchEffect(() => {
       if (lists.value)
         if (dictionaryMeta.value)
@@ -85,6 +100,7 @@ export default defineComponent({
 
     watchEffect(() => {
       if (route.name === "Home") {
+        expanded.clear();
         searchInfo.searching = false;
         searchworker.postMessage("stop");
         dbworker.postMessage("stop");

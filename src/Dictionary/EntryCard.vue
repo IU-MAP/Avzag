@@ -56,11 +56,11 @@
       </template>
     </div>
   </div>
-  <btn v-else-if="entry" :text="plain" @click="expand = 0" />
+  <btn v-else-if="entry" :class="{ faded }" :text="plain" @click="expand = 0" />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from "vue";
+import { computed, defineComponent, PropType, ref, inject, watch } from "vue";
 import { Entry } from "./types";
 import Flag from "@/components/Flag.vue";
 import Notes from "@/components/Notes/index.vue";
@@ -79,8 +79,28 @@ export default defineComponent({
       ["Usage", "textsms"],
       ["Info", "info"],
     ];
+    const expanded = inject<Set<Entry>>("expanded");
+    const toggleExpanded = inject<(en: Entry, ex: boolean) => void>(
+      "toggleExpanded"
+    );
+
+    const faded = computed(() => expanded?.has(props.entry));
+    watch(
+      () => expand.value,
+      () => toggleExpanded?.(props.entry, expand.value >= 0)
+    );
     const plain = computed(() => props.entry?.forms[0].plain);
-    return { expand, plain, views };
+    return { expand, plain, views, faded };
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.faded {
+  background-color: transparent !important;
+  opacity: map-get($opacity, "text");
+  &:hover {
+    opacity: 1;
+  }
+}
+</style>
