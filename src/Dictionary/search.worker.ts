@@ -8,16 +8,16 @@ let key: symbol;
 function checkTag(entry: Entry, tag: string) {
   tag = tag.substr(1);
   if (entry.tags?.includes(tag)) return true;
+
   const meanings = entry.concepts
     .filter((c) => c.tags?.includes(tag))
     .map((c) => c.meaning);
-  if (meanings.length) return meanings;
-  return false;
+  return meanings.length ? meanings : false;
 }
 
 function checkSegment(area: string, segment: string) {
   switch (segment[0]) {
-    case "*":
+    case "!":
       return area === segment.substr(1);
     case "+":
       return area.startsWith(segment.substr(1));
@@ -107,7 +107,19 @@ onmessage = async (e) => {
     return;
   }
   key = Symbol("sk");
-  const { lect, query } = { ...data };
-  if (lect) queryDictionaries(key, await findMeanings(key, lect, query));
-  else queryDictionaries(key, query);
+
+  const query = data.query
+    .split(".")
+    .map((q) =>
+      q
+        .split(" ")
+        .map((t) => t.trim())
+        .filter((t) => t)
+    )
+    .filter((q) => q.length);
+
+  if (data.lect) {
+    const meanings = await findMeanings(key, data.lect, query);
+    queryDictionaries(key, meanings);
+  } else queryDictionaries(key, query);
 };

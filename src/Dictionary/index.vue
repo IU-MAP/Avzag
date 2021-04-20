@@ -117,15 +117,7 @@ export default defineComponent({
       searchworker.postMessage(
         JSON.stringify({
           lect: lect.value,
-          query: query.value
-            .split(";")
-            .map((q) =>
-              q
-                .split(",")
-                .map((t) => t.trim())
-                .filter((t) => t)
-            )
-            .filter((q) => q.length),
+          query: query.value,
         } as SearchCommand)
       );
     });
