@@ -33,12 +33,12 @@ function checkToken(entry: Entry, token: string, forms: boolean) {
   else if (forms)
     return entry.forms.some((f) => checkSegment(f.plain, token))
       ? entry.concepts.map((c) => c.meaning)
-      : false;
+      : undefined;
   else {
     const meanings = entry.concepts
       .map((c) => c.meaning)
       .filter((m) => checkSegment(m, token));
-    return meanings.length ? meanings : false;
+    return meanings.length ? meanings : undefined;
   }
 }
 
