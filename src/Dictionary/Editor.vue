@@ -1,13 +1,16 @@
 <template>
   <div class="section small grid">
     <div class="col">
-      <btn text="one" />
-      <btn text="two" />
-      <btn text="three" />
-      <btn text="four" />
-      <btn text="five" />
-      <btn text="six" />
-      <btn text="seven" />
+      <input type="text" placeholder="Meanings, tags, forms..." />
+      <div class="scroll long col">
+        <btn text="word 1" is-on />
+        <btn text="word 2" />
+        <btn text="word 3" />
+        <btn text="word 4" />
+        <btn text="word 5" />
+        <btn text="word 6" />
+        <btn text="word 7" />
+      </div>
     </div>
     <div class="col-2">
       <EditorCard icon="tag" header="Tags">
@@ -15,7 +18,29 @@
       </EditorCard>
       <NotesEditor v-model="entry.notes" />
       <EditorCard icon="tune" header="Forms">
-        <input v-model="entry.tags" type="text" />
+        <template #header>
+          <ArrayControl
+            v-model="entry.forms"
+            v-model:item="form"
+            :add="() => ({ plain: 'from #' + entry.forms.length })"
+            shift-two
+            remove
+          />
+        </template>
+        <div class="col scroll">
+          <btn
+            v-for="(f, i) in entry.forms"
+            :key="i"
+            :text="f.plain"
+            :is-on="form === f"
+            @click="form = f"
+          />
+        </div>
+      </EditorCard>
+      <EditorCard v-if="form" icon="segment" header="Form Texts">
+        <input v-model="form.plain" type="text" placeholder="plain" />
+        <input v-model="form.ipa" type="text" placeholder="ipa" />
+        <input v-model="form.glossed" type="text" placeholder="glossed" />
       </EditorCard>
     </div>
     <div class="col-2">
@@ -51,14 +76,31 @@
           <template #header>
             <ArrayControl
               v-model="usecase.samples"
-              :add="() => ({ plain: 'samples #' + usecase.samples.length })"
+              v-model:item="sample"
+              :add="() => ({ plain: 'sample #' + usecase.samples.length })"
               shift-two
               remove
             />
           </template>
           <div class="col">
-            <btn v-for="(s, i) in usecase.samples" :key="i" :text="s.plain" />
+            <btn
+              v-for="(s, i) in usecase.samples"
+              :key="i"
+              :text="s.plain"
+              :is-on="sample === s"
+              @click="sample = s"
+            />
           </div>
+        </EditorCard>
+        <EditorCard v-if="sample" icon="segment" header="Sample Texts">
+          <input v-model="sample.plain" type="text" placeholder="plain" />
+          <input v-model="sample.ipa" type="text" placeholder="ipa" />
+          <input v-model="sample.glossed" type="text" placeholder="glossed" />
+          <input
+            v-model="sample.translation"
+            type="text"
+            placeholder="translation"
+          />
         </EditorCard>
       </template>
     </div>
@@ -85,7 +127,9 @@ export default defineComponent({
 
     const entry = ref({ uses: [] });
     const usecase = ref();
-    return { entry, usecase };
+    const form = ref();
+    const sample = ref();
+    return { entry, usecase, form, sample };
   },
 });
 </script>
@@ -99,13 +143,15 @@ export default defineComponent({
 .sample input {
   width: 64px;
 }
-// @media only screen and (max-width: $mobile-width) {
-//   .grid {
-//     grid-template-columns: 100%;
-//   }
-// }
-
 .scroll {
-  max-height: 128px;
+  max-height: 192px;
+  &.long {
+    max-height: 512px;
+  }
+}
+@media only screen and (max-width: $mobile-width) {
+  .grid {
+    grid-template-columns: 100%;
+  }
 }
 </style>
