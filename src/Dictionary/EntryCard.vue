@@ -17,16 +17,16 @@
     </div>
     <div v-if="expand >= 0" class="col">
       <template v-if="expand === 0">
-        <div v-for="c in entry.concepts" :key="c.meaning" class="col">
+        <div v-for="u in entry.uses" :key="u.meaning" class="col">
           <div>
-            <h2 style="user-select: auto; display: inline">{{ c.meaning }}</h2>
+            <h2 style="user-select: auto; display: inline">{{ u.meaning }}</h2>
             <span>&nbsp;</span>
             <span v-if="scholar" class="text-tags">
-              {{ c.tags?.join(" ") }}
+              {{ u.tags?.join(" ") }}
             </span>
           </div>
-          <Notes :notes="c.notes" />
-          <template v-for="(s, i) in c.samples" :key="i">
+          <Notes :notes="u.notes" />
+          <template v-for="(s, i) in u.samples" :key="i">
             <div class="col-0 card-0">
               {{ s.plain }}
               <span class="col-0 text-faded">
@@ -77,7 +77,7 @@ export default defineComponent({
   setup(props) {
     const expand = ref(-1);
     const views = [
-      ["Usage", "textsms"],
+      ["Uses", "textsms"],
       ["Info", "info"],
     ];
     const expanded = inject<Set<Entry>>("expanded");

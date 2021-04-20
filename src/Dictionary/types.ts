@@ -8,7 +8,7 @@ export type Sample = Text & {
   translation: string;
 };
 
-export type Concept = {
+export type Use = {
   meaning: string;
   tags?: string[];
   samples?: Sample[];
@@ -17,7 +17,7 @@ export type Concept = {
 
 export type Entry = {
   forms: Text[];
-  concepts: Concept[];
+  uses: Use[];
   tags?: string[];
   notes?: string[];
 };
