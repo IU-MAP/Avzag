@@ -28,6 +28,20 @@ function checkSegment(area: string, segment: string) {
   }
 }
 
+function checkToken(entry: Entry, token: string, forms: boolean) {
+  if (token[0] === "#") return checkTag(entry, token);
+  else if (forms)
+    return entry.forms.some((f) => checkSegment(f.plain, token))
+      ? entry.concepts.map((c) => c.meaning)
+      : false;
+  else {
+    const meanings = entry.concepts
+      .map((c) => c.meaning)
+      .filter((m) => checkSegment(m, token));
+    return meanings.length ? meanings : false;
+  }
+}
+
 function checkQueries(entry: Entry, queries: string[][], forms = false) {
   const meanings = new Set<string>();
   for (const query of queries) {
@@ -91,7 +105,7 @@ async function findMeanings(key_: symbol, lect: string, queries: string[][]) {
     checkQueries(entry, queries, true).forEach((m) => meanings.add(m));
     cr = await cr.continue();
   }
-  return [...meanings].map((m) => ["*" + m]);
+  return [...meanings].map((m) => ["!" + m]);
 }
 
 onmessage = async (e) => {
