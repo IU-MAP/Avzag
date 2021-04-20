@@ -87,8 +87,8 @@ export default defineComponent({
 
     const faded = computed(() => expanded?.has(props.entry));
     watch(
-      () => expand.value,
-      () => toggleExpanded?.(props.entry, expand.value >= 0)
+      () => expand.value >= 0,
+      (ex) => toggleExpanded?.(props.entry, ex)
     );
     const plain = computed(() => props.entry?.forms[0].plain);
     return { expand, plain, views, faded };
