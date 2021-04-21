@@ -7,7 +7,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "I"
       }
@@ -21,7 +21,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "you (singular)"
       }
@@ -35,7 +35,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "it"
       }
@@ -49,7 +49,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "we"
       }
@@ -63,7 +63,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "you (plural)"
       }
@@ -77,7 +77,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "they"
       }
@@ -91,7 +91,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "this"
       }
@@ -105,7 +105,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "that"
       }
@@ -119,7 +119,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "here"
       }
@@ -133,7 +133,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "there"
       }
@@ -147,7 +147,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "who"
       }
@@ -161,7 +161,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "what"
       }
@@ -175,7 +175,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "where"
       }
@@ -189,7 +189,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "when"
       }
@@ -203,7 +203,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "how"
       }
@@ -217,7 +217,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "not"
       }
@@ -231,7 +231,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "all"
       }
@@ -245,7 +245,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "many"
       }
@@ -259,7 +259,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "some"
       }
@@ -273,7 +273,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "few"
       }
@@ -287,7 +287,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "other"
       }
@@ -301,7 +301,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "one"
       }
@@ -315,7 +315,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "two"
       }
@@ -329,7 +329,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "three"
       }
@@ -343,7 +343,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "four"
       }
@@ -357,7 +357,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "five"
       }
@@ -371,7 +371,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "big"
       }
@@ -385,7 +385,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "long"
       }
@@ -399,7 +399,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "wide"
       }
@@ -413,7 +413,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "thick"
       }
@@ -427,7 +427,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "heavy"
       }
@@ -441,7 +441,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "small"
       }
@@ -455,7 +455,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "short"
       }
@@ -469,7 +469,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "narrow"
       }
@@ -483,7 +483,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "thin"
       }
@@ -497,7 +497,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "woman"
       }
@@ -511,7 +511,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "man"
       }
@@ -525,7 +525,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "person"
       }
@@ -539,7 +539,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "child"
       }
@@ -553,7 +553,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "wife"
       }
@@ -567,7 +567,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "husband"
       }
@@ -581,7 +581,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "mother"
       }
@@ -595,7 +595,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "father"
       }
@@ -609,7 +609,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "animal"
       }
@@ -623,7 +623,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "fish"
       }
@@ -637,7 +637,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "bird"
       }
@@ -651,7 +651,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "dog"
       }
@@ -665,7 +665,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "louse"
       }
@@ -679,7 +679,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "snake"
       }
@@ -693,7 +693,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "worm"
       }
@@ -707,7 +707,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "tree"
       }
@@ -721,7 +721,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "forest"
       }
@@ -735,7 +735,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "stick"
       }
@@ -749,7 +749,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "fruit"
       }
@@ -763,7 +763,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "seed"
       }
@@ -777,7 +777,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "leaf"
       }
@@ -791,7 +791,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "root"
       }
@@ -805,7 +805,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "bark"
       }
@@ -819,7 +819,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "flower"
       }
@@ -833,7 +833,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "grass"
       }
@@ -847,7 +847,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "rope"
       }
@@ -861,7 +861,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "skin"
       }
@@ -875,7 +875,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "meat"
       }
@@ -889,7 +889,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "blood"
       }
@@ -903,7 +903,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "bone"
       }
@@ -917,7 +917,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "fat"
       }
@@ -931,7 +931,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "egg"
       }
@@ -945,7 +945,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "horn"
       }
@@ -959,7 +959,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "tail"
       }
@@ -973,7 +973,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "feather"
       }
@@ -987,7 +987,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "hair"
       }
@@ -1001,7 +1001,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "head"
       }
@@ -1015,7 +1015,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "ear"
       }
@@ -1029,7 +1029,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "eye"
       }
@@ -1043,7 +1043,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "nose"
       }
@@ -1057,7 +1057,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "mouth"
       }
@@ -1071,7 +1071,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "tooth"
       }
@@ -1085,7 +1085,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "tongue"
       }
@@ -1099,7 +1099,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "fingernail"
       }
@@ -1113,7 +1113,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "foot"
       }
@@ -1127,7 +1127,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "leg"
       }
@@ -1141,7 +1141,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "knee"
       }
@@ -1155,7 +1155,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "hand"
       }
@@ -1169,7 +1169,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "wing"
       }
@@ -1183,7 +1183,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "belly"
       }
@@ -1197,7 +1197,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "guts"
       }
@@ -1211,7 +1211,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "neck"
       }
@@ -1225,7 +1225,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "back"
       }
@@ -1239,7 +1239,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "breast"
       }
@@ -1261,7 +1261,7 @@
         "translation": "What do you want?"
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "heart"
       }
@@ -1275,7 +1275,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "liver"
       }
@@ -1289,7 +1289,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to drink"
       }
@@ -1303,7 +1303,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to eat"
       }
@@ -1317,7 +1317,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to bite"
       }
@@ -1331,7 +1331,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to suck"
       }
@@ -1345,7 +1345,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to spit"
       }
@@ -1359,7 +1359,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to vomit"
       }
@@ -1373,7 +1373,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to blow"
       }
@@ -1387,7 +1387,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to breathe"
       }
@@ -1401,7 +1401,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to laugh"
       }
@@ -1415,7 +1415,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to see"
       }
@@ -1429,7 +1429,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to hear"
       }
@@ -1443,7 +1443,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to know"
       }
@@ -1457,7 +1457,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to think"
       }
@@ -1471,7 +1471,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to smell"
       }
@@ -1485,7 +1485,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to fear"
       }
@@ -1499,7 +1499,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to sleep"
       }
@@ -1513,7 +1513,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to live"
       }
@@ -1527,7 +1527,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to die"
       }
@@ -1541,7 +1541,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to kill"
       }
@@ -1555,7 +1555,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to fight"
       }
@@ -1569,7 +1569,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to hunt"
       }
@@ -1583,7 +1583,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to hit"
       }
@@ -1597,7 +1597,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to cut"
       }
@@ -1611,7 +1611,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to split"
       }
@@ -1625,7 +1625,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to stab"
       }
@@ -1639,7 +1639,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to scratch"
       }
@@ -1653,7 +1653,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to dig"
       }
@@ -1667,7 +1667,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to swim"
       }
@@ -1681,7 +1681,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to fly"
       }
@@ -1695,7 +1695,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to walk"
       }
@@ -1709,7 +1709,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to come"
       }
@@ -1723,7 +1723,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to lie"
       }
@@ -1737,7 +1737,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to sit"
       }
@@ -1751,7 +1751,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to stand"
       }
@@ -1765,7 +1765,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to turn"
       }
@@ -1779,7 +1779,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to fall"
       }
@@ -1793,7 +1793,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to give"
       }
@@ -1807,7 +1807,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to hold"
       }
@@ -1821,7 +1821,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to squeeze"
       }
@@ -1835,7 +1835,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to rub"
       }
@@ -1849,7 +1849,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to wash"
       }
@@ -1863,7 +1863,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to wipe"
       }
@@ -1877,7 +1877,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to pull"
       }
@@ -1891,7 +1891,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to push"
       }
@@ -1905,7 +1905,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to throw"
       }
@@ -1919,7 +1919,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to tie"
       }
@@ -1933,7 +1933,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to sew"
       }
@@ -1947,7 +1947,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to count"
       }
@@ -1961,7 +1961,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to say"
       }
@@ -1975,7 +1975,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to sing"
       }
@@ -1989,7 +1989,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to play"
       }
@@ -2003,7 +2003,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to float"
       }
@@ -2017,7 +2017,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to flow"
       }
@@ -2031,7 +2031,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to freeze"
       }
@@ -2045,7 +2045,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to swell"
       }
@@ -2059,7 +2059,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "sun"
       }
@@ -2073,7 +2073,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "moon"
       }
@@ -2087,7 +2087,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "star"
       }
@@ -2101,7 +2101,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "water"
       }
@@ -2115,7 +2115,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "rain"
       }
@@ -2129,7 +2129,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "river"
       }
@@ -2143,7 +2143,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "lake"
       }
@@ -2157,7 +2157,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "sea"
       }
@@ -2171,7 +2171,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "salt"
       }
@@ -2185,7 +2185,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "stone"
       }
@@ -2199,7 +2199,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "sand"
       }
@@ -2213,7 +2213,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "dust"
       }
@@ -2227,7 +2227,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "earth"
       }
@@ -2241,7 +2241,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "cloud"
       }
@@ -2255,7 +2255,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "fog"
       }
@@ -2269,7 +2269,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "sky"
       }
@@ -2283,7 +2283,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "wind"
       }
@@ -2297,7 +2297,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "snow"
       }
@@ -2311,7 +2311,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "ice"
       }
@@ -2325,7 +2325,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "smoke"
       }
@@ -2339,7 +2339,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "fire"
       }
@@ -2353,7 +2353,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "ash"
       }
@@ -2367,7 +2367,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "to burn"
       }
@@ -2381,7 +2381,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "road"
       }
@@ -2395,7 +2395,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "mountain"
       }
@@ -2409,7 +2409,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "red"
       }
@@ -2423,7 +2423,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "green"
       }
@@ -2437,7 +2437,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "yellow"
       }
@@ -2451,7 +2451,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "white"
       }
@@ -2465,7 +2465,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "black"
       }
@@ -2479,7 +2479,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "night"
       }
@@ -2493,7 +2493,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "day"
       }
@@ -2507,7 +2507,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "year"
       }
@@ -2521,7 +2521,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "warm"
       }
@@ -2535,7 +2535,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "cold"
       }
@@ -2549,7 +2549,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "full"
       }
@@ -2563,7 +2563,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "new"
       }
@@ -2577,7 +2577,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "old"
       }
@@ -2591,7 +2591,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "good"
       }
@@ -2605,7 +2605,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "bad"
       }
@@ -2619,7 +2619,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "rotten"
       }
@@ -2633,7 +2633,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "dirty"
       }
@@ -2647,7 +2647,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "straight"
       }
@@ -2661,7 +2661,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "round"
       }
@@ -2675,7 +2675,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "sharp"
       }
@@ -2689,7 +2689,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "dull"
       }
@@ -2703,7 +2703,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "smooth"
       }
@@ -2717,7 +2717,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "wet"
       }
@@ -2731,7 +2731,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "dry"
       }
@@ -2745,7 +2745,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "correct"
       }
@@ -2759,7 +2759,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "near"
       }
@@ -2773,7 +2773,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "far"
       }
@@ -2787,7 +2787,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "right"
       }
@@ -2801,7 +2801,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "left"
       }
@@ -2815,7 +2815,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "at"
       }
@@ -2829,7 +2829,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "in"
       }
@@ -2843,7 +2843,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "with"
       }
@@ -2857,7 +2857,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "and"
       }
@@ -2871,7 +2871,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "if"
       }
@@ -2885,7 +2885,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "because"
       }
@@ -2899,7 +2899,7 @@
         }
       }
     ],
-    "concepts": [
+    "uses": [
       {
         "meaning": "name"
       }
