@@ -47,12 +47,8 @@ export default defineComponent({
 .lect {
   border-top: var(--color-active) dashed $border-width;
   padding-top: map-get($margins, "half");
-  width: 256px;
-  min-width: 256px;
-  @media only screen and (max-width: $mobile-width) {
-    width: 192px;
-    min-width: 192px;
-  }
+  width: 192px;
+  min-width: 192px;
   &:first-child {
     width: 128px;
     min-width: 128px;
