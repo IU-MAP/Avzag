@@ -87,13 +87,13 @@ export default defineComponent({
     const lect = ref("");
     const route = useRoute();
 
-    const expanded = reactive(new Map<Entry, number>());
-    const toggleExpanded = (en: Entry, ex: boolean) => {
-      expanded.set(en, (expanded.get(en) ?? 0) + (ex ? 1 : -1));
-      if ((expanded.get(en) ?? 0) <= 0) expanded.delete(en);
+    const expandedEntries = reactive(new Map<Entry, number>());
+    const setExpansion = (en: Entry, ex: boolean) => {
+      expandedEntries.set(en, (expandedEntries.get(en) ?? 0) + (ex ? 1 : -1));
+      if ((expandedEntries.get(en) ?? 0) <= 0) expandedEntries.delete(en);
     };
-    provide("expanded", expanded);
-    provide("toggleExpanded", toggleExpanded);
+    provide("expandedEntries", expandedEntries);
+    provide("setExpansion", setExpansion);
 
     watchEffect(() => {
       if (lists.value)
@@ -106,7 +106,7 @@ export default defineComponent({
 
     watchEffect(() => {
       if (route.name === "Home") {
-        expanded.clear();
+        expandedEntries.clear();
         searchInfo.searching = false;
         searchworker.postMessage("stop");
         dbworker.postMessage("stop");
