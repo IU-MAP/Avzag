@@ -2,11 +2,10 @@
   <div v-if="entry" class="col">
     <btn
       :class="{ 'card-0 flag': expand >= 0, faded: faded && expand < 0 }"
-      :icon="expand >= 0 ? 'unfold_less' : ''"
-      :text="plain"
-      :is-on="expand >= 0"
       @click="expand = expand < 0 ? 0 : -1"
     >
+      <span v-if="expand < 0">{{ plain }}</span>
+      <h2 v-else>{{ plain }}</h2>
       <Flag v-if="expand >= 0" :lect="lect" class="blur" />
     </btn>
     <template v-if="expand >= 0">
