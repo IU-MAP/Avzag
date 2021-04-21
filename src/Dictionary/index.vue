@@ -21,17 +21,23 @@
     <div class="scroll-area col">
       <div class="row-1 lects">
         <btn
-          class="lect"
-          :text="lists ? 'Lists' : 'Meanings'"
+          class="lect card-0"
           :is-on="!lect"
+          :icon="!lect ? 'search' : ''"
+          :text="lists ? 'Lists' : 'Meanings'"
           @click="lect = ''"
         />
-        <div v-for="l in lects" :key="l" class="col lect flag">
+        <btn
+          v-for="l in lects"
+          :key="l"
+          :icon="lect === l ? 'search' : ''"
+          class="row lect flag card-0"
+          :is-on="lect === l"
+          @click="lect = l"
+        >
           <Flag :lect="l" class="blur" />
-          <button :class="{ highlight: lect === l }" @click="lect = l">
-            <h2 class="flex">{{ l }}</h2>
-          </button>
-        </div>
+          <h2 class="flex">{{ l }}</h2>
+        </btn>
       </div>
       <MeaningRow
         v-for="(es, m) of searchInfo.results"

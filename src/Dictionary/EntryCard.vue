@@ -1,63 +1,73 @@
 <template>
-  <div v-if="entry && expand >= 0" class="col">
-    <h2 class="card flag" @click="expand = -1">
-      <Flag :lect="lect" class="blur" />
-      {{ plain }}
-    </h2>
-    <div class="row">
-      <btn
-        v-for="([t, i], j) in views"
-        :key="i"
-        :icon="i"
-        :text="t"
-        :class="{ highlight: expand === j }"
-        class="flex"
-        @click="expand = j"
-      />
-    </div>
-    <div v-if="expand >= 0" class="col">
-      <template v-if="expand === 0">
-        <div v-for="u in entry.uses" :key="u.meaning" class="col">
-          <div>
-            <h2 style="user-select: auto; display: inline">{{ u.meaning }}</h2>
-            <span>&nbsp;</span>
-            <span v-if="scholar" class="text-tags">
-              {{ u.tags?.join(" ") }}
-            </span>
-          </div>
-          <Notes :notes="u.notes" />
-          <template v-for="(s, i) in u.samples" :key="i">
-            <div class="col-0 card-0">
-              {{ s.plain }}
-              <span class="col-0 text-faded">
-                {{ s.translation }}
-                <span v-if="scholar" class="col-0">
-                  <span class="text-ipa">
-                    {{ s.ipa }}
-                  </span>
-                  {{ s.glossed }}
-                </span>
+  <div v-if="entry" class="col">
+    <btn
+      :class="{ 'card-0 flag': expand >= 0, faded: faded && expand < 0 }"
+      :icon="expand >= 0 ? 'unfold_less' : ''"
+      :text="plain"
+      :is-on="expand >= 0"
+      @click="expand = expand < 0 ? 0 : -1"
+    >
+      <Flag v-if="expand >= 0" :lect="lect" class="blur" />
+    </btn>
+    <template v-if="expand >= 0">
+      <div class="row">
+        <btn
+          v-for="([t, i], j) in views"
+          :key="i"
+          :icon="i"
+          :text="t"
+          :class="{ highlight: expand === j }"
+          class="flex"
+          @click="expand = j"
+        />
+      </div>
+      <div v-if="expand >= 0" class="col">
+        <template v-if="expand === 0">
+          <div v-for="u in entry.uses" :key="u.meaning" class="col">
+            <div>
+              <h2 style="user-select: auto; display: inline">
+                {{ u.meaning }}
+              </h2>
+              <span>&nbsp;</span>
+              <span v-if="scholar" class="text-tags">
+                {{ u.tags?.join(" ") }}
               </span>
             </div>
-          </template>
-        </div>
-      </template>
-      <template v-else-if="expand === 1">
-        <p v-if="scholar" class="text-tags">{{ entry.tags?.join(" ") }}</p>
-        <div class="col-0 card-0">
-          <p v-for="(f, i) in entry.forms" :key="i">
-            {{ f.plain }}
-            <span v-if="scholar" class="text-faded">
-              <span class="text-ipa">{{ f.ipa }}</span>
-              {{ f.glossed }}
-            </span>
+            <Notes :notes="u.notes" />
+            <template v-for="(s, i) in u.samples" :key="i">
+              <div class="col-0 card-1">
+                {{ s.plain }}
+                <span class="col-0 text-faded">
+                  {{ s.translation }}
+                  <span v-if="scholar" class="col-0">
+                    <span class="text-ipa">
+                      {{ s.ipa }}
+                    </span>
+                    {{ s.glossed }}
+                  </span>
+                </span>
+              </div>
+            </template>
+          </div>
+        </template>
+        <template v-else-if="expand === 1">
+          <p v-if="scholar && entry.tags" class="text-tags">
+            {{ entry.tags?.join(" ") }}
           </p>
-        </div>
-        <Notes :notes="entry.notes" />
-      </template>
-    </div>
+          <div class="col-0 card-1">
+            <p v-for="(f, i) in entry.forms" :key="i">
+              {{ f.plain }}
+              <span v-if="scholar" class="text-faded">
+                <span class="text-ipa">{{ f.ipa }}</span>
+                {{ f.glossed }}
+              </span>
+            </p>
+          </div>
+          <Notes :notes="entry.notes" />
+        </template>
+      </div>
+    </template>
   </div>
-  <btn v-else-if="entry" :class="{ faded }" :text="plain" @click="expand = 0" />
 </template>
 
 <script lang="ts">

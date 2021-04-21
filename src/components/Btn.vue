@@ -2,6 +2,7 @@
   <button :class="{ highlight: isOn }">
     <p v-if="icon" class="icon">{{ icon }}</p>
     <p v-if="text">{{ text }}</p>
+    <slot />
   </button>
 </template>
 
