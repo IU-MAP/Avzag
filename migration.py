@@ -10,11 +10,11 @@ for l in lects:
         data = json.loads(f.read())
 
     for d in data:
-        c = {"meaning": d["translation"]}
+        u = {"meaning": d["translation"]}
         if "explanation" in d:
-            c["notes"] = [d["explanation"]]
+            u["notes"] = [d["explanation"]]
 
-        d["concepts"] = [c]
+        d["uses"] = [u]
         del d["translation"]
 
     with open(path, 'w', encoding='utf-8') as f:
