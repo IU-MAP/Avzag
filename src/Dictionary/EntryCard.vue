@@ -46,6 +46,7 @@
         </div>
         <Notes :notes="entry.notes" />
       </template>
+      <hr />
     </template>
   </div>
 </template>
