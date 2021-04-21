@@ -7,7 +7,11 @@
         }
       }
     ],
-    "translation": "I"
+    "concepts": [
+      {
+        "meaning": "I"
+      }
+    ]
   },
   {
     "forms": [
@@ -17,7 +21,11 @@
         }
       }
     ],
-    "translation": "you (singular)"
+    "concepts": [
+      {
+        "meaning": "you (singular)"
+      }
+    ]
   },
   {
     "forms": [
@@ -27,7 +35,11 @@
         }
       }
     ],
-    "translation": "it"
+    "concepts": [
+      {
+        "meaning": "it"
+      }
+    ]
   },
   {
     "forms": [
@@ -37,7 +49,11 @@
         }
       }
     ],
-    "translation": "we"
+    "concepts": [
+      {
+        "meaning": "we"
+      }
+    ]
   },
   {
     "forms": [
@@ -47,7 +63,11 @@
         }
       }
     ],
-    "translation": "you (plural)"
+    "concepts": [
+      {
+        "meaning": "you (plural)"
+      }
+    ]
   },
   {
     "forms": [
@@ -57,7 +77,11 @@
         }
       }
     ],
-    "translation": "he"
+    "concepts": [
+      {
+        "meaning": "he"
+      }
+    ]
   },
   {
     "forms": [
@@ -67,7 +91,11 @@
         }
       }
     ],
-    "translation": "they"
+    "concepts": [
+      {
+        "meaning": "they"
+      }
+    ]
   },
   {
     "forms": [
@@ -77,7 +105,11 @@
         }
       }
     ],
-    "translation": "this"
+    "concepts": [
+      {
+        "meaning": "this"
+      }
+    ]
   },
   {
     "forms": [
@@ -87,7 +119,11 @@
         }
       }
     ],
-    "translation": "that"
+    "concepts": [
+      {
+        "meaning": "that"
+      }
+    ]
   },
   {
     "explanation": "Object or person far above.",
@@ -98,7 +134,14 @@
         }
       }
     ],
-    "translation": "that"
+    "concepts": [
+      {
+        "meaning": "that",
+        "notes": [
+          "Object or person far above."
+        ]
+      }
+    ]
   },
   {
     "explanation": "Object or person far below.",
@@ -109,7 +152,14 @@
         }
       }
     ],
-    "translation": "that"
+    "concepts": [
+      {
+        "meaning": "that",
+        "notes": [
+          "Object or person far below."
+        ]
+      }
+    ]
   },
   {
     "forms": [
@@ -119,7 +169,11 @@
         }
       }
     ],
-    "translation": "here"
+    "concepts": [
+      {
+        "meaning": "here"
+      }
+    ]
   },
   {
     "forms": [
@@ -129,7 +183,11 @@
         }
       }
     ],
-    "translation": "there"
+    "concepts": [
+      {
+        "meaning": "there"
+      }
+    ]
   },
   {
     "forms": [
@@ -139,7 +197,11 @@
         }
       }
     ],
-    "translation": "who"
+    "concepts": [
+      {
+        "meaning": "who"
+      }
+    ]
   },
   {
     "forms": [
@@ -149,7 +211,11 @@
         }
       }
     ],
-    "translation": "what"
+    "concepts": [
+      {
+        "meaning": "what"
+      }
+    ]
   },
   {
     "forms": [
@@ -159,7 +225,11 @@
         }
       }
     ],
-    "translation": "where"
+    "concepts": [
+      {
+        "meaning": "where"
+      }
+    ]
   },
   {
     "forms": [
@@ -169,7 +239,11 @@
         }
       }
     ],
-    "translation": "when"
+    "concepts": [
+      {
+        "meaning": "when"
+      }
+    ]
   },
   {
     "forms": [
@@ -179,7 +253,11 @@
         }
       }
     ],
-    "translation": "how"
+    "concepts": [
+      {
+        "meaning": "how"
+      }
+    ]
   },
   {
     "forms": [
@@ -189,7 +267,11 @@
         }
       }
     ],
-    "translation": "not"
+    "concepts": [
+      {
+        "meaning": "not"
+      }
+    ]
   },
   {
     "forms": [
@@ -199,7 +281,11 @@
         }
       }
     ],
-    "translation": "all"
+    "concepts": [
+      {
+        "meaning": "all"
+      }
+    ]
   },
   {
     "forms": [
@@ -209,7 +295,11 @@
         }
       }
     ],
-    "translation": "many"
+    "concepts": [
+      {
+        "meaning": "many"
+      }
+    ]
   },
   {
     "forms": [
@@ -219,7 +309,11 @@
         }
       }
     ],
-    "translation": "some"
+    "concepts": [
+      {
+        "meaning": "some"
+      }
+    ]
   },
   {
     "forms": [
@@ -229,7 +323,11 @@
         }
       }
     ],
-    "translation": "few"
+    "concepts": [
+      {
+        "meaning": "few"
+      }
+    ]
   },
   {
     "forms": [
@@ -239,7 +337,11 @@
         }
       }
     ],
-    "translation": "other"
+    "concepts": [
+      {
+        "meaning": "other"
+      }
+    ]
   },
   {
     "forms": [
@@ -249,7 +351,11 @@
         }
       }
     ],
-    "translation": "one"
+    "concepts": [
+      {
+        "meaning": "one"
+      }
+    ]
   },
   {
     "forms": [
@@ -259,7 +365,11 @@
         }
       }
     ],
-    "translation": "two"
+    "concepts": [
+      {
+        "meaning": "two"
+      }
+    ]
   },
   {
     "forms": [
@@ -269,7 +379,11 @@
         }
       }
     ],
-    "translation": "three"
+    "concepts": [
+      {
+        "meaning": "three"
+      }
+    ]
   },
   {
     "forms": [
@@ -279,7 +393,11 @@
         }
       }
     ],
-    "translation": "four"
+    "concepts": [
+      {
+        "meaning": "four"
+      }
+    ]
   },
   {
     "forms": [
@@ -289,7 +407,11 @@
         }
       }
     ],
-    "translation": "five"
+    "concepts": [
+      {
+        "meaning": "five"
+      }
+    ]
   },
   {
     "forms": [
@@ -299,7 +421,11 @@
         }
       }
     ],
-    "translation": "house"
+    "concepts": [
+      {
+        "meaning": "house"
+      }
+    ]
   },
   {
     "forms": [
@@ -309,7 +435,11 @@
         }
       }
     ],
-    "translation": "big"
+    "concepts": [
+      {
+        "meaning": "big"
+      }
+    ]
   },
   {
     "forms": [
@@ -319,7 +449,11 @@
         }
       }
     ],
-    "translation": "long"
+    "concepts": [
+      {
+        "meaning": "long"
+      }
+    ]
   },
   {
     "forms": [
@@ -329,7 +463,11 @@
         }
       }
     ],
-    "translation": "wide"
+    "concepts": [
+      {
+        "meaning": "wide"
+      }
+    ]
   },
   {
     "forms": [
@@ -339,7 +477,11 @@
         }
       }
     ],
-    "translation": "thick"
+    "concepts": [
+      {
+        "meaning": "thick"
+      }
+    ]
   },
   {
     "forms": [
@@ -349,7 +491,11 @@
         }
       }
     ],
-    "translation": "heavy"
+    "concepts": [
+      {
+        "meaning": "heavy"
+      }
+    ]
   },
   {
     "forms": [
@@ -359,7 +505,11 @@
         }
       }
     ],
-    "translation": "small"
+    "concepts": [
+      {
+        "meaning": "small"
+      }
+    ]
   },
   {
     "forms": [
@@ -369,7 +519,11 @@
         }
       }
     ],
-    "translation": "short"
+    "concepts": [
+      {
+        "meaning": "short"
+      }
+    ]
   },
   {
     "forms": [
@@ -379,7 +533,11 @@
         }
       }
     ],
-    "translation": "narrow"
+    "concepts": [
+      {
+        "meaning": "narrow"
+      }
+    ]
   },
   {
     "forms": [
@@ -389,7 +547,11 @@
         }
       }
     ],
-    "translation": "thin"
+    "concepts": [
+      {
+        "meaning": "thin"
+      }
+    ]
   },
   {
     "forms": [
@@ -399,7 +561,11 @@
         }
       }
     ],
-    "translation": "woman"
+    "concepts": [
+      {
+        "meaning": "woman"
+      }
+    ]
   },
   {
     "forms": [
@@ -409,7 +575,11 @@
         }
       }
     ],
-    "translation": "man"
+    "concepts": [
+      {
+        "meaning": "man"
+      }
+    ]
   },
   {
     "forms": [
@@ -419,7 +589,11 @@
         }
       }
     ],
-    "translation": "person"
+    "concepts": [
+      {
+        "meaning": "person"
+      }
+    ]
   },
   {
     "forms": [
@@ -429,7 +603,11 @@
         }
       }
     ],
-    "translation": "child"
+    "concepts": [
+      {
+        "meaning": "child"
+      }
+    ]
   },
   {
     "forms": [
@@ -439,7 +617,11 @@
         }
       }
     ],
-    "translation": "wife"
+    "concepts": [
+      {
+        "meaning": "wife"
+      }
+    ]
   },
   {
     "forms": [
@@ -449,7 +631,11 @@
         }
       }
     ],
-    "translation": "husband"
+    "concepts": [
+      {
+        "meaning": "husband"
+      }
+    ]
   },
   {
     "forms": [
@@ -459,7 +645,11 @@
         }
       }
     ],
-    "translation": "mother"
+    "concepts": [
+      {
+        "meaning": "mother"
+      }
+    ]
   },
   {
     "forms": [
@@ -469,7 +659,11 @@
         }
       }
     ],
-    "translation": "father"
+    "concepts": [
+      {
+        "meaning": "father"
+      }
+    ]
   },
   {
     "forms": [
@@ -479,7 +673,11 @@
         }
       }
     ],
-    "translation": "animal"
+    "concepts": [
+      {
+        "meaning": "animal"
+      }
+    ]
   },
   {
     "forms": [
@@ -489,7 +687,11 @@
         }
       }
     ],
-    "translation": "fish"
+    "concepts": [
+      {
+        "meaning": "fish"
+      }
+    ]
   },
   {
     "forms": [
@@ -499,7 +701,11 @@
         }
       }
     ],
-    "translation": "bird"
+    "concepts": [
+      {
+        "meaning": "bird"
+      }
+    ]
   },
   {
     "forms": [
@@ -509,7 +715,11 @@
         }
       }
     ],
-    "translation": "dog"
+    "concepts": [
+      {
+        "meaning": "dog"
+      }
+    ]
   },
   {
     "forms": [
@@ -547,7 +757,11 @@
         "translation": "Cat caught a mouse."
       }
     ],
-    "translation": "cat"
+    "concepts": [
+      {
+        "meaning": "cat"
+      }
+    ]
   },
   {
     "forms": [
@@ -557,7 +771,11 @@
         }
       }
     ],
-    "translation": "louse"
+    "concepts": [
+      {
+        "meaning": "louse"
+      }
+    ]
   },
   {
     "forms": [
@@ -567,7 +785,11 @@
         }
       }
     ],
-    "translation": "snake"
+    "concepts": [
+      {
+        "meaning": "snake"
+      }
+    ]
   },
   {
     "forms": [
@@ -577,7 +799,11 @@
         }
       }
     ],
-    "translation": "worm"
+    "concepts": [
+      {
+        "meaning": "worm"
+      }
+    ]
   },
   {
     "forms": [
@@ -587,7 +813,11 @@
         }
       }
     ],
-    "translation": "tree"
+    "concepts": [
+      {
+        "meaning": "tree"
+      }
+    ]
   },
   {
     "forms": [
@@ -597,7 +827,11 @@
         }
       }
     ],
-    "translation": "forest"
+    "concepts": [
+      {
+        "meaning": "forest"
+      }
+    ]
   },
   {
     "forms": [
@@ -607,7 +841,11 @@
         }
       }
     ],
-    "translation": "stick"
+    "concepts": [
+      {
+        "meaning": "stick"
+      }
+    ]
   },
   {
     "forms": [
@@ -617,7 +855,11 @@
         }
       }
     ],
-    "translation": "fruit"
+    "concepts": [
+      {
+        "meaning": "fruit"
+      }
+    ]
   },
   {
     "forms": [
@@ -627,7 +869,11 @@
         }
       }
     ],
-    "translation": "seed"
+    "concepts": [
+      {
+        "meaning": "seed"
+      }
+    ]
   },
   {
     "forms": [
@@ -637,7 +883,11 @@
         }
       }
     ],
-    "translation": "leaf"
+    "concepts": [
+      {
+        "meaning": "leaf"
+      }
+    ]
   },
   {
     "forms": [
@@ -647,7 +897,11 @@
         }
       }
     ],
-    "translation": "root"
+    "concepts": [
+      {
+        "meaning": "root"
+      }
+    ]
   },
   {
     "forms": [
@@ -657,7 +911,11 @@
         }
       }
     ],
-    "translation": "bark"
+    "concepts": [
+      {
+        "meaning": "bark"
+      }
+    ]
   },
   {
     "forms": [
@@ -667,7 +925,11 @@
         }
       }
     ],
-    "translation": "flower"
+    "concepts": [
+      {
+        "meaning": "flower"
+      }
+    ]
   },
   {
     "forms": [
@@ -677,7 +939,11 @@
         }
       }
     ],
-    "translation": "grass"
+    "concepts": [
+      {
+        "meaning": "grass"
+      }
+    ]
   },
   {
     "forms": [
@@ -687,7 +953,11 @@
         }
       }
     ],
-    "translation": "rope"
+    "concepts": [
+      {
+        "meaning": "rope"
+      }
+    ]
   },
   {
     "forms": [
@@ -697,7 +967,11 @@
         }
       }
     ],
-    "translation": "skin"
+    "concepts": [
+      {
+        "meaning": "skin"
+      }
+    ]
   },
   {
     "forms": [
@@ -707,7 +981,11 @@
         }
       }
     ],
-    "translation": "meat"
+    "concepts": [
+      {
+        "meaning": "meat"
+      }
+    ]
   },
   {
     "forms": [
@@ -717,7 +995,11 @@
         }
       }
     ],
-    "translation": "blood"
+    "concepts": [
+      {
+        "meaning": "blood"
+      }
+    ]
   },
   {
     "forms": [
@@ -727,7 +1009,11 @@
         }
       }
     ],
-    "translation": "bone"
+    "concepts": [
+      {
+        "meaning": "bone"
+      }
+    ]
   },
   {
     "forms": [
@@ -737,7 +1023,11 @@
         }
       }
     ],
-    "translation": "fat"
+    "concepts": [
+      {
+        "meaning": "fat"
+      }
+    ]
   },
   {
     "forms": [
@@ -747,7 +1037,11 @@
         }
       }
     ],
-    "translation": "egg"
+    "concepts": [
+      {
+        "meaning": "egg"
+      }
+    ]
   },
   {
     "forms": [
@@ -757,7 +1051,11 @@
         }
       }
     ],
-    "translation": "horn"
+    "concepts": [
+      {
+        "meaning": "horn"
+      }
+    ]
   },
   {
     "forms": [
@@ -767,7 +1065,11 @@
         }
       }
     ],
-    "translation": "tail"
+    "concepts": [
+      {
+        "meaning": "tail"
+      }
+    ]
   },
   {
     "forms": [
@@ -777,7 +1079,11 @@
         }
       }
     ],
-    "translation": "feather"
+    "concepts": [
+      {
+        "meaning": "feather"
+      }
+    ]
   },
   {
     "forms": [
@@ -787,7 +1093,11 @@
         }
       }
     ],
-    "translation": "hair"
+    "concepts": [
+      {
+        "meaning": "hair"
+      }
+    ]
   },
   {
     "forms": [
@@ -797,7 +1107,11 @@
         }
       }
     ],
-    "translation": "head"
+    "concepts": [
+      {
+        "meaning": "head"
+      }
+    ]
   },
   {
     "forms": [
@@ -807,7 +1121,11 @@
         }
       }
     ],
-    "translation": "ear"
+    "concepts": [
+      {
+        "meaning": "ear"
+      }
+    ]
   },
   {
     "forms": [
@@ -817,7 +1135,11 @@
         }
       }
     ],
-    "translation": "eye"
+    "concepts": [
+      {
+        "meaning": "eye"
+      }
+    ]
   },
   {
     "forms": [
@@ -827,7 +1149,11 @@
         }
       }
     ],
-    "translation": "nose"
+    "concepts": [
+      {
+        "meaning": "nose"
+      }
+    ]
   },
   {
     "forms": [
@@ -837,7 +1163,11 @@
         }
       }
     ],
-    "translation": "mouth"
+    "concepts": [
+      {
+        "meaning": "mouth"
+      }
+    ]
   },
   {
     "forms": [
@@ -847,7 +1177,11 @@
         }
       }
     ],
-    "translation": "tooth"
+    "concepts": [
+      {
+        "meaning": "tooth"
+      }
+    ]
   },
   {
     "forms": [
@@ -857,7 +1191,11 @@
         }
       }
     ],
-    "translation": "tongue"
+    "concepts": [
+      {
+        "meaning": "tongue"
+      }
+    ]
   },
   {
     "forms": [
@@ -867,7 +1205,11 @@
         }
       }
     ],
-    "translation": "fingernail"
+    "concepts": [
+      {
+        "meaning": "fingernail"
+      }
+    ]
   },
   {
     "forms": [
@@ -877,7 +1219,11 @@
         }
       }
     ],
-    "translation": "foot"
+    "concepts": [
+      {
+        "meaning": "foot"
+      }
+    ]
   },
   {
     "forms": [
@@ -887,7 +1233,11 @@
         }
       }
     ],
-    "translation": "leg"
+    "concepts": [
+      {
+        "meaning": "leg"
+      }
+    ]
   },
   {
     "forms": [
@@ -897,7 +1247,11 @@
         }
       }
     ],
-    "translation": "knee"
+    "concepts": [
+      {
+        "meaning": "knee"
+      }
+    ]
   },
   {
     "forms": [
@@ -907,7 +1261,11 @@
         }
       }
     ],
-    "translation": "hand"
+    "concepts": [
+      {
+        "meaning": "hand"
+      }
+    ]
   },
   {
     "forms": [
@@ -917,7 +1275,11 @@
         }
       }
     ],
-    "translation": "wing"
+    "concepts": [
+      {
+        "meaning": "wing"
+      }
+    ]
   },
   {
     "forms": [
@@ -927,7 +1289,11 @@
         }
       }
     ],
-    "translation": "belly"
+    "concepts": [
+      {
+        "meaning": "belly"
+      }
+    ]
   },
   {
     "forms": [
@@ -937,7 +1303,11 @@
         }
       }
     ],
-    "translation": "guts"
+    "concepts": [
+      {
+        "meaning": "guts"
+      }
+    ]
   },
   {
     "forms": [
@@ -947,7 +1317,11 @@
         }
       }
     ],
-    "translation": "neck"
+    "concepts": [
+      {
+        "meaning": "neck"
+      }
+    ]
   },
   {
     "forms": [
@@ -957,7 +1331,11 @@
         }
       }
     ],
-    "translation": "back"
+    "concepts": [
+      {
+        "meaning": "back"
+      }
+    ]
   },
   {
     "forms": [
@@ -967,7 +1345,11 @@
         }
       }
     ],
-    "translation": "breast"
+    "concepts": [
+      {
+        "meaning": "breast"
+      }
+    ]
   },
   {
     "forms": [
@@ -977,7 +1359,11 @@
         }
       }
     ],
-    "translation": "heart"
+    "concepts": [
+      {
+        "meaning": "heart"
+      }
+    ]
   },
   {
     "forms": [
@@ -987,7 +1373,11 @@
         }
       }
     ],
-    "translation": "liver"
+    "concepts": [
+      {
+        "meaning": "liver"
+      }
+    ]
   },
   {
     "forms": [
@@ -997,7 +1387,11 @@
         }
       }
     ],
-    "translation": "navel"
+    "concepts": [
+      {
+        "meaning": "navel"
+      }
+    ]
   },
   {
     "forms": [
@@ -1007,7 +1401,11 @@
         }
       }
     ],
-    "translation": "thigh"
+    "concepts": [
+      {
+        "meaning": "thigh"
+      }
+    ]
   },
   {
     "forms": [
@@ -1017,7 +1415,11 @@
         }
       }
     ],
-    "translation": "to go"
+    "concepts": [
+      {
+        "meaning": "to go"
+      }
+    ]
   },
   {
     "forms": [
@@ -1027,7 +1429,11 @@
         }
       }
     ],
-    "translation": "to run"
+    "concepts": [
+      {
+        "meaning": "to run"
+      }
+    ]
   },
   {
     "forms": [
@@ -1037,7 +1443,11 @@
         }
       }
     ],
-    "translation": "to cry"
+    "concepts": [
+      {
+        "meaning": "to cry"
+      }
+    ]
   },
   {
     "forms": [
@@ -1047,7 +1457,11 @@
         }
       }
     ],
-    "translation": "to do"
+    "concepts": [
+      {
+        "meaning": "to do"
+      }
+    ]
   },
   {
     "forms": [
@@ -1057,7 +1471,11 @@
         }
       }
     ],
-    "translation": "to drink"
+    "concepts": [
+      {
+        "meaning": "to drink"
+      }
+    ]
   },
   {
     "forms": [
@@ -1067,7 +1485,11 @@
         }
       }
     ],
-    "translation": "to eat"
+    "concepts": [
+      {
+        "meaning": "to eat"
+      }
+    ]
   },
   {
     "forms": [
@@ -1077,7 +1499,11 @@
         }
       }
     ],
-    "translation": "to bite"
+    "concepts": [
+      {
+        "meaning": "to bite"
+      }
+    ]
   },
   {
     "forms": [
@@ -1087,7 +1513,11 @@
         }
       }
     ],
-    "translation": "to suck"
+    "concepts": [
+      {
+        "meaning": "to suck"
+      }
+    ]
   },
   {
     "forms": [
@@ -1097,7 +1527,11 @@
         }
       }
     ],
-    "translation": "to spit"
+    "concepts": [
+      {
+        "meaning": "to spit"
+      }
+    ]
   },
   {
     "forms": [
@@ -1107,7 +1541,11 @@
         }
       }
     ],
-    "translation": "to vomit"
+    "concepts": [
+      {
+        "meaning": "to vomit"
+      }
+    ]
   },
   {
     "forms": [
@@ -1117,7 +1555,11 @@
         }
       }
     ],
-    "translation": "to hide"
+    "concepts": [
+      {
+        "meaning": "to hide"
+      }
+    ]
   },
   {
     "forms": [
@@ -1127,7 +1569,11 @@
         }
       }
     ],
-    "translation": "to blow"
+    "concepts": [
+      {
+        "meaning": "to blow"
+      }
+    ]
   },
   {
     "forms": [
@@ -1137,7 +1583,11 @@
         }
       }
     ],
-    "translation": "to breathe"
+    "concepts": [
+      {
+        "meaning": "to breathe"
+      }
+    ]
   },
   {
     "forms": [
@@ -1147,7 +1597,11 @@
         }
       }
     ],
-    "translation": "to laugh"
+    "concepts": [
+      {
+        "meaning": "to laugh"
+      }
+    ]
   },
   {
     "forms": [
@@ -1157,7 +1611,11 @@
         }
       }
     ],
-    "translation": "to see"
+    "concepts": [
+      {
+        "meaning": "to see"
+      }
+    ]
   },
   {
     "forms": [
@@ -1167,7 +1625,11 @@
         }
       }
     ],
-    "translation": "to hear"
+    "concepts": [
+      {
+        "meaning": "to hear"
+      }
+    ]
   },
   {
     "forms": [
@@ -1177,7 +1639,11 @@
         }
       }
     ],
-    "translation": "to know"
+    "concepts": [
+      {
+        "meaning": "to know"
+      }
+    ]
   },
   {
     "forms": [
@@ -1187,7 +1653,11 @@
         }
       }
     ],
-    "translation": "to think"
+    "concepts": [
+      {
+        "meaning": "to think"
+      }
+    ]
   },
   {
     "forms": [
@@ -1197,7 +1667,11 @@
         }
       }
     ],
-    "translation": "to smell"
+    "concepts": [
+      {
+        "meaning": "to smell"
+      }
+    ]
   },
   {
     "forms": [
@@ -1207,7 +1681,11 @@
         }
       }
     ],
-    "translation": "to fear"
+    "concepts": [
+      {
+        "meaning": "to fear"
+      }
+    ]
   },
   {
     "forms": [
@@ -1217,7 +1695,11 @@
         }
       }
     ],
-    "translation": "to sleep"
+    "concepts": [
+      {
+        "meaning": "to sleep"
+      }
+    ]
   },
   {
     "forms": [
@@ -1227,7 +1709,11 @@
         }
       }
     ],
-    "translation": "to live"
+    "concepts": [
+      {
+        "meaning": "to live"
+      }
+    ]
   },
   {
     "forms": [
@@ -1237,7 +1723,11 @@
         }
       }
     ],
-    "translation": "to die"
+    "concepts": [
+      {
+        "meaning": "to die"
+      }
+    ]
   },
   {
     "forms": [
@@ -1247,7 +1737,11 @@
         }
       }
     ],
-    "translation": "to kill"
+    "concepts": [
+      {
+        "meaning": "to kill"
+      }
+    ]
   },
   {
     "forms": [
@@ -1257,7 +1751,11 @@
         }
       }
     ],
-    "translation": "to fight"
+    "concepts": [
+      {
+        "meaning": "to fight"
+      }
+    ]
   },
   {
     "forms": [
@@ -1267,7 +1765,11 @@
         }
       }
     ],
-    "translation": "to hunt"
+    "concepts": [
+      {
+        "meaning": "to hunt"
+      }
+    ]
   },
   {
     "forms": [
@@ -1277,7 +1779,11 @@
         }
       }
     ],
-    "translation": "to hit"
+    "concepts": [
+      {
+        "meaning": "to hit"
+      }
+    ]
   },
   {
     "forms": [
@@ -1287,7 +1793,11 @@
         }
       }
     ],
-    "translation": "to cut"
+    "concepts": [
+      {
+        "meaning": "to cut"
+      }
+    ]
   },
   {
     "forms": [
@@ -1297,7 +1807,11 @@
         }
       }
     ],
-    "translation": "to split"
+    "concepts": [
+      {
+        "meaning": "to split"
+      }
+    ]
   },
   {
     "forms": [
@@ -1307,7 +1821,11 @@
         }
       }
     ],
-    "translation": "to stab"
+    "concepts": [
+      {
+        "meaning": "to stab"
+      }
+    ]
   },
   {
     "forms": [
@@ -1317,7 +1835,11 @@
         }
       }
     ],
-    "translation": "to scratch"
+    "concepts": [
+      {
+        "meaning": "to scratch"
+      }
+    ]
   },
   {
     "forms": [
@@ -1327,7 +1849,11 @@
         }
       }
     ],
-    "translation": "to dig"
+    "concepts": [
+      {
+        "meaning": "to dig"
+      }
+    ]
   },
   {
     "forms": [
@@ -1337,7 +1863,11 @@
         }
       }
     ],
-    "translation": "to swim"
+    "concepts": [
+      {
+        "meaning": "to swim"
+      }
+    ]
   },
   {
     "forms": [
@@ -1347,7 +1877,11 @@
         }
       }
     ],
-    "translation": "to fly"
+    "concepts": [
+      {
+        "meaning": "to fly"
+      }
+    ]
   },
   {
     "forms": [
@@ -1357,7 +1891,11 @@
         }
       }
     ],
-    "translation": "to walk"
+    "concepts": [
+      {
+        "meaning": "to walk"
+      }
+    ]
   },
   {
     "forms": [
@@ -1367,7 +1905,11 @@
         }
       }
     ],
-    "translation": "to come"
+    "concepts": [
+      {
+        "meaning": "to come"
+      }
+    ]
   },
   {
     "forms": [
@@ -1377,7 +1919,11 @@
         }
       }
     ],
-    "translation": "to lie"
+    "concepts": [
+      {
+        "meaning": "to lie"
+      }
+    ]
   },
   {
     "forms": [
@@ -1387,7 +1933,11 @@
         }
       }
     ],
-    "translation": "to sit"
+    "concepts": [
+      {
+        "meaning": "to sit"
+      }
+    ]
   },
   {
     "forms": [
@@ -1397,7 +1947,11 @@
         }
       }
     ],
-    "translation": "to stand"
+    "concepts": [
+      {
+        "meaning": "to stand"
+      }
+    ]
   },
   {
     "forms": [
@@ -1407,7 +1961,11 @@
         }
       }
     ],
-    "translation": "to turn"
+    "concepts": [
+      {
+        "meaning": "to turn"
+      }
+    ]
   },
   {
     "forms": [
@@ -1417,7 +1975,11 @@
         }
       }
     ],
-    "translation": "to fall"
+    "concepts": [
+      {
+        "meaning": "to fall"
+      }
+    ]
   },
   {
     "forms": [
@@ -1427,7 +1989,11 @@
         }
       }
     ],
-    "translation": "to carry"
+    "concepts": [
+      {
+        "meaning": "to carry"
+      }
+    ]
   },
   {
     "forms": [
@@ -1437,7 +2003,11 @@
         }
       }
     ],
-    "translation": "to give"
+    "concepts": [
+      {
+        "meaning": "to give"
+      }
+    ]
   },
   {
     "forms": [
@@ -1447,7 +2017,11 @@
         }
       }
     ],
-    "translation": "to hold"
+    "concepts": [
+      {
+        "meaning": "to hold"
+      }
+    ]
   },
   {
     "forms": [
@@ -1457,7 +2031,11 @@
         }
       }
     ],
-    "translation": "to squeeze"
+    "concepts": [
+      {
+        "meaning": "to squeeze"
+      }
+    ]
   },
   {
     "forms": [
@@ -1467,7 +2045,11 @@
         }
       }
     ],
-    "translation": "to rub"
+    "concepts": [
+      {
+        "meaning": "to rub"
+      }
+    ]
   },
   {
     "forms": [
@@ -1477,7 +2059,11 @@
         }
       }
     ],
-    "translation": "to wash"
+    "concepts": [
+      {
+        "meaning": "to wash"
+      }
+    ]
   },
   {
     "forms": [
@@ -1487,7 +2073,11 @@
         }
       }
     ],
-    "translation": "to wipe"
+    "concepts": [
+      {
+        "meaning": "to wipe"
+      }
+    ]
   },
   {
     "forms": [
@@ -1497,7 +2087,11 @@
         }
       }
     ],
-    "translation": "to pull"
+    "concepts": [
+      {
+        "meaning": "to pull"
+      }
+    ]
   },
   {
     "forms": [
@@ -1507,7 +2101,11 @@
         }
       }
     ],
-    "translation": "to push"
+    "concepts": [
+      {
+        "meaning": "to push"
+      }
+    ]
   },
   {
     "forms": [
@@ -1517,7 +2115,11 @@
         }
       }
     ],
-    "translation": "to throw"
+    "concepts": [
+      {
+        "meaning": "to throw"
+      }
+    ]
   },
   {
     "forms": [
@@ -1527,7 +2129,11 @@
         }
       }
     ],
-    "translation": "to tie"
+    "concepts": [
+      {
+        "meaning": "to tie"
+      }
+    ]
   },
   {
     "forms": [
@@ -1537,7 +2143,11 @@
         }
       }
     ],
-    "translation": "to sew"
+    "concepts": [
+      {
+        "meaning": "to sew"
+      }
+    ]
   },
   {
     "forms": [
@@ -1547,7 +2157,11 @@
         }
       }
     ],
-    "translation": "to count"
+    "concepts": [
+      {
+        "meaning": "to count"
+      }
+    ]
   },
   {
     "forms": [
@@ -1557,7 +2171,11 @@
         }
       }
     ],
-    "translation": "to say"
+    "concepts": [
+      {
+        "meaning": "to say"
+      }
+    ]
   },
   {
     "forms": [
@@ -1567,7 +2185,11 @@
         }
       }
     ],
-    "translation": "to sing"
+    "concepts": [
+      {
+        "meaning": "to sing"
+      }
+    ]
   },
   {
     "forms": [
@@ -1577,7 +2199,11 @@
         }
       }
     ],
-    "translation": "to play"
+    "concepts": [
+      {
+        "meaning": "to play"
+      }
+    ]
   },
   {
     "forms": [
@@ -1587,7 +2213,11 @@
         }
       }
     ],
-    "translation": "to float"
+    "concepts": [
+      {
+        "meaning": "to float"
+      }
+    ]
   },
   {
     "forms": [
@@ -1597,7 +2227,11 @@
         }
       }
     ],
-    "translation": "to flow"
+    "concepts": [
+      {
+        "meaning": "to flow"
+      }
+    ]
   },
   {
     "forms": [
@@ -1607,7 +2241,11 @@
         }
       }
     ],
-    "translation": "to freeze"
+    "concepts": [
+      {
+        "meaning": "to freeze"
+      }
+    ]
   },
   {
     "forms": [
@@ -1617,7 +2255,11 @@
         }
       }
     ],
-    "translation": "to swell"
+    "concepts": [
+      {
+        "meaning": "to swell"
+      }
+    ]
   },
   {
     "forms": [
@@ -1627,7 +2269,11 @@
         }
       }
     ],
-    "translation": "to take"
+    "concepts": [
+      {
+        "meaning": "to take"
+      }
+    ]
   },
   {
     "forms": [
@@ -1637,7 +2283,11 @@
         }
       }
     ],
-    "translation": "ant"
+    "concepts": [
+      {
+        "meaning": "ant"
+      }
+    ]
   },
   {
     "forms": [
@@ -1647,7 +2297,11 @@
         }
       }
     ],
-    "translation": "sun"
+    "concepts": [
+      {
+        "meaning": "sun"
+      }
+    ]
   },
   {
     "forms": [
@@ -1657,7 +2311,11 @@
         }
       }
     ],
-    "translation": "moon"
+    "concepts": [
+      {
+        "meaning": "moon"
+      }
+    ]
   },
   {
     "forms": [
@@ -1667,7 +2325,11 @@
         }
       }
     ],
-    "translation": "star"
+    "concepts": [
+      {
+        "meaning": "star"
+      }
+    ]
   },
   {
     "forms": [
@@ -1677,7 +2339,11 @@
         }
       }
     ],
-    "translation": "water"
+    "concepts": [
+      {
+        "meaning": "water"
+      }
+    ]
   },
   {
     "forms": [
@@ -1687,7 +2353,11 @@
         }
       }
     ],
-    "translation": "rain"
+    "concepts": [
+      {
+        "meaning": "rain"
+      }
+    ]
   },
   {
     "forms": [
@@ -1697,7 +2367,11 @@
         }
       }
     ],
-    "translation": "river"
+    "concepts": [
+      {
+        "meaning": "river"
+      }
+    ]
   },
   {
     "forms": [
@@ -1707,7 +2381,11 @@
         }
       }
     ],
-    "translation": "lake"
+    "concepts": [
+      {
+        "meaning": "lake"
+      }
+    ]
   },
   {
     "forms": [
@@ -1717,7 +2395,11 @@
         }
       }
     ],
-    "translation": "sea"
+    "concepts": [
+      {
+        "meaning": "sea"
+      }
+    ]
   },
   {
     "forms": [
@@ -1727,7 +2409,11 @@
         }
       }
     ],
-    "translation": "salt"
+    "concepts": [
+      {
+        "meaning": "salt"
+      }
+    ]
   },
   {
     "forms": [
@@ -1737,7 +2423,11 @@
         }
       }
     ],
-    "translation": "stone"
+    "concepts": [
+      {
+        "meaning": "stone"
+      }
+    ]
   },
   {
     "forms": [
@@ -1747,7 +2437,11 @@
         }
       }
     ],
-    "translation": "sand"
+    "concepts": [
+      {
+        "meaning": "sand"
+      }
+    ]
   },
   {
     "forms": [
@@ -1757,7 +2451,11 @@
         }
       }
     ],
-    "translation": "dust"
+    "concepts": [
+      {
+        "meaning": "dust"
+      }
+    ]
   },
   {
     "forms": [
@@ -1767,7 +2465,11 @@
         }
       }
     ],
-    "translation": "earth"
+    "concepts": [
+      {
+        "meaning": "earth"
+      }
+    ]
   },
   {
     "forms": [
@@ -1777,7 +2479,11 @@
         }
       }
     ],
-    "translation": "cloud"
+    "concepts": [
+      {
+        "meaning": "cloud"
+      }
+    ]
   },
   {
     "forms": [
@@ -1787,7 +2493,11 @@
         }
       }
     ],
-    "translation": "fog"
+    "concepts": [
+      {
+        "meaning": "fog"
+      }
+    ]
   },
   {
     "forms": [
@@ -1797,7 +2507,11 @@
         }
       }
     ],
-    "translation": "sky"
+    "concepts": [
+      {
+        "meaning": "sky"
+      }
+    ]
   },
   {
     "forms": [
@@ -1807,7 +2521,11 @@
         }
       }
     ],
-    "translation": "wind"
+    "concepts": [
+      {
+        "meaning": "wind"
+      }
+    ]
   },
   {
     "forms": [
@@ -1817,7 +2535,11 @@
         }
       }
     ],
-    "translation": "snow"
+    "concepts": [
+      {
+        "meaning": "snow"
+      }
+    ]
   },
   {
     "forms": [
@@ -1827,7 +2549,11 @@
         }
       }
     ],
-    "translation": "ice"
+    "concepts": [
+      {
+        "meaning": "ice"
+      }
+    ]
   },
   {
     "forms": [
@@ -1837,7 +2563,11 @@
         }
       }
     ],
-    "translation": "smoke"
+    "concepts": [
+      {
+        "meaning": "smoke"
+      }
+    ]
   },
   {
     "forms": [
@@ -1847,7 +2577,11 @@
         }
       }
     ],
-    "translation": "ппягӏя"
+    "concepts": [
+      {
+        "meaning": "ппягӏя"
+      }
+    ]
   },
   {
     "forms": [
@@ -1857,7 +2591,11 @@
         }
       }
     ],
-    "translation": "fire"
+    "concepts": [
+      {
+        "meaning": "fire"
+      }
+    ]
   },
   {
     "forms": [
@@ -1867,7 +2605,11 @@
         }
       }
     ],
-    "translation": "ash"
+    "concepts": [
+      {
+        "meaning": "ash"
+      }
+    ]
   },
   {
     "forms": [
@@ -1877,7 +2619,11 @@
         }
       }
     ],
-    "translation": "to burn"
+    "concepts": [
+      {
+        "meaning": "to burn"
+      }
+    ]
   },
   {
     "forms": [
@@ -1887,7 +2633,11 @@
         }
       }
     ],
-    "translation": "road"
+    "concepts": [
+      {
+        "meaning": "road"
+      }
+    ]
   },
   {
     "forms": [
@@ -1897,7 +2647,11 @@
         }
       }
     ],
-    "translation": "mountain"
+    "concepts": [
+      {
+        "meaning": "mountain"
+      }
+    ]
   },
   {
     "forms": [
@@ -1907,8 +2661,12 @@
         }
       }
     ],
-    "translation": "red",
-    "tags": "color"
+    "tags": "color",
+    "concepts": [
+      {
+        "meaning": "red"
+      }
+    ]
   },
   {
     "forms": [
@@ -1918,8 +2676,12 @@
         }
       }
     ],
-    "translation": "green",
-    "tags": "color"
+    "tags": "color",
+    "concepts": [
+      {
+        "meaning": "green"
+      }
+    ]
   },
   {
     "forms": [
@@ -1929,8 +2691,12 @@
         }
       }
     ],
-    "translation": "yellow",
-    "tags": "color"
+    "tags": "color",
+    "concepts": [
+      {
+        "meaning": "yellow"
+      }
+    ]
   },
   {
     "forms": [
@@ -1940,8 +2706,12 @@
         }
       }
     ],
-    "translation": "white",
-    "tags": "color"
+    "tags": "color",
+    "concepts": [
+      {
+        "meaning": "white"
+      }
+    ]
   },
   {
     "forms": [
@@ -1951,8 +2721,12 @@
         }
       }
     ],
-    "translation": "black",
-    "tags": "color"
+    "tags": "color",
+    "concepts": [
+      {
+        "meaning": "black"
+      }
+    ]
   },
   {
     "forms": [
@@ -1962,7 +2736,11 @@
         }
       }
     ],
-    "translation": "night"
+    "concepts": [
+      {
+        "meaning": "night"
+      }
+    ]
   },
   {
     "forms": [
@@ -1972,7 +2750,11 @@
         }
       }
     ],
-    "translation": "day"
+    "concepts": [
+      {
+        "meaning": "day"
+      }
+    ]
   },
   {
     "forms": [
@@ -1982,7 +2764,11 @@
         }
       }
     ],
-    "translation": "year"
+    "concepts": [
+      {
+        "meaning": "year"
+      }
+    ]
   },
   {
     "forms": [
@@ -1992,7 +2778,11 @@
         }
       }
     ],
-    "translation": "yesterday"
+    "concepts": [
+      {
+        "meaning": "yesterday"
+      }
+    ]
   },
   {
     "forms": [
@@ -2002,7 +2792,11 @@
         }
       }
     ],
-    "translation": "bitter"
+    "concepts": [
+      {
+        "meaning": "bitter"
+      }
+    ]
   },
   {
     "forms": [
@@ -2012,7 +2806,11 @@
         }
       }
     ],
-    "translation": "warm"
+    "concepts": [
+      {
+        "meaning": "warm"
+      }
+    ]
   },
   {
     "forms": [
@@ -2022,7 +2820,11 @@
         }
       }
     ],
-    "translation": "cold"
+    "concepts": [
+      {
+        "meaning": "cold"
+      }
+    ]
   },
   {
     "forms": [
@@ -2032,7 +2834,11 @@
         }
       }
     ],
-    "translation": "full"
+    "concepts": [
+      {
+        "meaning": "full"
+      }
+    ]
   },
   {
     "forms": [
@@ -2042,7 +2848,11 @@
         }
       }
     ],
-    "translation": "new"
+    "concepts": [
+      {
+        "meaning": "new"
+      }
+    ]
   },
   {
     "forms": [
@@ -2052,7 +2862,11 @@
         }
       }
     ],
-    "translation": "old"
+    "concepts": [
+      {
+        "meaning": "old"
+      }
+    ]
   },
   {
     "forms": [
@@ -2062,7 +2876,11 @@
         }
       }
     ],
-    "translation": "good"
+    "concepts": [
+      {
+        "meaning": "good"
+      }
+    ]
   },
   {
     "forms": [
@@ -2072,7 +2890,11 @@
         }
       }
     ],
-    "translation": "bad"
+    "concepts": [
+      {
+        "meaning": "bad"
+      }
+    ]
   },
   {
     "forms": [
@@ -2082,7 +2904,11 @@
         }
       }
     ],
-    "translation": "rotten"
+    "concepts": [
+      {
+        "meaning": "rotten"
+      }
+    ]
   },
   {
     "forms": [
@@ -2092,7 +2918,11 @@
         }
       }
     ],
-    "translation": "dirty"
+    "concepts": [
+      {
+        "meaning": "dirty"
+      }
+    ]
   },
   {
     "forms": [
@@ -2102,7 +2932,11 @@
         }
       }
     ],
-    "translation": "straight"
+    "concepts": [
+      {
+        "meaning": "straight"
+      }
+    ]
   },
   {
     "forms": [
@@ -2112,7 +2946,11 @@
         }
       }
     ],
-    "translation": "round"
+    "concepts": [
+      {
+        "meaning": "round"
+      }
+    ]
   },
   {
     "forms": [
@@ -2122,7 +2960,11 @@
         }
       }
     ],
-    "translation": "sharp"
+    "concepts": [
+      {
+        "meaning": "sharp"
+      }
+    ]
   },
   {
     "forms": [
@@ -2132,7 +2974,11 @@
         }
       }
     ],
-    "translation": "dull"
+    "concepts": [
+      {
+        "meaning": "dull"
+      }
+    ]
   },
   {
     "forms": [
@@ -2142,7 +2988,11 @@
         }
       }
     ],
-    "translation": "smooth"
+    "concepts": [
+      {
+        "meaning": "smooth"
+      }
+    ]
   },
   {
     "forms": [
@@ -2152,7 +3002,11 @@
         }
       }
     ],
-    "translation": "wet"
+    "concepts": [
+      {
+        "meaning": "wet"
+      }
+    ]
   },
   {
     "forms": [
@@ -2162,7 +3016,11 @@
         }
       }
     ],
-    "translation": "dry"
+    "concepts": [
+      {
+        "meaning": "dry"
+      }
+    ]
   },
   {
     "forms": [
@@ -2172,7 +3030,11 @@
         }
       }
     ],
-    "translation": "correct"
+    "concepts": [
+      {
+        "meaning": "correct"
+      }
+    ]
   },
   {
     "forms": [
@@ -2182,7 +3044,11 @@
         }
       }
     ],
-    "translation": "near"
+    "concepts": [
+      {
+        "meaning": "near"
+      }
+    ]
   },
   {
     "forms": [
@@ -2192,7 +3058,11 @@
         }
       }
     ],
-    "translation": "far"
+    "concepts": [
+      {
+        "meaning": "far"
+      }
+    ]
   },
   {
     "forms": [
@@ -2202,7 +3072,11 @@
         }
       }
     ],
-    "translation": "right"
+    "concepts": [
+      {
+        "meaning": "right"
+      }
+    ]
   },
   {
     "forms": [
@@ -2212,7 +3086,11 @@
         }
       }
     ],
-    "translation": "left"
+    "concepts": [
+      {
+        "meaning": "left"
+      }
+    ]
   },
   {
     "forms": [
@@ -2222,7 +3100,11 @@
         }
       }
     ],
-    "translation": "at"
+    "concepts": [
+      {
+        "meaning": "at"
+      }
+    ]
   },
   {
     "forms": [
@@ -2232,7 +3114,11 @@
         }
       }
     ],
-    "translation": "in"
+    "concepts": [
+      {
+        "meaning": "in"
+      }
+    ]
   },
   {
     "forms": [
@@ -2242,7 +3128,11 @@
         }
       }
     ],
-    "translation": "with"
+    "concepts": [
+      {
+        "meaning": "with"
+      }
+    ]
   },
   {
     "forms": [
@@ -2252,7 +3142,11 @@
         }
       }
     ],
-    "translation": "and"
+    "concepts": [
+      {
+        "meaning": "and"
+      }
+    ]
   },
   {
     "forms": [
@@ -2262,7 +3156,11 @@
         }
       }
     ],
-    "translation": "if"
+    "concepts": [
+      {
+        "meaning": "if"
+      }
+    ]
   },
   {
     "forms": [
@@ -2272,7 +3170,11 @@
         }
       }
     ],
-    "translation": "because"
+    "concepts": [
+      {
+        "meaning": "because"
+      }
+    ]
   },
   {
     "forms": [
@@ -2282,7 +3184,11 @@
         }
       }
     ],
-    "translation": "name"
+    "concepts": [
+      {
+        "meaning": "name"
+      }
+    ]
   },
   {
     "forms": [
@@ -2292,7 +3198,11 @@
         }
       }
     ],
-    "translation": "wood"
+    "concepts": [
+      {
+        "meaning": "wood"
+      }
+    ]
   },
   {
     "forms": [
@@ -2302,7 +3212,11 @@
         }
       }
     ],
-    "translation": "sweet"
+    "concepts": [
+      {
+        "meaning": "sweet"
+      }
+    ]
   },
   {
     "forms": [
@@ -2312,7 +3226,11 @@
         }
       }
     ],
-    "translation": "shadow"
+    "concepts": [
+      {
+        "meaning": "shadow"
+      }
+    ]
   },
   {
     "forms": [
@@ -2322,7 +3240,11 @@
         }
       }
     ],
-    "translation": "to crush"
+    "concepts": [
+      {
+        "meaning": "to crush"
+      }
+    ]
   },
   {
     "forms": [
@@ -2332,6 +3254,10 @@
         }
       }
     ],
-    "translation": "hard"
+    "concepts": [
+      {
+        "meaning": "hard"
+      }
+    ]
   }
 ]
