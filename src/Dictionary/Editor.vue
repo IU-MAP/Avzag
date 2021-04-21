@@ -14,7 +14,7 @@
     </div>
     <div class="col-2">
       <EditorCard icon="tag" header="Tags">
-        <input v-model="entry.tags" type="text" />
+        <TagsInput v-model="entry.tags" />
       </EditorCard>
       <NotesEditor v-model="entry.notes" />
       <EditorCard icon="tune" header="Forms">
@@ -65,10 +65,10 @@
         </div>
       </EditorCard>
       <template v-if="usecase">
-        <EditorCard icon="lightbulb" header="Concept">
+        <EditorCard icon="lightFbulb" header="Concept">
           <div class="row">
-            <input v-model="usecase.meaning" style="flex: 1" type="text" />
-            <input v-model="usecase.tags" style="flex: 2" type="text" />
+            <input v-model="usecase.meaning" style="flex: 0.5" type="text" />
+            <TagsInput v-model="usecase.tags" class="flex" />
           </div>
         </EditorCard>
         <NotesEditor v-model="usecase.notes" />
@@ -111,12 +111,13 @@
 import ArrayControl from "@/components/ArrayControl.vue";
 import EditorCard from "@/components/EditorCard.vue";
 import NotesEditor from "@/components/Notes/Editor.vue";
+import TagsInput from "@/components/TagsInput.vue";
 
 import { computed, ref, defineComponent, reactive } from "vue";
 import { setupEditor } from "@/editor";
 
 export default defineComponent({
-  components: { EditorCard, ArrayControl, NotesEditor },
+  components: { EditorCard, ArrayControl, NotesEditor, TagsInput },
   setup() {
     // const phoneme = ref<PhonemeUse>();
     // const file = setupEditor<PhonemeUse[]>({
