@@ -13,8 +13,12 @@ for l in lects:
         u = {"meaning": d["translation"]}
         if "explanation" in d:
             u["notes"] = [d["explanation"]]
+        if "tags" in d:
+            u["tags"] = d["tags"].split()
 
         d["uses"] = [u]
+        if len(d["forms"]) > 0:
+            d["forms"] = [d["forms"][0]["text"]]
         del d["translation"]
 
     with open(path, 'w', encoding='utf-8') as f:
