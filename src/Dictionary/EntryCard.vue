@@ -35,6 +35,7 @@
         <p v-if="scholar && entry.tags" class="text-tags">
           {{ entry.tags?.join(" ") }}
         </p>
+        <Notes :notes="entry.notes" />
         <div class="col-0 card-1">
           <p v-for="(f, i) in entry.forms" :key="i">
             {{ f.plain }}
@@ -44,7 +45,6 @@
             </span>
           </p>
         </div>
-        <Notes :notes="entry.notes" />
       </template>
       <hr />
     </template>
