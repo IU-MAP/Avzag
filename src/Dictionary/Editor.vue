@@ -65,7 +65,7 @@
         </div>
       </EditorCard>
       <template v-if="usecase">
-        <EditorCard icon="lightFbulb" header="Concept">
+        <EditorCard icon="lightbulb" header="Concept">
           <div class="row">
             <input v-model="usecase.meaning" style="flex: 0.5" type="text" />
             <TagsInput v-model="usecase.tags" class="flex" />
