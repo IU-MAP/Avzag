@@ -2512,6 +2512,8 @@
         "samples": [{ "plain": "барджын ныхас", "translation": "weighty word" }]
       }
     ],
+    "tags": ["noun"],
+    "notes": ["Etymology of the work ныхас etc etc..."],
     "forms": [
       { "plain": "ныхас", "ipa": "nəχaʃ" },
       { "plain": "ныхæстæ", "ipa": "nəχaʃ-tɐ", "glossed": "speech-PL" }
