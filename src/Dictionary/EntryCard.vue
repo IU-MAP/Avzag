@@ -23,32 +23,13 @@
         />
       </div>
       <template v-if="expanded === 1">
-        <div v-for="u in entry.uses" :key="u.meaning" class="col">
-          <div>
-            <h2 style="user-select: auto; display: inline">
-              {{ u.meaning }}
-            </h2>
-            <span>&nbsp;</span>
-            <span v-if="scholar" class="text-tags">
-              {{ u.tags?.join(" ") }}
-            </span>
-          </div>
-          <Notes :notes="u.notes" />
-          <template v-for="(s, i) in u.samples" :key="i">
-            <div class="col-0 card-1">
-              {{ s.plain }}
-              <span class="col-0 text-faded">
-                {{ s.translation }}
-                <span v-if="scholar" class="col-0">
-                  <span class="text-ipa">
-                    {{ s.ipa }}
-                  </span>
-                  {{ s.glossed }}
-                </span>
-              </span>
-            </div>
-          </template>
-        </div>
+        <EntryUse :scholar="scholar" :use="targetUse" />
+        <EntryUse
+          v-for="u in otherUses"
+          :key="u.meaning"
+          :scholar="scholar"
+          :use="u"
+        />
       </template>
       <template v-else-if="expanded === 2">
         <p v-if="scholar && entry.tags" class="text-tags">
@@ -74,12 +55,14 @@ import { computed, defineComponent, PropType, ref, inject, watch } from "vue";
 import { Entry } from "./types";
 import Flag from "@/components/Flag.vue";
 import Notes from "@/components/Notes/index.vue";
+import EntryUse from "./EntryUse.vue";
 
 export default defineComponent({
   name: "EntryCard",
-  components: { Notes, Flag },
+  components: { Notes, Flag, EntryUse },
   props: {
     lect: { type: String, default: "" },
+    meaning: { type: String, default: "" },
     entry: { type: Object as PropType<Entry>, default: undefined },
     scholar: Boolean,
   },
@@ -89,18 +72,25 @@ export default defineComponent({
       ["Uses", "textsms"],
       ["Info", "info"],
     ];
+
     const expandedEntries = inject<Map<Entry, number>>("expandedEntries");
     const setExpansion = inject<(en: Entry, ex: boolean) => void>(
       "setExpansion"
     );
-
     const faded = computed(() => expandedEntries?.has(props.entry));
     watch(
       () => !!expanded.value,
       (ex) => setExpansion?.(props.entry, ex)
     );
+
     const plain = computed(() => props.entry?.forms[0].plain);
-    return { expanded, plain, views, faded };
+    const targetUse = computed(() =>
+      props.entry.uses.find((u) => u.meaning === props.meaning)
+    );
+    const otherUses = computed(() =>
+      props.entry.uses.filter((u) => u.meaning !== props.meaning)
+    );
+    return { views, expanded, faded, plain, otherUses, targetUse };
   },
 });
 </script>

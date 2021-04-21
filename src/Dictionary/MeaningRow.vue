@@ -10,6 +10,7 @@
           :key="e.forms[0].plain"
           :lect="l"
           :entry="e"
+          :meaning="meaning"
           :scholar="scholar"
           class="appear"
         />
