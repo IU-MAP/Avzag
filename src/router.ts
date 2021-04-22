@@ -46,7 +46,7 @@ const routes = [
 
 export default createRouter({
   history: createWebHistory(
-    process.env.NODE_ENV === "production" ? "/Avzag/" : "/"
+    process.env.NODE_ENV === "production" ? "/avzag/" : "/"
   ),
   routes,
 });
