@@ -12,7 +12,7 @@ type Track = {
 
 const state = reactive({
   key: null as null | string,
-  timer: 0,
+  timer: 0 as unknown,
   current: undefined as undefined | Track,
   queue: [] as Track[],
 });
@@ -35,7 +35,7 @@ function canPlay(result: Ref<string[]>, lect: string, files: string[]) {
 function play(lect: string, files: string[], key?: string) {
   stop();
   state.key = key ?? lect ?? files[0];
-  state.timer = setInterval(seek, 50);
+  state.timer = setInterval(seek, 50) as unknown;
 
   state.queue = files
     .map((f) => (lect ? url(lect, f) : f))
@@ -80,7 +80,7 @@ function seek() {
 function stop() {
   Howler.unload();
   state.key = null;
-  clearInterval(state.timer);
+  clearInterval(state.timer as number);
   state.current = undefined;
   state.queue.length = 0;
 }
