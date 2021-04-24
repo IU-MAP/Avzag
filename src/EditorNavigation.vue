@@ -16,6 +16,7 @@
       </div>
       <div class="row">
         <btn icon="cloud_download" @click="loadLect" />
+        <btn icon="cloud_upload" @click="saveLect" />
         <btn icon="file_upload" @click="loadJSON" />
         <btn icon="file_download" @click="saveJSON" />
         <ConfirmButton message="Reset file?" @confirm="resetFile" />
@@ -33,6 +34,7 @@ import { useRoute, useRouter } from "vue-router";
 import { loadJSON as loadDBJSON } from "@/store";
 import { config, file, resetFile } from "@/editor";
 import { uploadFile, downloadFile } from "@/file-manager";
+import { pushToStore } from "./gh-manager";
 
 export default defineComponent({
   components: { ConfirmButton },
@@ -42,20 +44,8 @@ export default defineComponent({
 
     const menus = [
       {
-        text: "Phonology",
-        name: "PhonologyEditor",
-      },
-      {
-        text: "Converter",
-        name: "ConverterEditor",
-      },
-      {
-        text: "Phrasebook",
-        name: "PhrasebookEditor",
-      },
-      {
-        text: "Phrasebook Corpus",
-        name: "PhrasebookCorpusEditor",
+        text: "Dictionary",
+        name: "DictionaryEditor",
       },
     ];
     const menu = ref((route.name ?? menus[0].name) as string);
@@ -80,8 +70,15 @@ export default defineComponent({
         ".json"
       );
     }
+    function saveLect() {
+      pushToStore(
+        JSON.stringify({ kaitag: "aeaeaea" }),
+        "Kaitag/test.json",
+        "Please work"
+      );
+    }
 
-    return { menu, menus, loadLect, loadJSON, saveJSON, resetFile };
+    return { menu, menus, loadLect, loadJSON, saveLect, saveJSON, resetFile };
   },
 });
 </script>
