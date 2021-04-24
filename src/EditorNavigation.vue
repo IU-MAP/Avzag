@@ -72,9 +72,9 @@ export default defineComponent({
     }
     function saveLect() {
       pushToStore(
-        JSON.stringify({ kaitag: "aeaeaea" }),
-        "Kaitag/test.json",
-        "Please work"
+        JSON.stringify(file.value, null, 2) + "\n",
+        `${window.prompt("Enter lect name")}/dictionary.json`,
+        window.prompt("Enter optional comment") ?? ""
       );
     }
 
