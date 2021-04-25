@@ -5,8 +5,8 @@ import { Entry, DBState } from "./types";
 let db: IDBPDatabase;
 
 /**
- * 
- * @param lects 
+ *
+ * @param lects
  */
 async function cleanDB(lects: string[]) {
   await deleteDB("avzag");
@@ -18,9 +18,9 @@ async function cleanDB(lects: string[]) {
 }
 
 /**
- * 
- * @param dictionaries 
- * @returns 
+ *
+ * @param dictionaries
+ * @returns
  */
 async function fillDB(dictionaries: Record<string, Entry[]>) {
   postState("loading");
@@ -49,9 +49,9 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
 }
 
 /**
- * 
- * @param lects 
- * @returns 
+ *
+ * @param lects
+ * @returns
  */
 async function load(lects: string[]) {
   postState("fetching", "Downloading files");
@@ -68,9 +68,9 @@ async function load(lects: string[]) {
 }
 
 /**
- * 
- * @param state 
- * @param text 
+ *
+ * @param state
+ * @param text
  */
 function postState(state: DBState, text: string | string[] = "Loading") {
   postMessage(JSON.stringify({ state, text }));
@@ -80,7 +80,7 @@ let pending: undefined | (() => void);
 let executing = false;
 
 /**
- * 
+ *
  */
 onmessage = (e) => {
   const data = e.data as string;

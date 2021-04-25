@@ -30,7 +30,6 @@ async function queryDictionaries(key_: symbol, queries: string[][]) {
   postMessage(JSON.stringify({ lect: "" }));
 }
 
-
 async function findMeanings(key_: symbol, lect: string, queries: string[][]) {
   // look through all forms in the language and collect their translations.
   const meanings = new Set<string>();

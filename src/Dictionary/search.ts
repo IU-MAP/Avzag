@@ -1,10 +1,10 @@
 import { Entry } from "./types";
 
 /**
- * 
- * @param entry 
- * @param tag 
- * @returns 
+ *
+ * @param entry
+ * @param tag
+ * @returns
  */
 function checkTag(entry: Entry, tag: string) {
   tag = tag.substr(1);
@@ -13,10 +13,10 @@ function checkTag(entry: Entry, tag: string) {
 }
 
 /**
- * 
- * @param area 
- * @param segment 
- * @returns 
+ *
+ * @param area
+ * @param segment
+ * @returns
  */
 function checkSegment(area: string, segment: string) {
   switch (segment[0]) {
@@ -32,11 +32,11 @@ function checkSegment(area: string, segment: string) {
 }
 
 /**
- * 
- * @param entry 
- * @param token 
- * @param forms 
- * @returns 
+ *
+ * @param entry
+ * @param token
+ * @param forms
+ * @returns
  */
 function checkToken(entry: Entry, token: string, forms: boolean) {
   if (token[0] === "#") return checkTag(entry, token);
@@ -48,11 +48,11 @@ function checkToken(entry: Entry, token: string, forms: boolean) {
 }
 
 /**
- * 
- * @param entry 
- * @param queries 
- * @param forms 
- * @returns 
+ *
+ * @param entry
+ * @param queries
+ * @param forms
+ * @returns
  */
 export function checkQueries(entry: Entry, queries: string[][], forms = false) {
   const meanings = new Set<string>();
@@ -68,9 +68,9 @@ export function checkQueries(entry: Entry, queries: string[][], forms = false) {
 }
 
 /**
- * 
- * @param input 
- * @returns 
+ *
+ * @param input
+ * @returns
  */
 export function parseQuery(input: string) {
   return input
