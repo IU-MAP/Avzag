@@ -5,8 +5,8 @@ import { Entry, DBState } from "./types";
 let db: IDBPDatabase;
 
 /**
- * 
- * @param lects 
+ * cleans the whole database
+ * @param lects languages user chose
  */
 async function cleanDB(lects: string[]) {
   await deleteDB("avzag");
@@ -18,11 +18,12 @@ async function cleanDB(lects: string[]) {
 }
 
 /**
- * 
- * @param dictionaries 
- * @returns 
+ * fills database with words from each chosen language
+ * @param dictionaries words from each chosen language
+ * @returns
  */
 async function fillDB(dictionaries: Record<string, Entry[]>) {
+  console.log(JSON.parse(JSON.stringify(dictionaries)));
   postState("loading");
   const size = Object.values(dictionaries).reduce((s, d) => s + d.length, 0);
   const step = 1024;
@@ -49,9 +50,9 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
 }
 
 /**
- * 
- * @param lects 
- * @returns 
+ * loads chosen languages
+ * @param lects chosen languages
+ * @returns
  */
 async function load(lects: string[]) {
   postState("fetching", "Downloading files");
@@ -68,9 +69,9 @@ async function load(lects: string[]) {
 }
 
 /**
- * 
- * @param state 
- * @param text 
+ * notifies main thread about the progress
+ * @param state current state
+ * @param text message for user
  */
 function postState(state: DBState, text: string | string[] = "Loading") {
   postMessage(JSON.stringify({ state, text }));
@@ -80,7 +81,7 @@ let pending: undefined | (() => void);
 let executing = false;
 
 /**
- * 
+ * a sequence of actions to do when a message from main thread comes
  */
 onmessage = (e) => {
   const data = e.data as string;

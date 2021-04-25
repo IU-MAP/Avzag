@@ -7,10 +7,9 @@ let lects: string[];
 let key: symbol;
 
 /**
- *
- * @param key_
- * @param queries
- * @returns
+ * @param key_ id of request
+ * @param queries queries from user
+ * @returns ???
  */
 async function queryDictionaries(key_: symbol, queries: string[][]) {
   if (!queries.length) return;
@@ -30,7 +29,12 @@ async function queryDictionaries(key_: symbol, queries: string[][]) {
   postMessage(JSON.stringify({ lect: "" }));
 }
 
-
+/**
+ * @param key_ id of query
+ * @param lect language
+ * @param queries queries to find meanings of
+ * @returns meanings if found
+ */
 async function findMeanings(key_: symbol, lect: string, queries: string[][]) {
   // look through all forms in the language and collect their translations.
   const meanings = new Set<string>();
@@ -44,6 +48,9 @@ async function findMeanings(key_: symbol, lect: string, queries: string[][]) {
   return [...meanings].map((m) => ["!" + m]);
 }
 
+/**
+ * a sequence of actions to do when a message from main thread comes
+ */
 onmessage = async (e) => {
   if (e.data === "stop") {
     db?.close();

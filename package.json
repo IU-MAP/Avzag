@@ -23,11 +23,13 @@
   "dependencies": {
     "@octokit/rest": "^18.5.3",
     "@types/node": "^14.14.37",
+    "chai": "^4.3.4",
     "core-js": "^3.10.1",
     "howler": "^2.2.1",
     "idb": "^6.0.0",
     "mapbox-gl": "^2.2.0",
     "register-service-worker": "^1.7.1",
+    "rewire": "^5.0.0",
     "uuid": "^8.3.2",
     "vue": "^3.0.11",
     "vue-router": "^4.0.6",
