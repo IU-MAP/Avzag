@@ -6,6 +6,12 @@ let db: IDBPDatabase;
 let lects: string[];
 let key: symbol;
 
+/**
+ *
+ * @param key_
+ * @param queries
+ * @returns
+ */
 async function queryDictionaries(key_: symbol, queries: string[][]) {
   if (!queries.length) return;
   async function search(lect: string) {
@@ -23,6 +29,7 @@ async function queryDictionaries(key_: symbol, queries: string[][]) {
   if (key !== key_) return;
   postMessage(JSON.stringify({ lect: "" }));
 }
+
 
 async function findMeanings(key_: symbol, lect: string, queries: string[][]) {
   // look through all forms in the language and collect their translations.

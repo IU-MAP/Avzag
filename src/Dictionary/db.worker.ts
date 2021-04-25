@@ -4,6 +4,10 @@ import { Entry, DBState } from "./types";
 
 let db: IDBPDatabase;
 
+/**
+ * 
+ * @param lects 
+ */
 async function cleanDB(lects: string[]) {
   await deleteDB("avzag");
   db = await openDB("avzag", 1, {
@@ -13,6 +17,11 @@ async function cleanDB(lects: string[]) {
   });
 }
 
+/**
+ * 
+ * @param dictionaries 
+ * @returns 
+ */
 async function fillDB(dictionaries: Record<string, Entry[]>) {
   postState("loading");
   const size = Object.values(dictionaries).reduce((s, d) => s + d.length, 0);
@@ -39,6 +48,11 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
   }
 }
 
+/**
+ * 
+ * @param lects 
+ * @returns 
+ */
 async function load(lects: string[]) {
   postState("fetching", "Downloading files");
   if (pending) return postState("fetching");
@@ -53,6 +67,11 @@ async function load(lects: string[]) {
   postState("ready");
 }
 
+/**
+ * 
+ * @param state 
+ * @param text 
+ */
 function postState(state: DBState, text: string | string[] = "Loading") {
   postMessage(JSON.stringify({ state, text }));
 }
@@ -60,6 +79,9 @@ function postState(state: DBState, text: string | string[] = "Loading") {
 let pending: undefined | (() => void);
 let executing = false;
 
+/**
+ * 
+ */
 onmessage = (e) => {
   const data = e.data as string;
   const call = async () => {
