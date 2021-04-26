@@ -2,9 +2,9 @@ import { openDB, IDBPDatabase, deleteDB } from "idb";
 import { loadLectsJSON } from "@/store";
 import { Entry, DBState } from "./types";
 
-let db: IDBPDatabase;
+export let db: IDBPDatabase;
 
-async function cleanDB(lects: string[]) {
+export async function cleanDB(lects: string[]) {
   await deleteDB("avzag");
   db = await openDB("avzag", 1, {
     upgrade(db) {
@@ -60,7 +60,7 @@ function postState(state: DBState, text: string | string[] = "Loading") {
 let pending: undefined | (() => void);
 let executing = false;
 
-onmessage = (e) => {
+const onmessage = (e: any) => {
   const data = e.data as string;
   const call = async () => {
     executing = true;
