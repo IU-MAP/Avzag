@@ -23,7 +23,6 @@ dbworker.onmessage = (e) => (dbInfo.value = e.data);
 watch(
   () => dbInfo.value,
   () => {
-    console.log(dbInfo.value);
     if (dbInfo.value.state === "fetched")
       lects_.value = dbInfo.value.lect as string[];
     else if (dbInfo.value.state === "ready")
