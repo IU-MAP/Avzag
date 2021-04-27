@@ -94,7 +94,7 @@ export default defineComponent({
     }
     function load() {
       lects.value = [...search.selected];
-      lastUpdated.lects = Date.now();
+      lastUpdated.value.lects = Date.now();
       router.push(
         localStorage.urlUser
           ? { path: localStorage.urlUser }

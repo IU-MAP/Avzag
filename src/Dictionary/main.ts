@@ -25,8 +25,10 @@ watch(
   () => {
     if (dbInfo.value.state === "fetched")
       lects_.value = dbInfo.value.lect as string[];
-    else if (dbInfo.value.state === "ready")
+    else if (dbInfo.value.state === "ready") {
+      lastUpdated.value.dictionary = Date.now();
       searchworker.postMessage(toRaw(lects_.value));
+    }
   }
 );
 
@@ -36,12 +38,9 @@ export const lects_ = shallowRef([] as string[]);
 watch(lects, async (lects) => {
   dbInfo.value.state = "fetching";
   dictionaryMeta.value = await loadJSON("dictionary");
-  if ((lastUpdated.lects ?? 0) <= (lastUpdated.db ?? 0))
+  if ((lastUpdated.value.lects ?? 0) <= (lastUpdated.value.dictionary ?? 0))
     dbInfo.value.state = "ready";
-  else {
-    lastUpdated.db = Date.now();
-    dbworker.postMessage(toRaw(lects));
-  }
+  else dbworker.postMessage(toRaw(lects));
 });
 
 async function receiveSearch(occerence: SearchOccurence) {

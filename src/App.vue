@@ -5,7 +5,7 @@
 <script lang="ts">
 import { watchEffect, defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { lects } from "./store";
+import { lastUpdated, lects } from "./store";
 
 import "./Dictionary/main";
 
@@ -13,6 +13,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
+    lastUpdated.value = JSON.parse(localStorage.lastUpdated ?? "{}");
 
     if (!route.name || route.name === "Home") {
       router.push(
