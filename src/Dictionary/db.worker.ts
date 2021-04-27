@@ -72,8 +72,13 @@ async function load(lects: string[]) {
  * @param state
  * @param text
  */
-function postState(state: DBState, text: string | string[] = "Loading") {
-  postMessage(JSON.stringify({ state, text }));
+function postState(
+  state: DBState,
+  lect?: string,
+  percent?: number,
+  text?: string
+) {
+  postMessage(JSON.stringify({ state, lect, text, percent }));
 }
 
 let pending: undefined | (() => void);

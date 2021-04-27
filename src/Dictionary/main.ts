@@ -1,10 +1,10 @@
 import { loadJSON, lects } from "@/store";
-import { reactive, shallowRef, watch } from "vue";
+import { reactive, ref, shallowRef, watch } from "vue";
 import {
   DictionaryMeta,
-  DBState,
   SearchResults,
   SearchOccurence,
+  DBInfo,
 } from "./types";
 /* eslint-disable import/no-webpack-loader-syntax */
 import DBWorker from "worker-loader!./db.worker";
@@ -18,14 +18,17 @@ export const searchInfo = reactive({
 });
 
 export const dbworker = new DBWorker();
-dbworker.onmessage = (e) => {
-  const { state, text } = JSON.parse(e.data);
-  connectDB(state, text);
-};
-export const dbInfo = reactive({
-  state: "loading" as DBState,
-  text: "",
-});
+export const dbInfo = ref({ state: "loading" } as DBInfo);
+dbworker.onmessage = (e) => (dbInfo.value = JSON.parse(e.data) as DBInfo);
+watch(
+  () => dbInfo.value,
+  () => {
+    if (dbInfo.value.state === "fetched")
+      lects_.value = dbInfo.value.text?.split(",") ?? [];
+    else if (dbInfo.value.state === "ready")
+      searchworker.postMessage(JSON.stringify(lects_.value));
+  }
+);
 
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
@@ -46,15 +49,5 @@ async function receiveSearch(data: string) {
     if (!searchInfo.results[t]) searchInfo.results[t] = {};
     if (!searchInfo.results[t][lect]) searchInfo.results[t][lect] = [];
     searchInfo.results[t][lect].push(entry);
-  }
-}
-
-async function connectDB(state: DBState, text: string) {
-  dbInfo.state = state;
-  if (state === "fetched") lects_.value = text.split(",");
-  else {
-    dbInfo.text = text;
-    if (state === "ready")
-      searchworker.postMessage(JSON.stringify(lects_.value));
   }
 }

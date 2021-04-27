@@ -39,6 +39,13 @@ export type DBState =
   | "loading"
   | "ready";
 
+export type DBInfo = {
+  state: DBState;
+  lect?: string;
+  progress?: number;
+  text?: string;
+};
+
 export type SearchCommand =
   | string[]
   | {
