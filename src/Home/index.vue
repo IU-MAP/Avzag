@@ -74,7 +74,7 @@ import {
   defineComponent,
 } from "vue";
 import { useRouter } from "vue-router";
-import { lects } from "@/store";
+import { lastUpdated, lects } from "@/store";
 import { reset, catalogue, search, query } from "./main";
 import { createMap } from "./map";
 
@@ -94,6 +94,7 @@ export default defineComponent({
     }
     function load() {
       lects.value = [...search.selected];
+      lastUpdated.lects = Date.now();
       router.push(
         localStorage.urlUser
           ? { path: localStorage.urlUser }

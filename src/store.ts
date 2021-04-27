@@ -1,9 +1,14 @@
-import { ref } from "vue";
+import { reactive, ref, watchEffect } from "vue";
 
 export const lects = ref([] as string[]);
 export const root =
   process.env.VUE_APP_STORE ??
   "https://raw.githubusercontent.com/alkaitagi/avzag/store/";
+
+export const lastUpdated = reactive(
+  JSON.parse(localStorage.lastUpdated ?? "{}") as Record<string, number>
+);
+watchEffect(() => (localStorage.lastUpdated = JSON.stringify(lastUpdated)));
 
 export async function loadJSON(filename: string, defaultValue?: unknown) {
   return await fetch(root + filename + ".json")
