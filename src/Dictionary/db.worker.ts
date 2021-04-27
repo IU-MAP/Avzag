@@ -30,15 +30,16 @@ async function fillDB(db: IDBPDatabase, dictionaries: Record<string, Entry[]>) {
     const puts = [];
     for (const d of ds) {
       puts.push(st.add(d));
-      if (!(puts.length % 1024))
+      if (!(puts.length % 1024)) {
         postMessage({
           state: "loading",
           lect: l,
           progress: puts.length / ds.length,
         });
+        await Promise.all(puts);
+        if (pending) return;
+      }
     }
-    await Promise.all(puts);
-    if (pending) return;
   }
 }
 
@@ -56,7 +57,7 @@ async function load(lects: string[]) {
   const db = await cleanDB(lects);
   await fillDB(db, dictionaries);
   db.close();
-  postMessage({ state: pending ? "ready" : "loading" });
+  if (!pending) postMessage({ state: "ready" });
 }
 
 /**
