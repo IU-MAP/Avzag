@@ -1,5 +1,5 @@
 import { loadJSON, lects } from "@/store";
-import { reactive, ref, shallowRef, watch } from "vue";
+import { reactive, ref, shallowRef, toRaw, watch } from "vue";
 import {
   DictionaryMeta,
   SearchResults,
@@ -37,7 +37,7 @@ export const lects_ = shallowRef([] as string[]);
 watch(lects, async (lects) => {
   dbInfo.value.state = "fetching";
   dictionaryMeta.value = await loadJSON("dictionary");
-  dbworker.postMessage(JSON.parse(JSON.stringify(lects)));
+  dbworker.postMessage(toRaw(lects));
 });
 
 async function receiveSearch(data: string) {
