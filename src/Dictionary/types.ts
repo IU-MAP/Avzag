@@ -39,6 +39,7 @@ export type DBInfo = {
 };
 
 export type SearchCommand =
+  | "stop"
   | string[]
   | {
       lect: string;

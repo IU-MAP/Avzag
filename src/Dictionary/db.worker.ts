@@ -64,10 +64,10 @@ async function load(lects: string[]) {
  *
  */
 
-async function init(data: string | string[]) {
+async function init(data: "stop" | string[]) {
   pending = null;
   executing = true;
-  if (data !== "stop") await load(data as string[]);
+  if (data !== "stop") await load(data);
   executing = false;
   if (pending) {
     const p = pending;

@@ -26,7 +26,7 @@ watch(
     if (dbInfo.value.state === "fetched")
       lects_.value = dbInfo.value.lect as string[];
     else if (dbInfo.value.state === "ready")
-      searchworker.postMessage(JSON.stringify(lects_.value));
+      searchworker.postMessage(toRaw(lects_.value));
   }
 );
 
@@ -39,8 +39,8 @@ watch(lects, async (lects) => {
   dbworker.postMessage(toRaw(lects));
 });
 
-async function receiveSearch(data: string) {
-  const { lect, meanings, entry } = JSON.parse(data) as SearchOccurence;
+async function receiveSearch(occerence: SearchOccurence) {
+  const { lect, meanings, entry } = occerence;
   if (!lect) {
     searchInfo.searching = false;
     return;

@@ -13,52 +13,49 @@ let key: symbol;
  * @returns
  */
 async function queryDictionaries(key_: symbol, queries: string[][]) {
-  if (!queries.length) return;
   async function search(lect: string) {
     let cr = await db.transaction(lect).store.openCursor();
     while (cr) {
-      if (key !== key_) return;
       const entry = cr.value as Entry;
       const meanings = checkQueries(entry, queries);
-      if (meanings.length)
-        postMessage(JSON.stringify({ lect, meanings, entry }));
+      if (meanings.length) postMessage({ lect, meanings, entry });
+
       cr = await cr.continue();
+      if (key !== key_) return;
     }
   }
+
+  if (!queries.length) return;
   await Promise.all(lects.map((l) => search(l)));
-  if (key !== key_) return;
-  postMessage(JSON.stringify({ lect: "" }));
+  postMessage({ lect: "" });
 }
 
 async function findMeanings(key_: symbol, lect: string, queries: string[][]) {
-  // look through all forms in the language and collect their translations.
   const meanings = new Set<string>();
   let cr = await db.transaction(lect).store.openCursor();
   while (cr) {
-    if (key !== key_) return [];
     const entry = cr.value as Entry;
     checkQueries(entry, queries, true).forEach((m) => meanings.add(m));
+
     cr = await cr.continue();
+    if (key !== key_) return [];
   }
   return [...meanings].map((m) => ["!" + m]);
 }
 
-onmessage = async (e) => {
-  // if (e.data === "stop") {
-  //   db?.close();
-  //   key = Symbol("sk");
-  //   return;
-  // }
-  // const data = JSON.parse(e.data) as SearchCommand;
-  // if (Array.isArray(data)) {
-  //   db = await openDB("avzag", 1);
-  //   lects = data;
-  //   return;
-  // }
-  // key = Symbol("sk");
-  // const queries = parseQuery(data.query);
-  // if (data.lect) {
-  //   const meanings = await findMeanings(key, data.lect, queries);
-  //   queryDictionaries(key, meanings);
-  // } else queryDictionaries(key, queries);
-};
+async function init(data: SearchCommand) {
+  if (data === "stop") db?.close();
+  else if (Array.isArray(data)) {
+    db = await openDB("avzag", 1);
+    lects = data;
+  } else {
+    key = Symbol("sk");
+    const queries = parseQuery(data.query);
+    if (data.lect) {
+      const meanings = await findMeanings(key, data.lect, queries);
+      queryDictionaries(key, meanings);
+    } else queryDictionaries(key, queries);
+  }
+}
+
+onmessage = (e) => init(e.data);

@@ -81,7 +81,7 @@ import {
 import MeaningRow from "./MeaningRow.vue";
 import Flag from "@/components/Flag.vue";
 import Seeker from "@/components/Seeker.vue";
-import { Entry, SearchCommand } from "./types";
+import { Entry } from "./types";
 
 export default defineComponent({
   components: { MeaningRow, Flag, Seeker },
@@ -127,12 +127,10 @@ export default defineComponent({
       }
       searchInfo.searching = true;
       searchInfo.results = {};
-      searchworker.postMessage(
-        JSON.stringify({
-          lect: lect.value,
-          query: query.value,
-        } as SearchCommand)
-      );
+      searchworker.postMessage({
+        lect: lect.value,
+        query: query.value,
+      });
     });
 
     return {
