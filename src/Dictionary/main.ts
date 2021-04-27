@@ -9,6 +9,7 @@ import {
 /* eslint-disable import/no-webpack-loader-syntax */
 import DBWorker from "worker-loader!./db.worker";
 import SearchWorker from "worker-loader!./search.worker";
+import { openDB } from "idb";
 
 export const searchworker = new SearchWorker();
 searchworker.onmessage = (e) => receiveSearch(e.data);
@@ -38,9 +39,17 @@ export const lects_ = shallowRef([] as string[]);
 watch(lects, async (lects) => {
   dbInfo.value.state = "fetching";
   dictionaryMeta.value = await loadJSON("dictionary");
-  if ((lastUpdated.value.lects ?? 0) <= (lastUpdated.value.dictionary ?? 0))
-    dbInfo.value.state = "ready";
-  else dbworker.postMessage(toRaw(lects));
+
+  if ((lastUpdated.value.lects ?? 0) >= (lastUpdated.value.dictionary ?? 0))
+    return dbworker.postMessage(toRaw(lects));
+
+  const db = await openDB("avzag");
+  lects_.value = [];
+  for (const l of db.objectStoreNames) lects_.value.push(l);
+  db.close();
+
+  searchworker.postMessage(toRaw(lects_.value));
+  dbInfo.value.state = "ready";
 });
 
 async function receiveSearch(occerence: SearchOccurence) {
