@@ -3,6 +3,8 @@ import { loadLectsJSON } from "@/store";
 import { Entry } from "./types";
 
 let db: IDBPDatabase;
+let pending: undefined | (() => void);
+let executing = false;
 
 /**
  *
@@ -10,6 +12,7 @@ let db: IDBPDatabase;
  */
 async function cleanDB(lects: string[]) {
   await deleteDB("avzag");
+  if (pending) return;
   db = await openDB("avzag", 1, {
     upgrade(db) {
       lects.map((l) => db.createObjectStore(l, { autoIncrement: true }));
@@ -56,11 +59,8 @@ async function load(lects: string[]) {
   await cleanDB(lects);
   if (pending) return;
   await fillDB(dictionaries);
-  return postMessage({ state: "ready" });
+  postMessage({ state: "ready" });
 }
-
-let pending: undefined | (() => void);
-let executing = false;
 
 /**
  *
@@ -69,9 +69,9 @@ onmessage = (e) => {
   const data = e.data as string;
   const call = async () => {
     executing = true;
-    if (data === "stop") db?.close();
-    else await load(JSON.parse(data));
+    if (data !== "stop") await load(JSON.parse(data));
     executing = false;
+    db?.close();
     if (pending) {
       const p = pending;
       pending = undefined;
@@ -79,5 +79,8 @@ onmessage = (e) => {
     }
   };
   if (executing) pending = call;
-  else call();
+  else {
+    pending = undefined;
+    call();
+  }
 };
