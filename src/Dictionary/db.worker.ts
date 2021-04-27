@@ -2,6 +2,7 @@ import { openDB, IDBPDatabase, deleteDB } from "idb";
 import { loadLectsJSON } from "@/store";
 import { Entry } from "./types";
 
+let db: IDBPDatabase;
 let pending: null | (() => void);
 let executing = false;
 
@@ -10,8 +11,9 @@ let executing = false;
  * @param lects
  */
 async function cleanDB(lects: string[]) {
+  db?.close();
   await deleteDB("avzag");
-  return await openDB("avzag", 1, {
+  db = await openDB("avzag", 1, {
     upgrade(db) {
       lects.map((l) => db.createObjectStore(l, { autoIncrement: true }));
     },
@@ -23,7 +25,7 @@ async function cleanDB(lects: string[]) {
  * @param dictionaries
  * @returns
  */
-async function fillDB(db: IDBPDatabase, dictionaries: Record<string, Entry[]>) {
+async function fillDB(dictionaries: Record<string, Entry[]>) {
   postMessage({ state: "loading" });
   for (const [l, ds] of Object.entries(dictionaries)) {
     const st = db.transaction(l, "readwrite").store;
@@ -54,8 +56,8 @@ async function load(lects: string[]) {
   lects = Object.keys(dictionaries);
   postMessage({ state: "fetched", lect: lects });
 
-  const db = await cleanDB(lects);
-  await fillDB(db, dictionaries);
+  await cleanDB(lects);
+  await fillDB(dictionaries);
   db.close();
   if (!pending) postMessage({ state: "ready" });
 }
