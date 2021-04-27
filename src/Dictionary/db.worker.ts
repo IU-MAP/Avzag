@@ -2,8 +2,7 @@ import { openDB, IDBPDatabase, deleteDB } from "idb";
 import { loadLectsJSON } from "@/store";
 import { Entry } from "./types";
 
-let db: IDBPDatabase;
-let pending: undefined | (() => void);
+let pending: null | (() => void);
 let executing = false;
 
 /**
@@ -12,8 +11,7 @@ let executing = false;
  */
 async function cleanDB(lects: string[]) {
   await deleteDB("avzag");
-  if (pending) return;
-  db = await openDB("avzag", 1, {
+  return await openDB("avzag", 1, {
     upgrade(db) {
       lects.map((l) => db.createObjectStore(l, { autoIncrement: true }));
     },
@@ -25,13 +23,12 @@ async function cleanDB(lects: string[]) {
  * @param dictionaries
  * @returns
  */
-async function fillDB(dictionaries: Record<string, Entry[]>) {
+async function fillDB(db: IDBPDatabase, dictionaries: Record<string, Entry[]>) {
   postMessage({ state: "loading" });
   for (const [l, ds] of Object.entries(dictionaries)) {
     const st = db.transaction(l, "readwrite").store;
     const puts = [];
     for (const d of ds) {
-      if (pending) return;
       puts.push(st.add(d));
       if (!(puts.length % 1024))
         postMessage({
@@ -41,6 +38,7 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
         });
     }
     await Promise.all(puts);
+    if (pending) return;
   }
 }
 
@@ -50,37 +48,35 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
  * @returns
  */
 async function load(lects: string[]) {
-  if (pending) return;
   postMessage({ state: "fetching" });
   const dictionaries = await loadLectsJSON<Entry[]>("dictionary", lects);
   lects = Object.keys(dictionaries);
   postMessage({ state: "fetched", lect: lects });
-  if (pending) return;
-  await cleanDB(lects);
-  if (pending) return;
-  await fillDB(dictionaries);
-  postMessage({ state: "ready" });
+
+  const db = await cleanDB(lects);
+  await fillDB(db, dictionaries);
+  db.close();
+  postMessage({ state: pending ? "ready" : "loading" });
 }
 
 /**
  *
  */
-onmessage = (e) => {
-  const data = e.data as string;
-  const call = async () => {
-    executing = true;
-    if (data !== "stop") await load(JSON.parse(data));
-    executing = false;
-    db?.close();
-    if (pending) {
-      const p = pending;
-      pending = undefined;
-      p();
-    }
-  };
-  if (executing) pending = call;
-  else {
-    pending = undefined;
-    call();
+
+async function init(data: string | string[]) {
+  pending = null;
+  executing = true;
+  if (data !== "stop") await load(data as string[]);
+  executing = false;
+  if (pending) {
+    const p = pending;
+    pending = null;
+    (p as () => void)();
   }
+}
+
+onmessage = (e) => {
+  const data = e.data === "stop" ? e.data : e.data.split(",");
+  if (executing) pending = () => init(data);
+  else init(data);
 };

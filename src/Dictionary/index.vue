@@ -19,9 +19,9 @@
   <h2 v-else>
     {{
       dbInfo.state === "fetching"
-        ? "Downloading dictionaries..."
-        : "Preparing database..."
-    }}
+        ? "Downloading dictionaries"
+        : "Preparing database"
+    }}, please wait...
   </h2>
   <div v-if="lects?.length" class="scroll-area col">
     <div class="row-1 lects">
@@ -68,8 +68,8 @@ import {
   ref,
   watchEffect,
   provide,
+  onUnmounted,
 } from "vue";
-import { useRoute } from "vue-router";
 import {
   dictionaryMeta,
   lects_ as lects,
@@ -94,7 +94,6 @@ export default defineComponent({
     const scholar = ref(false);
     const lists = ref(false);
     const lect = ref("");
-    const route = useRoute();
 
     const expandedEntries = reactive(new Map<Entry, number>());
     const setExpansion = (en: Entry, ex: boolean) => {
@@ -113,14 +112,12 @@ export default defineComponent({
       lect.value = "";
     });
 
-    watchEffect(() => {
-      if (route.name === "Home") {
-        lects.value = [];
-        expandedEntries.clear();
-        searchInfo.searching = false;
-        searchworker.postMessage("stop");
-        dbworker.postMessage("stop");
-      }
+    onUnmounted(() => {
+      lects.value = [];
+      expandedEntries.clear();
+      searchInfo.searching = false;
+      searchworker.postMessage("stop");
+      dbworker.postMessage("stop");
     });
 
     watchEffect(() => {

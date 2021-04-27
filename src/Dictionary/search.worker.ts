@@ -44,22 +44,21 @@ async function findMeanings(key_: symbol, lect: string, queries: string[][]) {
 }
 
 onmessage = async (e) => {
-  if (e.data === "stop") {
-    db?.close();
-    key = Symbol("sk");
-    return;
-  }
-  const data = JSON.parse(e.data) as SearchCommand;
-  if (Array.isArray(data)) {
-    db = await openDB("avzag", 1);
-    lects = data;
-    return;
-  }
-
-  key = Symbol("sk");
-  const queries = parseQuery(data.query);
-  if (data.lect) {
-    const meanings = await findMeanings(key, data.lect, queries);
-    queryDictionaries(key, meanings);
-  } else queryDictionaries(key, queries);
+  // if (e.data === "stop") {
+  //   db?.close();
+  //   key = Symbol("sk");
+  //   return;
+  // }
+  // const data = JSON.parse(e.data) as SearchCommand;
+  // if (Array.isArray(data)) {
+  //   db = await openDB("avzag", 1);
+  //   lects = data;
+  //   return;
+  // }
+  // key = Symbol("sk");
+  // const queries = parseQuery(data.query);
+  // if (data.lect) {
+  //   const meanings = await findMeanings(key, data.lect, queries);
+  //   queryDictionaries(key, meanings);
+  // } else queryDictionaries(key, queries);
 };

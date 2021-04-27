@@ -35,8 +35,9 @@ export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
 
 watch(lects, async () => {
+  dbInfo.value.state = "fetching";
   dictionaryMeta.value = await loadJSON("dictionary");
-  dbworker.postMessage(JSON.stringify(lects.value));
+  dbworker.postMessage(lects.value.toString());
 });
 
 async function receiveSearch(data: string) {
