@@ -129,7 +129,7 @@ export default defineComponent({
       searchInfo.results = {};
       searchworker.postMessage({
         lect: lect.value,
-        query: query.value,
+        query: query.value.toLowerCase(),
       });
     });
 
