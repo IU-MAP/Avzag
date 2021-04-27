@@ -1,58 +1,73 @@
-import { Entry, SearchWorkerCommand } from "./types";
+import { Entry, SearchCommand } from "./types";
 import { IDBPDatabase, openDB } from "idb";
+import { parseQuery, checkQueries } from "./search";
 
 let db: IDBPDatabase;
 let lects: string[];
-let stopping: boolean;
+let pending: null | (() => void);
+let executing = false;
 
-async function queryDictionaries(query: string[], queryMode = "Translation") {
-  function fits(entry: Entry) {
-    // check if the word fits in the query.
-    const area = queryMode === "Tags" ? entry.tags ?? "" : entry.translation;
-    return query.some((q) => area?.includes(q));
-  }
+/**
+ *
+ * @param key_
+ * @param queries
+ * @returns
+ */
+async function queryDictionaries(queries: string[][]) {
   async function search(lect: string) {
     let cr = await db.transaction(lect).store.openCursor();
     while (cr) {
-      if (stopping) return;
       const entry = cr.value as Entry;
-      if (fits(entry)) postMessage(JSON.stringify({ lect, entry }));
+      const meanings = checkQueries(entry, queries);
+      if (meanings.length) postMessage({ lect, meanings, entry });
+
       cr = await cr.continue();
+      if (pending) return;
     }
   }
-  await Promise.all(lects.map((l) => search(l)));
-  postMessage(JSON.stringify({ lect: "" }));
+
+  if (queries.length) await Promise.all(lects.map((l) => search(l)));
+  if (!pending) postMessage({ lect: "" });
 }
 
-async function findTranslations(lect: string, query: string[]) {
-  // look through all forms in the language and collect their translations.
-  const translations = new Set<string>();
+async function findMeanings(lect: string, queries: string[][]) {
+  const meanings = new Set<string>();
   let cr = await db.transaction(lect).store.openCursor();
   while (cr) {
-    if (stopping) return [];
-    const { forms, translation } = cr.value as Entry;
-    if (forms.some(({ text }) => query.some((q) => text.plain.includes(q))))
-      translations.add(translation);
+    const entry = cr.value as Entry;
+    checkQueries(entry, queries, true).forEach((m) => meanings.add(m));
+
     cr = await cr.continue();
+    if (pending) return [];
   }
-  return [...translations];
+  return [...meanings].map((m) => ["!" + m]);
 }
 
-onmessage = async (e) => {
-  if (e.data === "stop") {
-    stopping = true;
-    return;
-  }
-  const data = JSON.parse(e.data) as SearchWorkerCommand;
-  if (Array.isArray(data)) {
+async function init(data: SearchCommand) {
+  pending = null;
+  executing = true;
+
+  if (data === "stop") db?.close();
+  else if (Array.isArray(data)) {
     db = await openDB("avzag", 1);
     lects = data;
-    return;
+  } else {
+    const queries = parseQuery(data.query);
+    if (data.lect) {
+      const meanings = await findMeanings(data.lect, queries);
+      queryDictionaries(meanings);
+    } else queryDictionaries(queries);
   }
-  if (!lects) return;
 
-  stopping = false;
-  const { lect, query, queryMode } = { ...data };
-  if (lect) queryDictionaries(await findTranslations(lect, query));
-  else queryDictionaries(query, queryMode);
+  executing = false;
+  if (pending) {
+    const p = pending;
+    pending = null;
+    (p as () => void)();
+  }
+}
+
+onmessage = (e) => {
+  if (executing) pending = () => init(e.data);
+  else init(e.data);
 };

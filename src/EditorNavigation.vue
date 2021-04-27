@@ -15,9 +15,10 @@
         </a>
       </div>
       <div class="row">
-        <btn icon="language" @click="loadLect" />
-        <btn icon="code" @click="loadJSON" />
-        <btn icon="integration_instructions" @click="saveJSON" />
+        <btn icon="cloud_download" @click="loadLect" />
+        <btn icon="cloud_upload" @click="saveLect" />
+        <btn icon="file_upload" @click="loadJSON" />
+        <btn icon="file_download" @click="saveJSON" />
         <ConfirmButton message="Reset file?" @confirm="resetFile" />
       </div>
     </div>
@@ -32,6 +33,8 @@ import { ref, watch, defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { loadJSON as loadDBJSON } from "@/store";
 import { config, file, resetFile } from "@/editor";
+import { uploadFile, downloadFile } from "@/file-manager";
+import { pushToStore } from "./gh-manager";
 
 export default defineComponent({
   components: { ConfirmButton },
@@ -54,20 +57,28 @@ export default defineComponent({
         const lect = window.prompt("Enter lect name");
         if (!lect) return;
         json = await loadDBJSON(lect + "/" + config.filename);
-      } else {
-        json = await loadDBJSON(config.filename());
-      }
+      } else json = await loadDBJSON(config.filename());
       if (json) file.value = json;
     }
     function loadJSON() {
-      const f = JSON.parse(window.prompt("Enter JSON") ?? "0");
-      if (f) file.value = f;
+      uploadFile((c) => (file.value = JSON.parse(c)));
     }
     function saveJSON() {
-      navigator.clipboard.writeText(JSON.stringify(file.value, null, 2) + "\n");
+      downloadFile(
+        JSON.stringify(file.value, null, 2) + "\n",
+        route.name as string,
+        ".json"
+      );
+    }
+    function saveLect() {
+      pushToStore(
+        JSON.stringify(file.value, null, 2) + "\n",
+        `${window.prompt("Enter lect name")}/dictionary.json`,
+        window.prompt("Enter optional comment") ?? ""
+      );
     }
 
-    return { menu, menus, loadLect, loadJSON, saveJSON, resetFile };
+    return { menu, menus, loadLect, loadJSON, saveLect, saveJSON, resetFile };
   },
 });
 </script>

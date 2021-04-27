@@ -5,6 +5,11 @@
   text-align: left;
 }
 
+p:empty,
+span:empty {
+  display: none;
+}
+
 .text-caption,
 .text-caption * {
   font-size: map-get($font-sizes, "small");
@@ -16,6 +21,13 @@
 .text-center,
 .text-center * {
   text-align: center;
+}
+
+.text-tags,
+.text-tags * {
+  @extend .text-caption;
+  @extend .text-faded;
+  word-spacing: map-get($margins, "quarter");
 }
 
 .text-ipa,

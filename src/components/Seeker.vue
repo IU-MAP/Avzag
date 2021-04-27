@@ -1,5 +1,5 @@
 <template>
-  <p :style="{ width }" />
+  <hr :style="{ width }" />
 </template>
 
 <script lang="ts">
@@ -24,7 +24,7 @@ export default defineComponent({
 </style>
 
 <style lang="scss" scoped>
-p {
+hr {
   padding: 0;
   background-color: var(--color-text);
   border-radius: $border-radius $border-radius 0 0;

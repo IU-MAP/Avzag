@@ -1,166 +1,183 @@
 <template>
-  <div class="section col small">
-    <h2 v-if="dbInfo.state !== 'ready'">{{ dbInfo.text }}...</h2>
+  <div v-if="dbInfo.state === 'ready'" class="section row">
+    <toggle v-model="scholar" icon="school" />
+    <toggle v-model="lists" icon="format_list_bulleted" />
+    <select v-if="lists && !lect" v-model="queries['']">
+      <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
+        {{ n }}
+      </option>
+    </select>
     <template v-else>
-      <h2 v-if="searchInfo.searching">Searching...</h2>
-      <button v-else @click="search">Search</button>
-      <div class="row-1 lects fill">
-        <div class="col lect">
-          <div class="row">
-            <btn
-              v-for="[t, i] in queryModes"
-              :key="t"
-              :text="queryMode === t ? t : ''"
-              :icon="i"
-              :class="queryMode === t && 'highlight flex'"
-              @click="
-                () => {
-                  queryMode = t;
-                  lect = '';
-                }
-              "
-            />
-          </div>
-          <select v-if="queryMode === 'Lists'" v-model="queries['']">
-            <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
-              {{ n }}
-            </option>
-          </select>
-          <input
-            v-else
-            v-model="queries['']"
-            class="selectable"
-            type="text"
-            placeholder="Search..."
-            :readonly="!!lect"
-            @click="lect = ''"
-          />
-        </div>
-        <div v-for="l in lects" :key="l" class="col lect flag">
-          <Flag :lect="l" class="blur" />
-          <h2 class="flex">{{ l }}</h2>
-          <input
-            v-model="queries[l]"
-            class="selectable"
-            type="text"
-            :placeholder="`Search by ${l} form...`"
-            :readonly="lect !== l"
-            @click="lect = l"
-          />
-        </div>
-      </div>
-      <div v-for="(ind, m) of searchInfo.results" :key="m" class="row-1 lects">
-        <div class="col lect">
-          <hr />
-          <i class="text-faded translation">{{ m }}</i>
-        </div>
-        <div v-for="l in lects" :key="l" class="col lect">
-          <hr />
-          <EntryCard v-for="(e, i) in ind[l]" :key="i" :entry="e" />
-        </div>
-      </div>
+      <input
+        v-model="query"
+        type="text"
+        :placeholder="lect ? `Enter ${lect} form...` : 'Enter meaning...'"
+      />
+      <btn icon="clear" @click="query = ''" />
     </template>
+  </div>
+  <h2 v-else>
+    {{
+      dbInfo.state === "fetching"
+        ? "Downloading dictionaries"
+        : "Preparing database"
+    }}, please wait...
+  </h2>
+  <div v-if="lects?.length" class="scroll-area col">
+    <div class="row-1 lects">
+      <btn
+        class="lect card-0"
+        :is-on="!lect"
+        :icon="!lect ? 'search' : ''"
+        :text="lists ? 'Lists' : 'Meanings'"
+        @click="lect = ''"
+      />
+      <btn
+        v-for="l in lects"
+        :key="l"
+        :icon="lect === l ? 'search' : ''"
+        class="row lect flag card-0"
+        :is-on="lect === l"
+        @click="lect = l"
+      >
+        <Seeker
+          v-if="dbInfo.state !== 'ready'"
+          :check="dbInfo.lect === l"
+          :seek="dbInfo.progress"
+        />
+        <Flag :lect="l" class="blur" />
+        <h2 class="flex">{{ l }}</h2>
+      </btn>
+    </div>
+    <MeaningRow
+      v-for="(es, m) of searchInfo.results"
+      :key="m"
+      :lects="lects"
+      :scholar="scholar"
+      :meaning="m"
+      :entries="es"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, watchEffect } from "vue";
-import { useRoute } from "vue-router";
+import {
+  computed,
+  defineComponent,
+  reactive,
+  ref,
+  watchEffect,
+  provide,
+  onUnmounted,
+} from "vue";
 import {
   dictionaryMeta,
-  lects_,
+  lects_ as lects,
   dbInfo,
   dbworker,
   searchworker,
   searchInfo,
-  startSearch,
 } from "./main";
-import EntryCard from "./EntryCard.vue";
+import MeaningRow from "./MeaningRow.vue";
 import Flag from "@/components/Flag.vue";
+import Seeker from "@/components/Seeker.vue";
+import { Entry } from "./types";
 
 export default defineComponent({
-  components: { EntryCard, Flag },
+  components: { MeaningRow, Flag, Seeker },
   setup() {
     const queries = reactive({} as Record<string, string>);
-    const queryMode = ref("Translations");
+    const query = computed({
+      get: () => queries[lect.value],
+      set: (q) => (queries[lect.value] = q),
+    });
+    const scholar = ref(false);
+    const lists = ref(false);
     const lect = ref("");
-    const route = useRoute();
+
+    const expandedEntries = reactive(new Map<Entry, number>());
+    const setExpansion = (en: Entry, ex: boolean) => {
+      expandedEntries.set(en, (expandedEntries.get(en) ?? 0) + (ex ? 1 : -1));
+      if ((expandedEntries.get(en) ?? 0) <= 0) expandedEntries.delete(en);
+    };
+    provide("expandedEntries", expandedEntries);
+    provide("setExpansion", setExpansion);
 
     watchEffect(() => {
-      if (route.name === "Home") {
-        searchInfo.searching = false;
-        searchworker.postMessage("stop");
-        dbworker.postMessage("stop");
-      }
+      if (lists.value)
+        if (dictionaryMeta.value)
+          queries[""] = Object.values(dictionaryMeta.value.lists)[0] ?? "";
+        else lists.value = false;
+      else queries[""] = "";
+      lect.value = "";
     });
 
-    function search() {
-      startSearch({
-        lect: lect.value,
-        query:
-          queries[lect.value]
-            ?.toLowerCase()
-            .split(",")
-            .map((q) => q.trim())
-            .filter((q) => q) ?? [],
-        queryMode: queryMode.value,
-      });
-    }
-    // watchEffect(async () => {
-    //   if (dbInfo.state === "ready")
-    //     startSearch({
-    //       lect: lect.value,
-    //       query:
-    //         queries[lect.value]
-    //           ?.toLowerCase()
-    //           .split(",")
-    //           .map((q) => q.trim())
-    //           .filter((q) => q) ?? [],
-    //       queryMode: queryMode.value,
-    //     });
-    // });
+    onUnmounted(() => {
+      lects.value = [];
+      expandedEntries.clear();
+      searchInfo.searching = false;
+      searchworker.postMessage("stop");
+      dbworker.postMessage("stop");
+    });
 
-    const queryModes = [
-      ["Translations", "bookmark_border"],
-      ["Tags", "label"],
-      ["Lists", "format_list_bulleted"],
-    ];
+    watchEffect(() => {
+      if (!query.value) {
+        searchInfo.results = {};
+        return;
+      }
+      searchInfo.searching = true;
+      searchInfo.results = {};
+      searchworker.postMessage({
+        lect: lect.value,
+        query: query.value,
+      });
+    });
 
     return {
-      queryModes,
-      lects: lects_,
+      lects,
+      scholar,
       queries,
-      queryMode,
+      query,
       lect,
+      lists,
       searchInfo,
       dictionaryMeta,
       dbInfo,
-      search,
     };
   },
 });
 </script>
 
 <style lang="scss" scoped>
-.translation {
-  line-height: map-get($button-height, "small");
-}
-@media only screen and (max-width: $mobile-width) {
-  .section {
-    overflow-x: auto;
-  }
-}
-.lects {
-  align-items: baseline;
-  &.fill {
-    align-items: stretch;
-  }
+.section {
+  margin-bottom: map-get($margins, "half");
+  margin-top: -1 * map-get($margins, "normal");
 }
 .lect {
   width: 192px;
   min-width: 192px;
+  &:first-child {
+    width: 128px;
+    min-width: 128px;
+  }
 }
 .flag h2 {
   line-height: map-get($button-height, "small");
+}
+.scroll-area {
+  padding-left: map-get($margins, "normal");
+  padding-right: map-get($margins, "normal");
+  padding-top: map-get($margins, "half");
+  margin-left: -1 * map-get($margins, "normal");
+  overflow: auto;
+  height: calc(100vh - 84px);
+  width: 100vw;
+}
+</style>
+
+<style lang="scss">
+html,
+body {
+  height: 100vh;
 }
 </style>

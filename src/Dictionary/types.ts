@@ -4,46 +4,44 @@ export type Text = {
   glossed?: string;
 };
 
-export type Sample = {
-  text: Text;
+export type Sample = Text & {
   translation: string;
 };
 
-export type Form = {
-  text: Text;
-  grammar: string;
+export type Use = {
+  meaning: string;
+  tags?: string[];
+  samples?: Sample[];
+  notes?: string[];
 };
 
 export type Entry = {
-  translation: string;
-  forms: Form[];
-  samples?: Sample[];
-  tags?: string;
-  explanation?: string;
-  etymology?: string;
-  related?: string[];
+  forms: Text[];
+  uses: Use[];
+  tags?: string[];
+  notes?: string[];
 };
 
-export type DictionaryMeta = { lists: Record<string, string[]> };
+export type SearchResults = Record<string, Record<string, Entry[]>>;
 
-export type Search = Record<string, Record<string, Entry[]>>;
+export type SearchOccurence = {
+  lect: string;
+  meanings: string[];
+  entry: Entry;
+};
 
-export type DBWorkerState =
-  | "preparing"
-  | "fetching"
-  | "fetched"
-  | "loading"
-  | "ready";
+export type DictionaryMeta = { lists: Record<string, string> };
 
-export type SearchWorkerCommand =
+export type DBInfo = {
+  state: "loading" | "fetching" | "fetched" | "ready";
+  lect?: string | string[];
+  progress?: number;
+};
+
+export type SearchCommand =
+  | "stop"
   | string[]
   | {
       lect: string;
-      query: string[];
-      queryMode: string;
+      query: string;
     };
-
-export type SearchWorkerResult = {
-  lect: string;
-  entry: Entry;
-};
