@@ -59,7 +59,6 @@ async function load(lects: string[]) {
   await cleanDB(lects);
   if (pending) return;
   await fillDB(dictionaries);
-  db?.close();
   postMessage({ state: "ready" });
 }
 
@@ -72,6 +71,7 @@ onmessage = (e) => {
     executing = true;
     if (data !== "stop") await load(JSON.parse(data));
     executing = false;
+    db?.close();
     if (pending) {
       const p = pending;
       pending = undefined;
