@@ -554,27 +554,6 @@
   {
     "forms": [
       {
-        "plain": "бизи",
-        "ipa": "biˈzi"
-      }
-    ],
-    "samples": [
-      {
-        "text": {
-          "plain": "Бизилли гваца буцив."
-        },
-        "translation": "Cat caught a mouse."
-      }
-    ],
-    "uses": [
-      {
-        "meaning": "cat"
-      }
-    ]
-  },
-  {
-    "forms": [
-      {
         "plain": "нез"
       }
     ],
@@ -2807,6 +2786,14 @@
       {
         "tags": ["kinship"],
         "meaning": "he"
+      },
+      {
+        "tags": ["kinship"],
+        "meaning": "she"
+      },
+      {
+        "tags": ["kinship"],
+        "meaning": "it"
       }
     ],
     "forms": [
@@ -2822,6 +2809,18 @@
       {
         "tags": ["spatial"],
         "meaning": "that"
+      },
+      {
+        "tags": ["kinship"],
+        "meaning": "he"
+      },
+      {
+        "tags": ["kinship"],
+        "meaning": "she"
+      },
+      {
+        "tags": ["kinship"],
+        "meaning": "it"
       }
     ],
     "forms": [
@@ -2837,6 +2836,18 @@
       {
         "tags": ["spatial"],
         "meaning": "that"
+      },
+      {
+        "tags": ["kinship"],
+        "meaning": "he"
+      },
+      {
+        "tags": ["kinship"],
+        "meaning": "she"
+      },
+      {
+        "tags": ["kinship"],
+        "meaning": "it"
       }
     ],
     "forms": [
