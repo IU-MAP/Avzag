@@ -1,6 +1,6 @@
 import { openDB, IDBPDatabase, deleteDB } from "idb";
 import { loadLectsJSON } from "@/store";
-import { Entry, DBState } from "./types";
+import { Entry } from "./types";
 
 let db: IDBPDatabase;
 
@@ -23,26 +23,19 @@ async function cleanDB(lects: string[]) {
  * @returns
  */
 async function fillDB(dictionaries: Record<string, Entry[]>) {
-  postState("loading");
-  const size = Object.values(dictionaries).reduce((s, d) => s + d.length, 0);
-  const step = 1024;
-  let done = 0;
-
+  postMessage({ state: "loading" });
   for (const [l, ds] of Object.entries(dictionaries)) {
     const st = db.transaction(l, "readwrite").store;
-    const current = ds.length;
     const puts = [];
     for (const d of ds) {
       if (pending) return;
       puts.push(st.add(d));
-      if (!(puts.length % step)) {
-        done += step;
-        const progress = Math.round((done / size) * 100);
-        postState(
-          "loading",
-          `[${progress}%] Loading ${l} - ${puts.length} of ${current}`
-        );
-      }
+      if (!(puts.length % 1024))
+        postMessage({
+          state: "loading",
+          lect: l,
+          progress: puts.length / ds.length,
+        });
     }
     await Promise.all(puts);
   }
@@ -54,31 +47,16 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
  * @returns
  */
 async function load(lects: string[]) {
-  postState("fetching", "Downloading files");
-  if (pending) return postState("fetching");
+  if (pending) return;
+  postMessage({ state: "fetching" });
   const dictionaries = await loadLectsJSON<Entry[]>("dictionary", lects);
   lects = Object.keys(dictionaries);
-  postState("fetched", lects.toString());
-  postState("preparing", "Preparing database");
-  if (pending) return postState("fetching");
+  postMessage({ state: "fetched", lect: lects });
+  if (pending) return;
   await cleanDB(lects);
-  if (pending) return postState("fetching");
+  if (pending) return;
   await fillDB(dictionaries);
-  postState("ready");
-}
-
-/**
- *
- * @param state
- * @param text
- */
-function postState(
-  state: DBState,
-  lect?: string,
-  percent?: number,
-  text?: string
-) {
-  postMessage(JSON.stringify({ state, lect, text, percent }));
+  return postMessage({ state: "ready" });
 }
 
 let pending: undefined | (() => void);

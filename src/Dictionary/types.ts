@@ -32,18 +32,10 @@ export type SearchOccurence = {
 
 export type DictionaryMeta = { lists: Record<string, string> };
 
-export type DBState =
-  | "preparing"
-  | "fetching"
-  | "fetched"
-  | "loading"
-  | "ready";
-
 export type DBInfo = {
-  state: DBState;
-  lect?: string;
+  state: "loading" | "fetching" | "fetched" | "ready";
+  lect?: string | string[];
   progress?: number;
-  text?: string;
 };
 
 export type SearchCommand =

@@ -19,12 +19,12 @@ export const searchInfo = reactive({
 
 export const dbworker = new DBWorker();
 export const dbInfo = ref({ state: "loading" } as DBInfo);
-dbworker.onmessage = (e) => (dbInfo.value = JSON.parse(e.data) as DBInfo);
+dbworker.onmessage = (e) => (dbInfo.value = e.data);
 watch(
   () => dbInfo.value,
   () => {
     if (dbInfo.value.state === "fetched")
-      lects_.value = dbInfo.value.text?.split(",") ?? [];
+      lects_.value = dbInfo.value.lect as string[];
     else if (dbInfo.value.state === "ready")
       searchworker.postMessage(JSON.stringify(lects_.value));
   }
