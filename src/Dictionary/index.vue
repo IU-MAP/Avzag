@@ -1,5 +1,4 @@
 <template>
-  <h2 v-if="dbInfo.state === 'fetching'">Downloading data...</h2>
   <div v-if="dbInfo.state === 'ready'" class="section row">
     <toggle v-model="scholar" icon="school" />
     <toggle v-model="lists" icon="format_list_bulleted" />
@@ -17,20 +16,22 @@
       <btn icon="clear" @click="query = ''" />
     </template>
   </div>
+  <h2 v-else>
+    {{
+      dbInfo.state === "fetching"
+        ? "Downloading dictionaries..."
+        : "Preparing database..."
+    }}
+  </h2>
   <div v-if="lects?.length" class="scroll-area col">
     <div class="row-1 lects">
       <btn
-        class="lect card-0 seeker"
+        class="lect card-0"
         :is-on="!lect"
         :icon="!lect ? 'search' : ''"
         :text="lists ? 'Lists' : 'Meanings'"
         @click="lect = ''"
-      >
-        <Seeker
-          v-if="dbInfo.state !== 'ready'"
-          :seek="dbInfo.state === 'fetching' ? 0.5 : 1"
-        />
-      </btn>
+      />
       <btn
         v-for="l in lects"
         :key="l"
@@ -41,7 +42,8 @@
       >
         <Seeker
           v-if="dbInfo.state !== 'ready'"
-          :seek="dbInfo.lect === l ? db.progress : 1"
+          :check="dbInfo.lect === l"
+          :seek="dbInfo.progress"
         />
         <Flag :lect="l" class="blur" />
         <h2 class="flex">{{ l }}</h2>
