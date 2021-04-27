@@ -76,7 +76,6 @@ async function init(data: string | string[]) {
 }
 
 onmessage = (e) => {
-  const data = e.data === "stop" ? e.data : e.data.split(",");
-  if (executing) pending = () => init(data);
-  else init(data);
+  if (executing) pending = () => init(e.data);
+  else init(e.data);
 };

@@ -1,6 +1,6 @@
 import { ref } from "vue";
 
-export const lects = ref<string[]>([]);
+export const lects = ref([] as string[]);
 export const root =
   process.env.VUE_APP_STORE ??
   "https://raw.githubusercontent.com/alkaitagi/Avzag/store/";

@@ -34,14 +34,13 @@ watch(
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
 
-watch(lects, async () => {
+watch(lects, async (lects) => {
   dbInfo.value.state = "fetching";
   dictionaryMeta.value = await loadJSON("dictionary");
-  dbworker.postMessage(lects.value.toString());
+  dbworker.postMessage(JSON.parse(JSON.stringify(lects)));
 });
 
 async function receiveSearch(data: string) {
-  // add the word to the result under its translation.
   const { lect, meanings, entry } = JSON.parse(data) as SearchOccurence;
   if (!lect) {
     searchInfo.searching = false;
