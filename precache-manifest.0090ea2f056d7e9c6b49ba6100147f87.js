@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/avzag/404.html"
   },
   {
-    "revision": "fd9f63fae32917e88177",
+    "revision": "38c809c1397cdc9227e1",
     "url": "/avzag/css/app.bd4b4d93.css"
   },
   {
@@ -16,11 +16,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/avzag/css/chunk-43b2eced.9a81ee9f.css"
   },
   {
-    "revision": "e784710742eba0d2b85d",
+    "revision": "824e166d56ec86070616",
     "url": "/avzag/css/chunk-4c8e87e4.1cb6544a.css"
   },
   {
-    "revision": "9ad8504888aeb468832a",
+    "revision": "5ef4f2b0ef65453bead9",
     "url": "/avzag/css/chunk-5b433456.2db054d5.css"
   },
   {
@@ -36,12 +36,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/avzag/icon.png"
   },
   {
-    "revision": "18180cf6bfda95a8f520d562e9988b1a",
+    "revision": "f27dc110d79f57a8a39befb058b4e676",
     "url": "/avzag/index.html"
   },
   {
-    "revision": "fd9f63fae32917e88177",
-    "url": "/avzag/js/app.7e708e7d.js"
+    "revision": "38c809c1397cdc9227e1",
+    "url": "/avzag/js/app.2bd45099.js"
   },
   {
     "revision": "55ef5d05279af365ecdb",
@@ -52,12 +52,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/avzag/js/chunk-43b2eced.9b88393d.js"
   },
   {
-    "revision": "e784710742eba0d2b85d",
-    "url": "/avzag/js/chunk-4c8e87e4.a4fb19cf.js"
+    "revision": "824e166d56ec86070616",
+    "url": "/avzag/js/chunk-4c8e87e4.e20e6479.js"
   },
   {
-    "revision": "9ad8504888aeb468832a",
-    "url": "/avzag/js/chunk-5b433456.5ca500af.js"
+    "revision": "5ef4f2b0ef65453bead9",
+    "url": "/avzag/js/chunk-5b433456.f39d0b1e.js"
   },
   {
     "revision": "a238239b6b97d98ff0d1",
@@ -72,8 +72,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/avzag/js/chunk-vendors.9467e320.js"
   },
   {
-    "revision": "29a60aab42be98d6d8612b421b6390f6",
-    "url": "/avzag/js/db.worker.66b53e39.worker.js"
+    "revision": "ba91f568daa45a94afe625cf0859f4a0",
+    "url": "/avzag/js/db.worker.84c2214c.worker.js"
   },
   {
     "revision": "f15d2c2f5d87387c2c08fdd48b68b820",
