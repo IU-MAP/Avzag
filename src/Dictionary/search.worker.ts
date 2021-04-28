@@ -26,7 +26,7 @@ async function queryDictionaries(queries: string[][]) {
     }
   }
 
-  if (queries.length) await Promise.all(lects.map((l) => search(l)));
+  await Promise.all(lects.map((l) => search(l)));
   if (!pending) postMessage({ lect: "" });
 }
 
@@ -53,10 +53,11 @@ async function init(data: SearchCommand) {
     lects = data;
   } else {
     const queries = parseQuery(data.query);
-    if (data.lect) {
-      const meanings = await findMeanings(data.lect, queries);
-      queryDictionaries(meanings);
-    } else queryDictionaries(queries);
+    if (queries.length)
+      if (data.lect) {
+        const meanings = await findMeanings(data.lect, queries);
+        if (meanings.length) queryDictionaries(meanings);
+      } else queryDictionaries(queries);
   }
 
   executing = false;
