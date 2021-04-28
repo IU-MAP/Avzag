@@ -2,8 +2,7 @@ name: Build docs from a pull request
 on:
   pull_request:
     paths:
-      - avzag/**
-      - docs/**
+      - src/**
       - package.json
       - yarn.lock
 
@@ -26,11 +25,10 @@ jobs:
           node-version: '14'
 
       - name: Build docs 🔧
-        env:
-          SAPPER_APP_BASEPATH: avzag/${{ github.event.number }}
         run: |
           yarn install
           yarn typedoc --out docs src/**/*.ts
+
       - name: Save the PR number 📩
         run: echo "${{ github.event.number }}" > ../pr_number.txt
 
@@ -38,4 +36,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: docs
-          path: docs/__sapper__/export/avzag/${{ github.event.number }}/
+          path: docs/
