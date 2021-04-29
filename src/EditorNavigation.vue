@@ -15,6 +15,15 @@
         </a>
       </div>
       <div class="row">
+        <select v-model="lect">
+          <option value="">[Custom]</option>
+          <option
+            v-for="{ name } in catalogue"
+            :key="name"
+            :value="name"
+            v-text="name"
+          />
+        </select>
         <btn icon="cloud_download" @click="loadLect" />
         <btn icon="cloud_upload" @click="saveLect" />
         <btn icon="file_upload" @click="loadJSON" />
@@ -33,6 +42,7 @@ import { ref, watch, defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { loadJSON as loadDBJSON } from "@/store";
 import { config, file, resetFile } from "@/editor";
+import { catalogue } from "@/Home/main";
 import { uploadFile, downloadFile } from "@/file-manager";
 import { pushToStore } from "./gh-manager";
 
@@ -42,6 +52,7 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
 
+    const lect = ref("");
     const menus = [
       {
         text: "Dictionary",
@@ -79,7 +90,17 @@ export default defineComponent({
       );
     }
 
-    return { menu, menus, loadLect, loadJSON, saveLect, saveJSON, resetFile };
+    return {
+      menu,
+      menus,
+      loadLect,
+      loadJSON,
+      saveLect,
+      saveJSON,
+      resetFile,
+      lect,
+      catalogue,
+    };
   },
 });
 </script>
