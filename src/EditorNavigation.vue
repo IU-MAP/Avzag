@@ -15,12 +15,16 @@
         </select>
       </div>
       <div class="row">
-        <select v-model="lect">
-          <option value="">[Custom]</option>
-          <option v-for="l in lects" :key="l" :value="l" v-text="l" />
-        </select>
-        <btn v-if="lect" icon="sync" @click="pullLect" />
-        <btn v-if="lect" icon="cloud_upload" @click="pushLect" />
+        <template v-if="menu !== 'phrasebookCorpusEditor'">
+          <select v-model="lect">
+            <option value="">[Custom]</option>
+            <option v-for="l in lects" :key="l" :value="l" v-text="l" />
+          </select>
+          <template v-if="lect">
+            <btn icon="sync" @click="pullLect" />
+            <btn icon="cloud_upload" @click="pushLect" />
+          </template>
+        </template>
         <btn icon="file_upload" @click="uploadJSON" />
         <btn icon="file_download" @click="downloadJSON" />
         <ConfirmButton message="Reset file?" @confirm="resetFile" />
@@ -84,11 +88,16 @@ export default defineComponent({
       );
     }
     function pushLect() {
+      const branch = [
+        menu.value,
+        lect.value,
+        new Date().toISOString().slice(0, -1).replaceAll(/\D/g, "."),
+      ].join("-");
       pushToStore(
         JSON.stringify(file.value, null, 2) + "\n",
         lect.value + "/dictionary.json",
         window.prompt("Enter optional comment") ?? "",
-        "store-" + (route.name as string)
+        branch
       );
     }
 
