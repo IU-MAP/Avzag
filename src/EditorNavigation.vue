@@ -74,7 +74,8 @@ export default defineComponent({
       pushToStore(
         JSON.stringify(file.value, null, 2) + "\n",
         `${window.prompt("Enter lect name")}/dictionary.json`,
-        window.prompt("Enter optional comment") ?? ""
+        window.prompt("Enter optional comment") ?? "",
+        `store-${route.name as string}-${Date.now()}`
       );
     }
 
