@@ -2,8 +2,8 @@ import { watch, ref, Ref } from "vue";
 
 type Options = {
   defaultFile: unknown;
-  storage: string;
   filename: string | (() => string);
+  storage?: string;
 };
 
 export const config: Options = {
@@ -19,17 +19,19 @@ export function resetFile() {
 }
 
 export function saveFile() {
-  localStorage[config.storage] = JSON.stringify(file.value);
+  if (config.storage) localStorage[config.storage] = JSON.stringify(file.value);
 }
 
 export function setupEditor<T>(options: Partial<Options>) {
   Object.assign(config, options);
-  try {
-    file.value = JSON.parse(localStorage[config.storage]);
-  } catch {
-    resetFile();
+  if (config.storage) {
+    try {
+      file.value = JSON.parse(localStorage[config.storage]);
+    } catch {
+      resetFile();
+    }
+    watch(file, saveFile, { deep: true });
   }
-  watch(file, saveFile, { deep: true });
 
   return file as Ref<T>;
 }

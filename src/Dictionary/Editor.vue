@@ -115,16 +115,15 @@ import TagsInput from "@/components/TagsInput.vue";
 
 import { computed, ref, defineComponent, reactive } from "vue";
 import { setupEditor } from "@/editor";
+import { Entry } from "./types";
 
 export default defineComponent({
   components: { EditorCard, ArrayControl, NotesEditor, TagsInput },
   setup() {
-    // const phoneme = ref<PhonemeUse>();
-    // const file = setupEditor<PhonemeUse[]>({
-    //   defaultFile: [],
-    //   filename: "phonology",
-    //   storage: "editor.phonology",
-    // });
+    const file = setupEditor<Entry[]>({
+      defaultFile: [],
+      filename: "dictionary",
+    });
 
     const entry = ref({ uses: [] });
     const usecase = ref();
