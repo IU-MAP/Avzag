@@ -98,7 +98,7 @@ export default defineComponent({
       router.push(
         localStorage.urlUser
           ? { path: localStorage.urlUser }
-          : { name: "Dictionary" }
+          : { name: "dictionary" }
       );
     }
 

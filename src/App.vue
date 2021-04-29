@@ -15,21 +15,21 @@ export default defineComponent({
     const router = useRouter();
     lastUpdated.value = JSON.parse(localStorage.lastUpdated ?? "{}");
 
-    if (!route.name || route.name === "Home") {
+    if (!route.name || route.name === "home") {
       router.push(
         localStorage.url && localStorage.url !== route.path
           ? { path: localStorage.url }
-          : { name: "Home" }
+          : { name: "home" }
       );
     }
-    if (route.name !== "Home")
+    if (route.name !== "home")
       lects.value = JSON.parse(localStorage.lects ?? '["Kaitag"]');
 
     watchEffect(() => {
       const name = route.name as string;
       if (!name) return;
       localStorage.url = route.path;
-      if (["Dictionary"].includes(name)) localStorage.urlUser = route.path;
+      if (["dictionary"].includes(name)) localStorage.urlUser = route.path;
     });
   },
 });
