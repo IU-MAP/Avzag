@@ -1,5 +1,5 @@
 import { openDB, IDBPDatabase, deleteDB } from "idb";
-import { loadLectsJSON } from "@/store";
+import { loadLectsJSON } from "src/Dictionary/store";
 import { Entry, DBState } from "./types";
 
 let db: IDBPDatabase;
