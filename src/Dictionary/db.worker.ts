@@ -3,18 +3,54 @@ import { loadLectsJSON } from "src/Dictionary/store";
 import { Entry, DBState } from "./types";
 
 let db: IDBPDatabase;
-
+const storeName = "lects";
 /**
  *
  * @param lects
  */
 async function cleanDB(lects: string[]) {
-  await deleteDB("avzag");
+  console.log("cleaning db");
+  // await deleteDB("avzag");
   db = await openDB("avzag", 1, {
     upgrade(db) {
-      lects.map((l) => db.createObjectStore(l, { autoIncrement: true }));
+      console.log("updating too");
+      const objectStore = db.createObjectStore(storeName, {
+        autoIncrement: true,
+      });
+      objectStore.createIndex("language", "language", { unique: false });
+
+      const langStore = db.createObjectStore("languageList", {
+        autoIncrement: true,
+      });
+      for (const l of lects) {
+        langStore.add(l);
+      }
     },
   });
+
+  const st = db.transaction("languageList", "readwrite").store;
+  const lanugageList = await st.getAll();
+
+  for (const l of lanugageList) {
+    console.log("for each language", l);
+    console.log("does not it include?", !lects.includes(l));
+    /*
+      code has been taken from: 
+        https://stackoverflow.com/questions/18603993/deleting-multiple-records-in-indexeddb-based-on-index
+    */
+    if (!lects.includes(l)) {
+      console.log("deleting records for language:", l);
+      const tx = db.transaction(storeName, "readwrite");
+      const index = tx.store.index("language");
+      const pdestroy = index.openCursor(IDBKeyRange.only(l));
+      pdestroy.then(async (cursor) => {
+        while (cursor) {
+          cursor.delete();
+          cursor = await cursor.continue();
+        }
+      });
+    }
+  }
 }
 
 /**
@@ -29,11 +65,13 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
   let done = 0;
 
   for (const [l, ds] of Object.entries(dictionaries)) {
-    const st = db.transaction(l, "readwrite").store;
+    const st = db.transaction(storeName, "readwrite").store;
     const current = ds.length;
     const puts = [];
     for (const d of ds) {
       if (pending) return;
+      d.language = l;
+      // console.log(d);
       puts.push(st.add(d));
       if (!(puts.length % step)) {
         done += step;

@@ -17,6 +17,7 @@ export type Use = {
 
 export type Entry = {
   forms: Text[];
+  language: string;
   uses: Use[];
   tags?: string[];
   notes?: string[];
