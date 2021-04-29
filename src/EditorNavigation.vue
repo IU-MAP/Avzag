@@ -75,7 +75,7 @@ export default defineComponent({
         JSON.stringify(file.value, null, 2) + "\n",
         `${window.prompt("Enter lect name")}/dictionary.json`,
         window.prompt("Enter optional comment") ?? "",
-        "store/" + (route.name as string)
+        "store-" + (route.name as string)
       );
     }
 

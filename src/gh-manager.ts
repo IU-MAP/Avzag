@@ -25,7 +25,7 @@ export async function pushToStore(
   branch: string
 ) {
   content = btoa(unescape(encodeURIComponent(content)));
-  branch += "/" + new Date().toISOString().replaceAll(/\D/g, "-");
+  branch += "-" + new Date().toISOString().slice(0, -1).replaceAll(/\D/g, ".");
 
   await createBranch(branch);
   await octokit.repos.createOrUpdateFileContents({
