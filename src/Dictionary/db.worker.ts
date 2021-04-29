@@ -1,9 +1,12 @@
 import { openDB, IDBPDatabase, deleteDB } from "idb";
-import { loadLectsJSON } from "src/Dictionary/store";
+import { loadLectsJSON } from "@/store";
 import { Entry, DBState } from "./types";
 
 let db: IDBPDatabase;
 const storeName = "lects";
+let version = 1;
+let storesNames: string[] = [];
+
 /**
  *
  * @param lects
@@ -11,19 +14,45 @@ const storeName = "lects";
 async function cleanDB(lects: string[]) {
   console.log("cleaning db");
   // await deleteDB("avzag");
-  db = await openDB("avzag", 1, {
-    upgrade(db) {
-      console.log("updating too");
-      const objectStore = db.createObjectStore(storeName, {
-        autoIncrement: true,
-      });
-      objectStore.createIndex("language", "language", { unique: false });
+  console.log("should I delete?");
+  let isChanged = false;
+  for (const tableName of storesNames) {
+    if (!lects.includes(tableName)) {
+      isChanged = true;
+      // break;
+    }
+  }
+  if (isChanged) {
+    version++;
+    console.log("yes, I should. version:", version);
+  }
 
-      const langStore = db.createObjectStore("languageList", {
-        autoIncrement: true,
-      });
+  db = await openDB("avzag", version, {
+    upgrade(db, oldVersion, newVesion, transaction) {
+      console.log("updating");
       for (const l of lects) {
-        langStore.add(l);
+        if (pending) return;
+        // if table for the language does not exist then create one
+        if (!db.objectStoreNames.contains(l)) {
+          db.createObjectStore(l, { autoIncrement: true });
+        }
+      }
+      // delete unnecessary tables from DB
+      console.log("trying to delete");
+      let isChanged = false;
+      for (const tableName of db.objectStoreNames) {
+        if (!lects.includes(tableName)) {
+          console.log("deleting");
+          db.deleteObjectStore(tableName);
+          isChanged = true;
+        }
+      }
+      if (isChanged) {
+        version++;
+      }
+      storesNames = [];
+      for (const storeName of db.objectStoreNames) {
+        storesNames.push(storeName);
       }
     },
   });
