@@ -18,6 +18,21 @@ async function createBranch(name: string) {
   });
 }
 
+async function getFileSha(path: string) {
+  const parts = path.split("/");
+  const folders = parts.slice(0, -1).join("/");
+  const file = parts[parts.length - 1];
+
+  const tree = await octokit.git
+    .getTree({
+      owner,
+      repo,
+      tree_sha: "store:" + folders,
+    })
+    .catch(() => undefined);
+  return tree?.data?.tree?.find((t) => t?.path === file)?.sha;
+}
+
 export async function pushToStore(
   content: string,
   path: string,
@@ -26,6 +41,7 @@ export async function pushToStore(
 ) {
   content = btoa(unescape(encodeURIComponent(content)));
   await createBranch(branch);
+  const sha = await getFileSha(path);
   await octokit.repos.createOrUpdateFileContents({
     owner,
     repo,
@@ -33,6 +49,7 @@ export async function pushToStore(
     content,
     message,
     branch,
+    sha,
   });
   await octokit.pulls.create({
     owner,
