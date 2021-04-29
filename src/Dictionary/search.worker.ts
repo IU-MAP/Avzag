@@ -44,9 +44,6 @@ async function findMeanings(lect: string, queries: string[][]) {
 }
 
 async function init(data: SearchCommand) {
-  pending = null;
-  executing = true;
-
   if (data === "stop") db?.close();
   else if (Array.isArray(data)) {
     db = await openDB("avzag", 1);
@@ -59,16 +56,20 @@ async function init(data: SearchCommand) {
         if (meanings.length) queryDictionaries(meanings);
       } else queryDictionaries(queries);
   }
-
-  executing = false;
-  if (pending) {
-    const p = pending;
-    pending = null;
-    (p as () => void)();
-  }
 }
 
 onmessage = (e) => {
-  if (executing) pending = () => init(e.data);
-  else init(e.data);
+  const call = async () => {
+    pending = null;
+    executing = true;
+    await init(e.data);
+    executing = false;
+    if (pending) {
+      const p = pending;
+      pending = null;
+      (p as () => void)();
+    }
+  };
+  if (executing) pending = call;
+  else call();
 };

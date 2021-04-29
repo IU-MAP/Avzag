@@ -50,35 +50,36 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
  * @param lects
  * @returns
  */
-async function load(lects: string[]) {
-  postMessage({ state: "fetching" });
-  const dictionaries = await loadLectsJSON<Entry[]>("dictionary", lects);
-  lects = Object.keys(dictionaries);
-  postMessage({ state: "fetched", lect: lects });
-
-  await cleanDB(lects);
-  await fillDB(dictionaries);
-  db.close();
-  if (!pending) postMessage({ state: "ready" });
-}
 
 /**
  *
  */
 
 async function init(data: "stop" | string[]) {
-  pending = null;
-  executing = true;
-  if (data !== "stop") await load(data);
-  executing = false;
-  if (pending) {
-    const p = pending;
-    pending = null;
-    (p as () => void)();
-  }
+  if (data === "stop") return db?.close();
+  postMessage({ state: "fetching" });
+  const dictionaries = await loadLectsJSON<Entry[]>("dictionary", data);
+  data = Object.keys(dictionaries);
+  postMessage({ state: "fetched", lect: data });
+
+  await cleanDB(data);
+  await fillDB(dictionaries);
+  db.close();
+  if (!pending) postMessage({ state: "ready" });
 }
 
 onmessage = (e) => {
-  if (executing) pending = () => init(e.data);
-  else init(e.data);
+  const call = async () => {
+    pending = null;
+    executing = true;
+    await init(e.data);
+    executing = false;
+    if (pending) {
+      const p = pending;
+      pending = null;
+      (p as () => void)();
+    }
+  };
+  if (executing) pending = call;
+  else call();
 };
