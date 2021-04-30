@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: docs
+        working-directory: ./
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
@@ -27,8 +27,6 @@ jobs:
       - name: Build docs 🔧
         run: |
           yarn install
-          mkdir docs
-          ls ./
           yarn typedoc --out docs src/**/*.ts
 
       - name: Save the PR number 📩
