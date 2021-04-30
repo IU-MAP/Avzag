@@ -21,8 +21,8 @@ export default defineComponent({
   setup() {
     return {
       menus: [
-        { icon: "arrow_back", name: "Home" },
-        { icon: "book", text: "Dictionary" },
+        { icon: "arrow_back", name: "home" },
+        { icon: "book", text: "dictionary" },
       ],
     };
   },

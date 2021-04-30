@@ -1,20 +1,43 @@
-import { ref } from "vue";
+import { ref, toRaw, watch } from "vue";
+// import { Octokit } from "@octokit/rest";
 
-export const lects = ref<string[]>([]);
+export const lects = ref([] as string[]);
 export const root =
   process.env.VUE_APP_STORE ??
-  "https://raw.githubusercontent.com/alkaitagi/Avzag/store/";
+  "https://raw.githubusercontent.com/alkaitagi/avzag/store/";
 
-export async function loadJSON(filename: string, defaultValue?: unknown) {
-  return await fetch(root + filename + ".json")
+export const lastUpdated = ref({} as Record<string, number>);
+watch(
+  () => lastUpdated.value,
+  () => (localStorage.lastUpdated = JSON.stringify(toRaw(lastUpdated.value))),
+  { deep: true }
+);
+
+export async function loadJSON<T>(path: string, defaultValue?: T) {
+  return await fetch(root + path + ".json")
     .then((r) => r.json())
-    .catch(() => defaultValue);
+    .then((j) => j as T)
+    .catch(() => defaultValue as T);
 }
-export async function loadLectsJSON<T>(filename: string, lects_?: string[]) {
+export async function loadLectsJSON<T>(path: string, lects_?: string[]) {
   const files = {} as Record<string, T>;
   for (const lect of lects_ ?? lects.value) {
-    const file = await loadJSON(lect + "/" + filename);
+    const file = await loadJSON<T>(lect + "/" + path);
     if (file) files[lect] = file;
   }
   return files;
 }
+
+// const octokit = new Octokit();
+// async function isOutdated(path: string) {
+//   const commits = await octokit.repos.listCommits({
+//     owner: "IU-MAP",
+//     repo: "avzag",
+//     sha: "store",
+//     path: path,
+//   });
+//   const time = commits.data[0].commit.committer?.date;
+//   if (!time) return;
+//   const timestamp = new Date(time).getTime();
+//   console.log(root + path, time);
+// }

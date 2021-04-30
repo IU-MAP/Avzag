@@ -6,19 +6,27 @@
           <btn icon="arrow_back" />
         </router-link>
         <select v-model="menu">
-          <option v-for="{ text, name } in menus" :key="name" :value="name">
-            {{ text }}
-          </option>
+          <option
+            v-for="{ text, name } in menus"
+            :key="name"
+            :value="name"
+            v-text="text"
+          />
         </select>
-        <a href="https://github.com/alkaitagi/avzag/wiki" class="wrap">
-          <btn icon="help_outline" />
-        </a>
       </div>
       <div class="row">
-        <btn icon="cloud_download" @click="loadLect" />
-        <btn icon="cloud_upload" @click="saveLect" />
-        <btn icon="file_upload" @click="loadJSON" />
-        <btn icon="file_download" @click="saveJSON" />
+        <template v-if="menu !== 'phrasebookCorpusEditor'">
+          <select v-model="lect">
+            <option value="">[Custom]</option>
+            <option v-for="l in lects" :key="l" :value="l" v-text="l" />
+          </select>
+          <template v-if="lect">
+            <btn icon="sync" @click="pullLect" />
+            <btn icon="cloud_upload" @click="pushLect" />
+          </template>
+        </template>
+        <btn icon="file_upload" @click="uploadJSON" />
+        <btn icon="file_download" @click="downloadJSON" />
         <ConfirmButton message="Reset file?" @confirm="resetFile" />
       </div>
     </div>
@@ -31,10 +39,11 @@ import ConfirmButton from "@/components/ConfirmButton.vue";
 
 import { ref, watch, defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { loadJSON as loadDBJSON } from "@/store";
+import { loadJSON } from "@/store";
 import { config, file, resetFile } from "@/editor";
 import { uploadFile, downloadFile } from "@/file-manager";
 import { pushToStore } from "./gh-manager";
+import { Lect } from "./Home/types";
 
 export default defineComponent({
   components: { ConfirmButton },
@@ -42,43 +51,67 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
 
+    loadJSON("catalogue", []).then(
+      (c) => (lects.value = c.map((l: Lect) => l.name))
+    );
+    const lects = ref([] as string[]);
+    const lect = ref(localStorage.editorLect ?? "");
+    watch(
+      () => lect.value,
+      () => (localStorage.editorLect = lect.value)
+    );
+
     const menus = [
       {
         text: "Dictionary",
-        name: "DictionaryEditor",
+        name: "dictionaryEditor",
       },
     ];
     const menu = ref((route.name ?? menus[0].name) as string);
     watch(menu, (menu) => router.push({ name: menu }));
 
-    async function loadLect() {
+    async function pullLect() {
       let json;
       if (typeof config.filename === "string") {
-        const lect = window.prompt("Enter lect name");
-        if (!lect) return;
-        json = await loadDBJSON(lect + "/" + config.filename);
-      } else json = await loadDBJSON(config.filename());
+        json = await loadJSON(lect.value + "/" + config.filename);
+      } else json = await loadJSON(config.filename());
       if (json) file.value = json;
     }
-    function loadJSON() {
+    function uploadJSON() {
       uploadFile((c) => (file.value = JSON.parse(c)));
     }
-    function saveJSON() {
+    function downloadJSON() {
       downloadFile(
         JSON.stringify(file.value, null, 2) + "\n",
         route.name as string,
         ".json"
       );
     }
-    function saveLect() {
+    function pushLect() {
+      const branch = [
+        menu.value,
+        lect.value,
+        new Date().toISOString().slice(0, -1).replaceAll(/\D/g, "."),
+      ].join("-");
       pushToStore(
         JSON.stringify(file.value, null, 2) + "\n",
-        `${window.prompt("Enter lect name")}/dictionary.json`,
-        window.prompt("Enter optional comment") ?? ""
+        lect.value + "/dictionary.json",
+        window.prompt("Enter optional comment") ?? "",
+        branch
       );
     }
 
-    return { menu, menus, loadLect, loadJSON, saveLect, saveJSON, resetFile };
+    return {
+      menu,
+      menus,
+      pullLect,
+      pushLect,
+      uploadJSON,
+      downloadJSON,
+      resetFile,
+      lect,
+      lects,
+    };
   },
 });
 </script>

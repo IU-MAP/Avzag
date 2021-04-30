@@ -11,7 +11,7 @@ const DictionaryEditor = () => import("@/Dictionary/Editor.vue");
 const routes = [
   {
     path: "/home",
-    name: "Home",
+    name: "home",
     component: Home,
   },
   {
@@ -20,7 +20,7 @@ const routes = [
     children: [
       {
         path: "dictionary",
-        name: "Dictionary",
+        name: "dictionary",
         component: Dictionary,
       },
     ],
@@ -31,7 +31,7 @@ const routes = [
     children: [
       {
         path: "dictionary",
-        name: "DictionaryEditor",
+        name: "dictionaryEditor",
         component: DictionaryEditor,
       },
     ],
@@ -39,7 +39,7 @@ const routes = [
   {
     path: "/:pathMatch(.*)",
     redirect: {
-      name: "Home",
+      name: "home",
     },
   },
 ] as RouteRecordRaw[];

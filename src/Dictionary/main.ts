@@ -1,14 +1,15 @@
-import { loadJSON, lects } from "@/store";
-import { reactive, shallowRef, watch } from "vue";
+import { loadJSON, lects, lastUpdated } from "@/store";
+import { reactive, ref, shallowRef, toRaw, watch } from "vue";
 import {
   DictionaryMeta,
-  DBState,
   SearchResults,
   SearchOccurence,
+  DBInfo,
 } from "./types";
 /* eslint-disable import/no-webpack-loader-syntax */
 import DBWorker from "worker-loader!./db.worker";
 import SearchWorker from "worker-loader!./search.worker";
+import { openDB } from "idb";
 
 export const searchworker = new SearchWorker();
 searchworker.onmessage = (e) => receiveSearch(e.data);
@@ -18,26 +19,41 @@ export const searchInfo = reactive({
 });
 
 export const dbworker = new DBWorker();
-dbworker.onmessage = (e) => {
-  const { state, text } = JSON.parse(e.data);
-  connectDB(state, text);
-};
-export const dbInfo = reactive({
-  state: "loading" as DBState,
-  text: "",
-});
+export const dbInfo = ref({ state: "loading" } as DBInfo);
+dbworker.onmessage = (e) => (dbInfo.value = e.data);
+watch(
+  () => dbInfo.value,
+  () => {
+    if (dbInfo.value.state === "fetched")
+      lects_.value = dbInfo.value.lect as string[];
+    else if (dbInfo.value.state === "ready") {
+      lastUpdated.value.dictionary = Date.now();
+      searchworker.postMessage(toRaw(lects_.value));
+    }
+  }
+);
 
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
 
-watch(lects, async () => {
+watch(lects, async (lects) => {
+  dbInfo.value.state = "fetching";
   dictionaryMeta.value = await loadJSON("dictionary");
-  dbworker.postMessage(JSON.stringify(lects.value));
+
+  if ((lastUpdated.value.lects ?? 0) >= (lastUpdated.value.dictionary ?? 0))
+    return dbworker.postMessage(toRaw(lects));
+
+  const db = await openDB("avzag");
+  lects_.value = [];
+  for (const l of db.objectStoreNames) lects_.value.push(l);
+  db.close();
+
+  searchworker.postMessage(toRaw(lects_.value));
+  dbInfo.value.state = "ready";
 });
 
-async function receiveSearch(data: string) {
-  // add the word to the result under its translation.
-  const { lect, meanings, entry } = JSON.parse(data) as SearchOccurence;
+async function receiveSearch(occerence: SearchOccurence) {
+  const { lect, meanings, entry } = occerence;
   if (!lect) {
     searchInfo.searching = false;
     return;
@@ -46,15 +62,5 @@ async function receiveSearch(data: string) {
     if (!searchInfo.results[t]) searchInfo.results[t] = {};
     if (!searchInfo.results[t][lect]) searchInfo.results[t][lect] = [];
     searchInfo.results[t][lect].push(entry);
-  }
-}
-
-async function connectDB(state: DBState, text: string) {
-  dbInfo.state = state;
-  if (state === "fetched") lects_.value = text.split(",");
-  else {
-    dbInfo.text = text;
-    if (state === "ready")
-      searchworker.postMessage(JSON.stringify(lects_.value));
   }
 }

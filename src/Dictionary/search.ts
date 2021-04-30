@@ -37,7 +37,7 @@ function checkSegment(area: string, segment: string) {
  * @param token token that tells what to check for
  * @param forms forms of the entry
  * @returns true if check passed, false otherwise
- */
+*/
 function checkToken(entry: Entry, token: string, forms: boolean) {
   if (token[0] === "#") return checkTag(entry, token);
   if (forms)
