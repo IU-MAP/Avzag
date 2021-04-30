@@ -1,85 +1,78 @@
-import { openDB, IDBPDatabase, deleteDB } from "idb";
+import { openDB, IDBPDatabase } from "idb";
 import { loadLectsJSON } from "@/store";
 import { Entry, DBState } from "./types";
 
 let db: IDBPDatabase;
 const storeName = "lects";
-let version = 1;
-let storesNames: string[] = [];
+const langStoreName = "languages";
+const version = 1;
+const storesNames: string[] = [];
 
 /**
  *
  * @param lects
  */
 async function cleanDB(lects: string[]) {
-  console.log("cleaning db");
-  // await deleteDB("avzag");
-  console.log("should I delete?");
-  let isChanged = false;
-  for (const tableName of storesNames) {
-    if (!lects.includes(tableName)) {
-      isChanged = true;
-      // break;
-    }
-  }
-  if (isChanged) {
-    version++;
-    console.log("yes, I should. version:", version);
-  }
+  console.log();
+  console.log("[cleanDB is called]");
 
   db = await openDB("avzag", version, {
-    upgrade(db, oldVersion, newVesion, transaction) {
-      console.log("updating");
-      for (const l of lects) {
-        if (pending) return;
-        // if table for the language does not exist then create one
-        if (!db.objectStoreNames.contains(l)) {
-          db.createObjectStore(l, { autoIncrement: true });
-        }
-      }
-      // delete unnecessary tables from DB
-      console.log("trying to delete");
-      let isChanged = false;
-      for (const tableName of db.objectStoreNames) {
-        if (!lects.includes(tableName)) {
-          console.log("deleting");
-          db.deleteObjectStore(tableName);
-          isChanged = true;
-        }
-      }
-      if (isChanged) {
-        version++;
-      }
-      storesNames = [];
-      for (const storeName of db.objectStoreNames) {
-        storesNames.push(storeName);
-      }
+    upgrade(db, transaction) {
+      console.log("[updating the schema]");
+
+      const dbStore = db.createObjectStore(storeName, { autoIncrement: true });
+      const langStore = db.createObjectStore(langStoreName, {
+        autoIncrement: true,
+      });
+
+      console.log("[creating index for languages]");
+      dbStore.createIndex("language", "language", { unique: false });
+      langStore.createIndex("lang", "lang", { unique: false });
     },
   });
+  console.log("[deleting unnecessary records]");
+  const st = db.transaction(langStoreName, "readwrite").store;
 
-  const st = db.transaction("languageList", "readwrite").store;
-  const lanugageList = await st.getAll();
+  const languageList = await st.getAll();
+  console.log("before ", languageList);
 
-  for (const l of lanugageList) {
-    console.log("for each language", l);
-    console.log("does not it include?", !lects.includes(l));
-    /*
-      code has been taken from: 
-        https://stackoverflow.com/questions/18603993/deleting-multiple-records-in-indexeddb-based-on-index
-    */
-    if (!lects.includes(l)) {
-      console.log("deleting records for language:", l);
-      const tx = db.transaction(storeName, "readwrite");
-      const index = tx.store.index("language");
-      const pdestroy = index.openCursor(IDBKeyRange.only(l));
-      pdestroy.then(async (cursor) => {
-        while (cursor) {
-          cursor.delete();
-          cursor = await cursor.continue();
-        }
-      });
+  if (languageList.length === 0) {
+    console.log("[languages table is empty]");
+    for (const l of lects) {
+      st.add({ lang: l });
+    }
+  } else {
+    for (const l of lects) {
+      if (!Object.values(languageList).includes(l)) {
+        console.log("[adding new language]");
+        console.log(Object.values(languageList));
+        console.log("====");
+        st.add({ lang: l });
+      }
+    }
+    // if DB does not have l then create such
+    for (const language of languageList) {
+      if (!lects.includes(language.lang)) {
+        console.log("does not include", language);
+
+        // then delete all rows of that language
+        console.log("[deleting records for language]", language.lang);
+        const tx = db.transaction(storeName, "readwrite");
+        const index = tx.store.index("language");
+        const pdestroy = index.openCursor(IDBKeyRange.only(language.lang));
+        pdestroy.then(async (cursor) => {
+          while (cursor) {
+            cursor.delete();
+            cursor = await cursor.continue();
+          }
+        });
+        console.log("[deleting from languageList table]", language.lang);
+        const key = await st.index("lang").getKey(language.lang);
+        await st.delete(key!);
+      }
     }
   }
+  // console.log("after ", await st.getAll());
 }
 
 /**
@@ -93,7 +86,13 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
   const step = 1024;
   let done = 0;
 
+  const langStore = db.transaction(langStoreName, "readwrite").store;
+  const languageList = await langStore.getAll();
+  console.log("[in fill db]", languageList);
   for (const [l, ds] of Object.entries(dictionaries)) {
+    if (Object.values(languageList).includes(l)) {
+      continue;
+    }
     const st = db.transaction(storeName, "readwrite").store;
     const current = ds.length;
     const puts = [];
