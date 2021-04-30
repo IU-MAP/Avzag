@@ -28,6 +28,7 @@ jobs:
         run: |
           yarn install
           mkdir docs
+          ls ./
           yarn typedoc --out docs src/**/*.ts
 
       - name: Save the PR number 📩
