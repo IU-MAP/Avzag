@@ -1,5 +1,5 @@
 import { ref, toRaw, watch } from "vue";
-import { Octokit } from "@octokit/rest";
+// import { Octokit } from "@octokit/rest";
 
 export const lects = ref([] as string[]);
 export const root =
@@ -13,27 +13,9 @@ watch(
   { deep: true }
 );
 
-const octokit = new Octokit();
-export async function isOutdated(path: string) {
-  const commits = await octokit.repos.listCommits({
-    owner: "IU-MAP",
-    repo: "avzag",
-    sha: "store",
-    path: path,
-  });
-  const time = commits.data[0].commit.committer?.date;
-  if (!time) return;
-  const timestamp = new Date(time).getTime();
-  console.log(root + path, time);
-}
-
 export async function loadJSON<T>(path: string, defaultValue?: T) {
-  path += ".json";
-  const response = await fetch(root + path);
-  console.log(Array.from(response.headers.entries()));
-  isOutdated(path);
-  return await response
-    .json()
+  return await fetch(root + path + ".json")
+    .then((r) => r.json())
     .then((j) => j as T)
     .catch(() => defaultValue as T);
 }
@@ -45,3 +27,17 @@ export async function loadLectsJSON<T>(path: string, lects_?: string[]) {
   }
   return files;
 }
+
+// const octokit = new Octokit();
+// async function isOutdated(path: string) {
+//   const commits = await octokit.repos.listCommits({
+//     owner: "IU-MAP",
+//     repo: "avzag",
+//     sha: "store",
+//     path: path,
+//   });
+//   const time = commits.data[0].commit.committer?.date;
+//   if (!time) return;
+//   const timestamp = new Date(time).getTime();
+//   console.log(root + path, time);
+// }
