@@ -1,4 +1,9 @@
+import localforage from "localforage";
 import { watch, ref, Ref } from "vue";
+
+const storage = localforage.createInstance({
+  name: "editor",
+});
 
 type Options = {
   defaultFile: unknown;
@@ -18,10 +23,6 @@ export function resetFile() {
   file.value = JSON.parse(JSON.stringify(config.defaultFile));
 }
 
-export function saveFile() {
-  if (config.storage) localStorage[config.storage] = JSON.stringify(file.value);
-}
-
 export function setupEditor<T>(options: Partial<Options>) {
   Object.assign(config, options);
   if (config.storage) {
@@ -30,7 +31,9 @@ export function setupEditor<T>(options: Partial<Options>) {
     } catch {
       resetFile();
     }
-    watch(file, saveFile, { deep: true });
+    watch(file, () => storage.setItem(config.storage as string, file), {
+      deep: true,
+    });
   }
 
   return file as Ref<T>;
