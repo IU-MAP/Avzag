@@ -5,15 +5,17 @@
 <script lang="ts">
 import { watchEffect, defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { lastUpdated, lects } from "./store";
 
+import "./store";
+import "./Phonology/main";
+import "./Converter/main";
+import "./Phrasebook/main";
 import "./Dictionary/main";
 
 export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
-    lastUpdated.value = JSON.parse(localStorage.lastUpdated ?? "{}");
 
     if (!route.name || route.name === "home") {
       router.push(
@@ -22,14 +24,13 @@ export default defineComponent({
           : { name: "home" }
       );
     }
-    if (route.name !== "home")
-      lects.value = JSON.parse(localStorage.lects ?? '["Kaitag"]');
 
     watchEffect(() => {
       const name = route.name as string;
       if (!name) return;
       localStorage.url = route.path;
-      if (["dictionary"].includes(name)) localStorage.urlUser = route.path;
+      if (["phonology", "converter", "phrasebook", "dictionary"].includes(name))
+        localStorage.urlUser = route.path;
     });
   },
 });

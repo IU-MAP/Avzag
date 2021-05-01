@@ -1,20 +1,11 @@
 const link = document.createElement("a");
 
-export function downloadFile(
-  content: string,
-  filename: string,
-  promptExtension?: string
-) {
-  if (promptExtension) {
-    filename = window.prompt("Save file as", filename) ?? "";
-    if (filename) filename += promptExtension;
-    else return;
-  }
-  link.href = "data:text/plain;charset=utf-8," + encodeURIComponent(content);
+export function downloadFile(content: string, filename: string) {
+  link.href =
+    "data:text/plain;charset=utf-8," + encodeURIComponent(content + "\n");
   link.download = filename;
   link.click();
 }
-
 const reader = new FileReader();
 const input = document.createElement("input");
 input.type = "file";

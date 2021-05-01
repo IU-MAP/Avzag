@@ -5,24 +5,30 @@
         <router-link to="/home">
           <btn icon="arrow_back" />
         </router-link>
-        <select v-model="menu">
+        <select v-model="routeName">
           <option
-            v-for="{ text, name } in menus"
+            v-for="{ title, name } in editorRoutes"
             :key="name"
             :value="name"
-            v-text="text"
+            v-text="title"
           />
         </select>
       </div>
       <div class="row">
-        <template v-if="menu !== 'phrasebookCorpusEditor'">
-          <select v-model="lect">
-            <option value="">[Custom]</option>
+        <p v-if="isDirty" class="icon">edit</p>
+        <template v-if="!config.global">
+          <select v-model="lect" @change="$event.target.value = lect">
+            <option :value="''" v-text="'[Custom]'" />
             <option v-for="l in lects" :key="l" :value="l" v-text="l" />
           </select>
           <template v-if="lect">
-            <btn icon="sync" @click="pullLect" />
-            <btn icon="cloud_upload" @click="pushLect" />
+            <btn :disabled="!isDirty" icon="cloud_upload" @click="pushLect" />
+            <ConfirmButton
+              :disabled="!isDirty"
+              icon="settings_backup_restore"
+              message="Local edits will be lost!"
+              @confirm="pullLect"
+            />
           </template>
         </template>
         <btn icon="file_upload" @click="uploadJSON" />
@@ -36,16 +42,24 @@
 
 <script lang="ts">
 import ConfirmButton from "@/components/ConfirmButton.vue";
-
-import { ref, watch, defineComponent } from "vue";
+import { ref, watch, defineComponent, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { loadJSON } from "@/store";
-import { config, file, resetFile } from "@/editor";
-import { uploadFile, downloadFile } from "@/file-manager";
-import { pushToStore } from "./gh-manager";
+import { editorRoutes } from "@/router";
+import {
+  lect,
+  resetFile,
+  pullLect,
+  uploadJSON,
+  downloadJSON,
+  pushLect,
+  config,
+  isDirty,
+} from "@/editor";
 import { Lect } from "./Home/types";
 
 export default defineComponent({
+  name: "EditorNavigation",
   components: { ConfirmButton },
   setup() {
     const route = useRoute();
@@ -55,62 +69,28 @@ export default defineComponent({
       (c) => (lects.value = c.map((l: Lect) => l.name))
     );
     const lects = ref([] as string[]);
-    const lect = ref(localStorage.editorLect ?? "");
-    watch(
-      () => lect.value,
-      () => (localStorage.editorLect = lect.value)
-    );
-
-    const menus = [
-      {
-        text: "Dictionary",
-        name: "dictionaryEditor",
+    const lect_ = computed({
+      get: () => lect.value,
+      set: (l) => {
+        if (window.confirm("Changing language will discard all local edits!"))
+          lect.value = l;
       },
-    ];
-    const menu = ref((route.name ?? menus[0].name) as string);
-    watch(menu, (menu) => router.push({ name: menu }));
-
-    async function pullLect() {
-      let json;
-      if (typeof config.filename === "string") {
-        json = await loadJSON(lect.value + "/" + config.filename);
-      } else json = await loadJSON(config.filename());
-      if (json) file.value = json;
-    }
-    function uploadJSON() {
-      uploadFile((c) => (file.value = JSON.parse(c)));
-    }
-    function downloadJSON() {
-      downloadFile(
-        JSON.stringify(file.value, null, 2) + "\n",
-        route.name as string,
-        ".json"
-      );
-    }
-    function pushLect() {
-      const branch = [
-        menu.value,
-        lect.value,
-        new Date().toISOString().slice(0, -1).replaceAll(/\D/g, "."),
-      ].join("-");
-      pushToStore(
-        JSON.stringify(file.value, null, 2) + "\n",
-        lect.value + "/dictionary.json",
-        window.prompt("Enter optional comment") ?? "",
-        branch
-      );
-    }
+    });
+    const routeName = ref((route.name as string) ?? editorRoutes[0].name);
+    watch(routeName, () => router.push({ name: routeName.value }));
 
     return {
-      menu,
-      menus,
+      routeName,
+      editorRoutes,
       pullLect,
       pushLect,
       uploadJSON,
       downloadJSON,
       resetFile,
-      lect,
+      lect: lect_,
       lects,
+      config,
+      isDirty,
     };
   },
 });

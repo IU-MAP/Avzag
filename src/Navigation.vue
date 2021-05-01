@@ -1,13 +1,16 @@
 <template>
   <div id="root">
     <div class="section row scroll">
+      <router-link to="/home">
+        <btn icon="arrow_back" />
+      </router-link>
       <router-link
-        v-for="{ icon, text, name } in menus"
-        :key="name ?? text ?? icon"
+        v-for="{ icon, name } in userRoutes"
+        :key="name"
         v-slot="{ isActive }"
-        :to="{ name: name ?? text }"
+        :to="{ name }"
       >
-        <btn :icon="icon" :text="text" :is-on="isActive" />
+        <btn :icon="icon" :is-on="isActive"><h2 v-text="name" /></btn>
       </router-link>
     </div>
   </div>
@@ -16,15 +19,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { userRoutes } from "@/router";
 
 export default defineComponent({
   setup() {
-    return {
-      menus: [
-        { icon: "arrow_back", name: "home" },
-        { icon: "book", text: "dictionary" },
-      ],
-    };
+    return { userRoutes };
   },
 });
 </script>
@@ -37,8 +36,5 @@ export default defineComponent({
   padding: map-get($margins, "half") map-get($margins, "normal");
   border-radius: 0;
   box-shadow: map-get($shadows, "elevated");
-  :not(.icon) {
-    font-weight: bold;
-  }
 }
 </style>
