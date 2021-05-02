@@ -26,7 +26,7 @@ watch(
   () => {
     if (dbInfo.value.state === "fetched")
       lects_.value = dbInfo.value.lect as string[];
-    else if (dbInfo.value.state === "ready") cache.changeRecord("dictionaryDB");
+    else if (dbInfo.value.state === "ready") cache.update("dictionaryDB");
   }
 );
 
@@ -37,7 +37,7 @@ watch(lects, async () => {
   dbInfo.value.state = "fetching";
   dictionaryMeta.value = await loadJSON("dictionary");
 
-  if (cache.getRecordChange("lects") >= cache.getRecordChange("dictionaryDB"))
+  if (cache.updateOf("lects") >= cache.updateOf("dictionaryDB"))
     return dbworker.postMessage(await loadLectsJSON("dictionary"));
 
   const db = await openDB("dictionary");

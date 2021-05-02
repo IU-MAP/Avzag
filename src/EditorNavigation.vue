@@ -15,25 +15,27 @@
         </select>
       </div>
       <div class="row">
+        <p v-if="isOutdated" class="icon">schedule</p>
         <p v-if="isDirty" class="icon">edit</p>
         <template v-if="!config.global">
-          <select v-model="lect" @change="$event.target.value = lect">
-            <option :value="''" v-text="'[Custom]'" />
+          <select v-model="lect" @change="$event.target.value = lect ?? ''">
+            <option value="" v-text="'[Custom]'" />
             <option v-for="l in lects" :key="l" :value="l" v-text="l" />
           </select>
-          <template v-if="lect">
-            <btn :disabled="!isDirty" icon="cloud_upload" @click="pushLect" />
-            <ConfirmButton
-              :disabled="!isDirty"
-              icon="settings_backup_restore"
-              message="Local edits will be lost!"
-              @confirm="pullLect"
-            />
-          </template>
         </template>
+        <btn
+          v-if="lect"
+          :disabled="!isDirty"
+          icon="cloud_upload"
+          @click="pushFile"
+        />
         <btn icon="file_upload" @click="uploadJSON" />
         <btn icon="file_download" @click="downloadJSON" />
-        <ConfirmButton message="Reset file?" @confirm="resetFile" />
+        <ConfirmButton
+          :disabled="!isDirty"
+          message="Reset file?"
+          @confirm="resetFile"
+        />
       </div>
     </div>
   </div>
@@ -49,12 +51,12 @@ import { editorRoutes } from "@/router";
 import {
   lect,
   resetFile,
-  pullLect,
+  pushFile,
   uploadJSON,
   downloadJSON,
-  pushLect,
   config,
   isDirty,
+  isOutdated,
 } from "@/editor";
 import { Lect } from "./Home/types";
 
@@ -82,15 +84,15 @@ export default defineComponent({
     return {
       routeName,
       editorRoutes,
-      pullLect,
-      pushLect,
+      resetFile,
+      pushFile,
       uploadJSON,
       downloadJSON,
-      resetFile,
       lect: lect_,
       lects,
       config,
       isDirty,
+      isOutdated,
     };
   },
 });

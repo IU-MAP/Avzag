@@ -34,7 +34,7 @@
         <div v-if="about" id="about" class="col-1 card text-center small">
           <h1>Ævzag</h1>
           <div class="row-1 wrap center">
-            <router-link to="/editor/phonology">
+            <router-link to="/editor/dictionary">
               <btn icon="construction" text="Editor" />
             </router-link>
             <a href="https://t.me/avzag" class="wrap">
@@ -85,7 +85,7 @@ export default defineComponent({
     const router = useRouter();
     onMounted(() => createMap());
     onUnmounted(async () => {
-      cache.changeRecord("lects");
+      cache.update("lects");
       lects.value = [...search.selected];
       await storage.setItem("lects", toRaw(lects.value));
       await checkOutdated();
@@ -113,7 +113,7 @@ export default defineComponent({
       router.push(
         localStorage.urlUser
           ? { path: localStorage.urlUser }
-          : { name: "phonology" }
+          : { name: "dictionary" }
       );
     }
 

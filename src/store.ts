@@ -21,22 +21,22 @@ export async function checkOutdated(alert = false) {
     ([p]) => !p.includes("/") || lects.value.some((l) => p.startsWith(l))
   );
   const outdated = [];
-  for (const [path, { added }] of entries) {
+  for (const [path, edited] of entries) {
     const updated = await lastCommitTime(path);
-    if (Date.now() - 300000 > updated && updated > added) outdated.push(path);
+    if (Date.now() - 300000 > updated && updated > edited) outdated.push(path);
   }
   if (outdated.length) {
     console.log("cleaning outdated cache", outdated);
     if (alert && Object.keys(cache.records.value).length)
       window.alert("New data is available, reloading...");
-    outdated?.forEach((p) => delete cache.records.value[p]);
+    outdated?.forEach((p) => cache.delete(p));
     location.reload();
   }
 }
 
 export async function loadJSON<T>(path: string, defaultValue?: T) {
   if (!path.endsWith(".json")) path += ".json";
-  if (!cache.addRecord(path)) return (await storage.getItem<T>(path)) as T;
+  if (!cache.add(path)) return (await storage.getItem<T>(path)) as T;
   console.log("cached", path);
   const f = await fetch(root + path, { cache: "no-store" })
     .then((r) => r.json())
