@@ -45,9 +45,9 @@ export async function loadJSON<T>(path: string, defaultValue?: T) {
   await storage.setItem(path, f);
   return f;
 }
-export async function loadLectsJSON<T>(path: string, lects_?: string[]) {
+export async function loadLectsJSON<T>(path: string) {
   const files = {} as Record<string, T>;
-  for (const lect of lects_ ?? lects.value) {
+  for (const lect of lects.value) {
     const file = await loadJSON<T>(lect + "/" + path);
     if (file) files[lect] = file;
   }

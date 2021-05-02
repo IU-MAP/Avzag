@@ -1,4 +1,4 @@
-import { loadJSON, lects, storage } from "@/store";
+import { loadJSON, lects, storage, loadLectsJSON } from "@/store";
 import { reactive, ref, shallowRef, toRaw, watch } from "vue";
 import {
   DictionaryMeta,
@@ -36,7 +36,7 @@ watch(
 export const dictionaryMeta = shallowRef<DictionaryMeta>();
 export const lects_ = shallowRef([] as string[]);
 
-watch(lects, async (lects) => {
+watch(lects, async () => {
   dbInfo.value.state = "fetching";
   dictionaryMeta.value = await loadJSON("dictionary");
 
@@ -44,7 +44,7 @@ watch(lects, async (lects) => {
     ((await storage.getItem<number>("lects")) ?? 0) >=
     ((await storage.getItem<number>("dictionary")) ?? 0)
   )
-    return dbworker.postMessage(toRaw(lects));
+    return dbworker.postMessage(await loadLectsJSON("dictionary"));
 
   const db = await openDB("dictionary");
   lects_.value = [];

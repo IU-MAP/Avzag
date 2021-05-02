@@ -1,5 +1,4 @@
 import { openDB, IDBPDatabase, deleteDB } from "idb";
-import { loadLectsJSON } from "@/store";
 import { Entry } from "./types";
 
 let db: IDBPDatabase;
@@ -55,15 +54,14 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
  *
  */
 
-async function init(data: "stop" | string[]) {
+async function init(data: "stop" | Record<string, Entry[]>) {
   if (data === "stop") return db?.close();
   postMessage({ state: "fetching" });
-  const dictionaries = await loadLectsJSON<Entry[]>("dictionary", data);
-  data = Object.keys(dictionaries);
-  postMessage({ state: "fetched", lect: data });
+  const lects = Object.keys(data);
+  postMessage({ state: "fetched", lect: lects });
 
-  await cleanDB(data);
-  await fillDB(dictionaries);
+  await cleanDB(lects);
+  await fillDB(data);
   db.close();
   if (!pending) postMessage({ state: "ready" });
 }
