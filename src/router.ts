@@ -5,35 +5,10 @@ const Home = () => import("@/Home/index.vue");
 const Navigation = () => import("@/Navigation.vue");
 const EditorNavigation = () => import("@/EditorNavigation.vue");
 
-const Phonology = () => import("@/Phonology/index.vue");
-const Converter = () => import("@/Converter/index.vue");
-const Phrasebook = () => import("@/Phrasebook/index.vue");
 const Dictionary = () => import("@/Dictionary/index.vue");
-
-const PhonologyEditor = () => import("@/Phonology/Editor.vue");
-const ConverterEditor = () => import("@/Converter/Editor.vue");
-const PhrasebookEditor = () => import("@/Phrasebook/Editor.vue");
-const PhrasebookCorpusEditor = () => import("@/Phrasebook/CorpusEditor.vue");
+const DictionaryEditor = () => import("@/Dictionary/Editor.vue");
 
 export const userRoutes = [
-  {
-    path: "phonology",
-    name: "phonology",
-    icon: "audiotrack",
-    component: Phonology,
-  },
-  {
-    path: "converter",
-    name: "converter",
-    icon: "sync_alt",
-    component: Converter,
-  },
-  {
-    path: "phrasebook",
-    name: "phrasebook",
-    icon: "chat",
-    component: Phrasebook,
-  },
   {
     path: "dictionary",
     name: "dictionary",
@@ -43,28 +18,10 @@ export const userRoutes = [
 ];
 export const editorRoutes = [
   {
-    path: "phonology",
-    title: "Phonology",
-    name: "phonologyEditor",
-    component: PhonologyEditor,
-  },
-  {
-    path: "converter",
-    title: "Converter",
-    name: "converterEditor",
-    component: ConverterEditor,
-  },
-  {
-    path: "phrasebook",
-    title: "Phrasebook",
-    name: "phrasebookEditor",
-    component: PhrasebookEditor,
-  },
-  {
-    path: "phrasebookСorpus",
-    title: "Phrasebook Corpus",
-    name: "phrasebookCorpusEditor",
-    component: PhrasebookCorpusEditor,
+    path: "dictionary",
+    name: "dictionaryEditor",
+    title: "Dictionary",
+    component: DictionaryEditor,
   },
 ];
 
