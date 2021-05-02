@@ -46,7 +46,7 @@ async function findMeanings(lect: string, queries: string[][]) {
 async function init(data: SearchCommand) {
   if (data === "stop") db?.close();
   else if (Array.isArray(data)) {
-    db = await openDB("avzag", 1);
+    db = await openDB("dictionary", 1);
     lects = data;
   } else {
     const queries = parseQuery(data.query);

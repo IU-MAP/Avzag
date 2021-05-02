@@ -12,8 +12,8 @@ let executing = false;
  */
 async function cleanDB(lects: string[]) {
   db?.close();
-  await deleteDB("avzag");
-  db = await openDB("avzag", 1, {
+  await deleteDB("dictionary");
+  db = await openDB("dictionary", 1, {
     upgrade(db) {
       lects.map((l) => db.createObjectStore(l, { autoIncrement: true }));
     },
