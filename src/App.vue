@@ -7,9 +7,6 @@ import { watchEffect, defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import "./store";
-import "./Phonology/main";
-import "./Converter/main";
-import "./Phrasebook/main";
 import "./Dictionary/main";
 
 export default defineComponent({
