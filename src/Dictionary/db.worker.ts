@@ -63,10 +63,10 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
   const step = 1024;
   let done = 0;
 
-  const langStore = db.transaction(langStoreName, "readwrite").store;
-  const languageList = await langStore.getAll();
-  console.log("[in fill db]", languageList);
   for (const [l, ds] of Object.entries(dictionaries)) {
+    const langStore = db.transaction(langStoreName, "readwrite").store;
+    const languageList = await langStore.getAll();
+    console.log("[in fill db]", languageList);
     // if DB has records for the language
     if (languageList.some((e) => e.lang === l)) {
       // skipping the language
@@ -92,6 +92,7 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
         );
       }
     }
+    console.log("[awaiting]");
     await Promise.all(puts);
   }
 }
