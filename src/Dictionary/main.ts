@@ -1,4 +1,4 @@
-import { loadJSON, lects, storage, loadLectsJSON } from "@/store";
+import { loadJSON, lects, cache, loadLectsJSON } from "@/store";
 import { reactive, ref, shallowRef, toRaw, watch } from "vue";
 import {
   DictionaryMeta,
@@ -26,10 +26,7 @@ watch(
   () => {
     if (dbInfo.value.state === "fetched")
       lects_.value = dbInfo.value.lect as string[];
-    else if (dbInfo.value.state === "ready") {
-      storage.setItem("dictionary", Date.now());
-      searchworker.postMessage(toRaw(lects_.value));
-    }
+    else if (dbInfo.value.state === "ready") cache.changeRecord("dictionaryDB");
   }
 );
 
@@ -40,10 +37,7 @@ watch(lects, async () => {
   dbInfo.value.state = "fetching";
   dictionaryMeta.value = await loadJSON("dictionary");
 
-  if (
-    ((await storage.getItem<number>("lects")) ?? 0) >=
-    ((await storage.getItem<number>("dictionary")) ?? 0)
-  )
+  if (cache.getRecordChange("lects") >= cache.getRecordChange("dictionaryDB"))
     return dbworker.postMessage(await loadLectsJSON("dictionary"));
 
   const db = await openDB("dictionary");

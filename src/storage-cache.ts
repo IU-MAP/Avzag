@@ -37,4 +37,8 @@ export default class StorageCache {
     }
     return r;
   }
+
+  getRecordChange(key: string) {
+    return this.records.value[key]?.changed ?? 0;
+  }
 }
