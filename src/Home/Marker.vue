@@ -16,8 +16,8 @@ import {
   computed,
   defineComponent,
   PropType,
-  onMounted,
   nextTick,
+  onUnmounted,
 } from "vue";
 import { Lect, SearchState } from "./types";
 import mapboxgl from "mapbox-gl";
@@ -31,16 +31,18 @@ export default defineComponent({
   emits: ["click"],
   setup(props, { emit }) {
     const root = ref<HTMLElement>();
-    onMounted(() =>
-      nextTick(() => {
-        new mapboxgl.Marker({
+    let marker: mapboxgl.Marker;
+    nextTick(() => {
+      if (map.value) {
+        marker = new mapboxgl.Marker({
           element: root.value,
           anchor: "top",
         })
           .setLngLat(props.lect.point)
-          .addTo(map);
-      })
-    );
+          .addTo(map.value);
+      }
+    });
+    onUnmounted(() => marker?.remove());
 
     const name = computed(() => props.lect.name);
     const selected = computed(() => props.search.selected.has(name.value));
