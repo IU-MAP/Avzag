@@ -15,14 +15,11 @@
         </select>
       </div>
       <div class="row">
-        <p v-if="isOutdated" class="icon">schedule</p>
-        <p v-if="isDirty" class="icon">edit</p>
-        <btn
-          v-if="lect"
-          :disabled="!isDirty"
-          icon="cloud_upload"
-          @click="pushFile"
-        />
+        <template v-if="lect">
+          <p v-if="isOutdated" class="icon">schedule</p>
+          <p v-if="isDirty" class="icon">edit</p>
+          <btn :disabled="!isDirty" icon="cloud_upload" @click="pushFile" />
+        </template>
         <template v-if="!config.global">
           <select v-model="lect">
             <option value="" v-text="'[Custom]'" />
