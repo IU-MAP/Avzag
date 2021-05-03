@@ -17,24 +17,24 @@
       <div class="row">
         <p v-if="isOutdated" class="icon">schedule</p>
         <p v-if="isDirty" class="icon">edit</p>
-        <template v-if="!config.global">
-          <select v-model="lect" @change="$event.target.value = lect ?? ''">
-            <option value="" v-text="'[Custom]'" />
-            <option v-for="l in lects" :key="l" :value="l" v-text="l" />
-          </select>
-        </template>
         <btn
           v-if="lect"
           :disabled="!isDirty"
           icon="cloud_upload"
           @click="pushFile"
         />
+        <template v-if="!config.global">
+          <select v-model="lect">
+            <option value="" v-text="'[Custom]'" />
+            <option v-for="l in lects" :key="l" :value="l" v-text="l" />
+          </select>
+        </template>
         <btn icon="file_upload" @click="uploadJSON" />
         <btn icon="file_download" @click="downloadJSON" />
         <ConfirmButton
           :disabled="!isDirty"
           message="Reset file?"
-          @confirm="resetFile"
+          @confirm="resetFile(false)"
         />
       </div>
     </div>
@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import ConfirmButton from "@/components/ConfirmButton.vue";
-import { ref, watch, defineComponent, computed } from "vue";
+import { ref, watch, defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { loadJSON } from "@/store";
 import { editorRoutes } from "@/router";
@@ -67,17 +67,11 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
 
+    const lects = ref([] as string[]);
     loadJSON("catalogue", []).then(
       (c) => (lects.value = c.map((l: Lect) => l.name))
     );
-    const lects = ref([] as string[]);
-    const lect_ = computed({
-      get: () => lect.value,
-      set: (l) => {
-        if (window.confirm("Changing language will discard all local edits!"))
-          lect.value = l;
-      },
-    });
+
     const routeName = ref((route.name as string) ?? editorRoutes[0].name);
     watch(routeName, () => router.push({ name: routeName.value }));
 
@@ -88,7 +82,7 @@ export default defineComponent({
       pushFile,
       uploadJSON,
       downloadJSON,
-      lect: lect_,
+      lect,
       lects,
       config,
       isDirty,
