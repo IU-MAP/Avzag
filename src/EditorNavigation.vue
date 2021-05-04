@@ -17,15 +17,12 @@
       <div class="row">
         <template v-if="lect">
           <p v-if="isOutdated" class="icon">schedule</p>
-          <p v-if="isDirty" class="icon">edit</p>
           <btn :disabled="!isDirty" icon="cloud_upload" @click="pushFile" />
         </template>
-        <template v-if="!config.global">
-          <select v-model="lect">
-            <option value="" v-text="'[Custom]'" />
-            <option v-for="l in lects" :key="l" :value="l" v-text="l" />
-          </select>
-        </template>
+        <select v-if="!config.global" v-model="lect">
+          <option value="" v-text="'[Custom]'" />
+          <option v-for="l in lects" :key="l" :value="l" v-text="l" />
+        </select>
         <btn icon="file_upload" @click="uploadJSON" />
         <btn icon="file_download" @click="downloadJSON" />
         <ConfirmButton
