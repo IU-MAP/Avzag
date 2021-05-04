@@ -2970,7 +2970,8 @@
     "uses": [
       {
         "tags": ["physical"],
-        "meaning": "foam"
+        "meaning": "foam",
+        "notes": ["Foam of milk"]
       }
     ],
     "forms": [
