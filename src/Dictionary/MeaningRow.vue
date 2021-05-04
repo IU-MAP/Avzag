@@ -4,9 +4,9 @@
       <i class="text-faded">{{ meaning }}</i>
     </div>
     <div v-for="l in lects" :key="l" class="col lect">
-      <template v-if="entries[l]">
+      <template v-if="sortedEntries[l]">
         <EntryCard
-          v-for="e in entries[l]"
+          v-for="e in sortedEntries[l]"
           :key="e.forms[0].plain"
           :lect="l"
           :entry="e"
@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 import EntryCard from "./EntryCard.vue";
 import { Entry } from "./types";
 
@@ -36,6 +36,20 @@ export default defineComponent({
       type: Object as PropType<Record<string, Entry[]>>,
       default: () => ({}),
     },
+  },
+  setup(props) {
+    function useLByMeaning(e: Entry) {
+      return (
+        e.uses.find((u) => u.meaning === props.meaning)?.notes?.length ?? 0
+      );
+    }
+    const sortedEntries = computed(() =>
+      Object.entries(props.entries).reduce((sr, [l, es]) => {
+        sr[l] = es.sort((a, b) => useLByMeaning(a) - useLByMeaning(b));
+        return sr;
+      }, {} as Record<string, Entry[]>)
+    );
+    return { sortedEntries };
   },
 });
 </script>
