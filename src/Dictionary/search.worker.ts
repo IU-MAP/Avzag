@@ -44,6 +44,7 @@ async function findMeanings(lect: string, queries: string[][]) {
 }
 
 async function init(data: SearchCommand) {
+  console.log(data);
   if (data === "stop") db?.close();
   else if (Array.isArray(data)) {
     db = await openDB("dictionary", 1);

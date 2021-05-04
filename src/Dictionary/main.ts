@@ -28,7 +28,7 @@ watch(
       lects_.value = dbInfo.value.lect as string[];
     else if (dbInfo.value.state === "ready") {
       cache.update("dictionaryDB");
-      searchworker.postMessage(toRaw(dbInfo.value.lect));
+      searchworker.postMessage(toRaw(lects_.value));
     }
   }
 );
