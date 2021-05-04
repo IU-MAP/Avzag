@@ -2965,5 +2965,33 @@
       }
     ],
     "tags": ["noun"]
+  },
+  {
+    "uses": [
+      {
+        "tags": ["physical"],
+        "meaning": "foam"
+      }
+    ],
+    "forms": [
+      {
+        "plain": "гъунуг"
+      }
+    ],
+    "tags": ["noun"]
+  },
+  {
+    "uses": [
+      {
+        "tags": ["physical"],
+        "meaning": "foam"
+      }
+    ],
+    "forms": [
+      {
+        "plain": "хьамхьа"
+      }
+    ],
+    "tags": ["noun"]
   }
 ]
