@@ -1,5 +1,5 @@
 <template>
-  <div class="section small grid">
+  <div v-if="file" class="section small grid">
     <div class="col">
       <input type="text" placeholder="Meanings, tags, forms..." />
       <div class="scroll long col">
@@ -113,24 +113,20 @@ import EditorCard from "@/components/EditorCard.vue";
 import NotesEditor from "@/components/Notes/Editor.vue";
 import TagsInput from "@/components/TagsInput.vue";
 
-import { computed, ref, defineComponent, reactive } from "vue";
-import { setupEditor } from "@/editor";
+import { ref, defineComponent } from "vue";
+import { configure, file } from "@/editor";
+import { Entry, Use, Text } from "./types";
 
 export default defineComponent({
   components: { EditorCard, ArrayControl, NotesEditor, TagsInput },
   setup() {
-    // const phoneme = ref<PhonemeUse>();
-    // const file = setupEditor<PhonemeUse[]>({
-    //   defaultFile: [],
-    //   filename: "phonology",
-    //   storage: "editor.phonology",
-    // });
+    configure({ default: [], filename: "dictionary" });
 
-    const entry = ref({ uses: [] });
+    const entry = ref({ forms: [] as Text[], uses: [] as Use[] } as Entry);
     const usecase = ref();
     const form = ref();
     const sample = ref();
-    return { entry, usecase, form, sample };
+    return { file, entry, usecase, form, sample };
   },
 });
 </script>

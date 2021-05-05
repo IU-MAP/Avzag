@@ -22,3 +22,6 @@ jobs:
       run: |
         yarn install
         yarn test
+      env:
+        CI: true
+        VUE_APP_STORE: https://raw.githubusercontent.com/IU-MAP/avzag/store/

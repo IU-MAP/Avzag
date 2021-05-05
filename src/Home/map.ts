@@ -1,8 +1,8 @@
 import mapboxgl from "mapbox-gl";
 import ResizeObserver from "resize-observer-polyfill";
-import { onUnmounted } from "vue";
+import { onUnmounted, shallowRef } from "vue";
 
-export let map: mapboxgl.Map;
+export const map = shallowRef<mapboxgl.Map>();
 
 function bindCamera() {
   const camera = {
@@ -14,17 +14,21 @@ function bindCamera() {
     Object.assign(camera, JSON.parse(localStorage.camera));
   onUnmounted(() => (localStorage.camera = JSON.stringify(camera)));
 
-  map.setZoom(camera.zoom);
-  map.setCenter(camera.center);
+  if (!map.value) return;
+  map.value.setZoom(camera.zoom);
+  map.value.setCenter(camera.center);
 
-  map.on("move", () => (camera.center = map.getCenter()));
-  map.on("zoom", () => (camera.zoom = map.getZoom()));
+  map.value.on(
+    "move",
+    () => map.value && (camera.center = map.value.getCenter())
+  );
+  map.value.on("zoom", () => map.value && (camera.zoom = map.value.getZoom()));
 }
 
 function bindTheme() {
   function setStyle({ matches }: MediaQueryList | MediaQueryListEvent) {
     const theme = matches ? "dark" : "light";
-    map.setStyle(`mapbox://styles/mapbox/${theme}-v10`);
+    map.value?.setStyle(`mapbox://styles/mapbox/${theme}-v10`);
   }
   const query = window.matchMedia("(prefers-color-scheme: dark)");
   query.addEventListener("change", setStyle);
@@ -32,12 +36,13 @@ function bindTheme() {
 }
 
 function bindResize() {
-  const observer = new ResizeObserver(() => map.resize());
-  observer.observe(map.getContainer());
+  const observer = new ResizeObserver(() => map.value?.resize());
+  const container = map.value?.getContainer();
+  if (container) observer.observe(container);
 }
 
 export function createMap(container = "map") {
-  map = new mapboxgl.Map({
+  map.value = new mapboxgl.Map({
     container,
     minZoom: 2,
     maxZoom: 10,
@@ -50,5 +55,5 @@ export function createMap(container = "map") {
   bindTheme();
   bindResize();
 
-  onUnmounted(() => map?.remove());
+  onUnmounted(() => map.value?.remove());
 }

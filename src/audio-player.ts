@@ -22,20 +22,20 @@ function url(lect: string, file: string) {
 }
 
 function canPlay(result: Ref<string[]>, lect: string, files: string[]) {
-  files
-    .map((f) => url(lect, f))
-    .map((u, i) =>
-      fetch(u)
-        .then((r) => r.blob())
-        .then(({ type }) => type.includes("audio"))
-        .then((a) => (result.value[i] = a ? u : ""))
-    );
+  files.forEach((f, i) => {
+    if (!f) return;
+    const u = url(lect, f);
+    fetch(u)
+      .then((r) => r.blob())
+      .then(({ type }) => type.includes("audio"))
+      .then((a) => (result.value[i] = a ? u : ""));
+  });
 }
 
 function play(lect: string, files: string[], key?: string) {
   stop();
   state.key = key ?? lect ?? files[0];
-  state.timer = setInterval(seek, 50) as unknown;
+  state.timer = setInterval(seek, 50);
 
   state.queue = files
     .map((f) => (lect ? url(lect, f) : f))

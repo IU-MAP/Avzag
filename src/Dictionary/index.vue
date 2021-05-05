@@ -1,54 +1,63 @@
 <template>
-  <h2 v-if="dbInfo.state !== 'ready'" class="section">{{ dbInfo.text }}...</h2>
-  <template v-else>
-    <div class="section row">
-      <toggle v-model="scholar" icon="school" />
-      <toggle v-model="lists" icon="format_list_bulleted" />
-      <select v-if="lists && !lect" v-model="queries['']">
-        <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
-          {{ n }}
-        </option>
-      </select>
-      <template v-else>
-        <input
-          v-model="query"
-          type="text"
-          :placeholder="lect ? `Enter ${lect} form...` : 'Enter meaning...'"
-        />
-        <btn icon="clear" @click="query = ''" />
-      </template>
-    </div>
-    <div class="scroll-area col">
-      <div class="row-1 lects">
-        <btn
-          class="lect card-0"
-          :is-on="!lect"
-          :icon="!lect ? 'search' : ''"
-          :text="lists ? 'Lists' : 'Meanings'"
-          @click="lect = ''"
-        />
-        <btn
-          v-for="l in lects"
-          :key="l"
-          :icon="lect === l ? 'search' : ''"
-          class="row lect flag card-0"
-          :is-on="lect === l"
-          @click="lect = l"
-        >
-          <Flag :lect="l" class="blur" />
-          <h2 class="flex">{{ l }}</h2>
-        </btn>
-      </div>
-      <MeaningRow
-        v-for="(es, m) of searchInfo.results"
-        :key="m"
-        :lects="lects"
-        :scholar="scholar"
-        :meaning="m"
-        :entries="es"
+  <div v-if="dbInfo.state === 'ready'" class="section row">
+    <toggle v-model="scholar" icon="school" />
+    <toggle v-model="lists" icon="format_list_bulleted" />
+    <select v-if="lists && !lect" v-model="queries['']">
+      <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
+        {{ n }}
+      </option>
+    </select>
+    <template v-else>
+      <input
+        v-model="query"
+        type="text"
+        :placeholder="lect ? `Enter ${lect} form...` : 'Enter meaning...'"
       />
+      <btn icon="clear" @click="query = ''" />
+    </template>
+  </div>
+  <h2 v-else>
+    {{
+      dbInfo.state === "fetching"
+        ? "Downloading dictionaries"
+        : "Preparing database"
+    }}, please wait...
+  </h2>
+  <div v-if="lects?.length" class="scroll-area col">
+    <div class="row-1 lects">
+      <btn
+        class="lect card-0"
+        :is-on="!lect"
+        :icon="!lect ? 'search' : ''"
+        :text="lists ? 'Lists' : 'Meanings'"
+        @click="lect = ''"
+      />
+      <btn
+        v-for="l in lects"
+        :key="l"
+        :icon="lect === l ? 'search' : ''"
+        class="row lect flag card-0"
+        :is-on="lect === l"
+        @click="lect = l"
+      >
+        <Seeker
+          v-if="dbInfo.state !== 'ready'"
+          :check="dbInfo.lect === l"
+          :seek="dbInfo.progress"
+        />
+        <Flag :lect="l" class="blur" />
+        <h2 class="flex">{{ l }}</h2>
+      </btn>
     </div>
-  </template>
+    <MeaningRow
+      v-for="(es, m) of searchInfo.results"
+      :key="m"
+      :lects="lects"
+      :scholar="scholar"
+      :meaning="m"
+      :entries="es"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -59,11 +68,11 @@ import {
   ref,
   watchEffect,
   provide,
+  onUnmounted,
 } from "vue";
-import { useRoute } from "vue-router";
 import {
   dictionaryMeta,
-  lects_,
+  lects_ as lects,
   dbInfo,
   dbworker,
   searchworker,
@@ -71,11 +80,11 @@ import {
 } from "./main";
 import MeaningRow from "./MeaningRow.vue";
 import Flag from "@/components/Flag.vue";
-import { Entry, SearchCommand } from "./types";
-import Btn from "@/components/Btn.vue";
+import Seeker from "@/components/Seeker.vue";
+import { Entry } from "./types";
 
 export default defineComponent({
-  components: { MeaningRow, Flag, Btn },
+  components: { MeaningRow, Flag, Seeker },
   setup() {
     const queries = reactive({} as Record<string, string>);
     const query = computed({
@@ -85,7 +94,6 @@ export default defineComponent({
     const scholar = ref(false);
     const lists = ref(false);
     const lect = ref("");
-    const route = useRoute();
 
     const expandedEntries = reactive(new Map<Entry, number>());
     const setExpansion = (en: Entry, ex: boolean) => {
@@ -104,13 +112,12 @@ export default defineComponent({
       lect.value = "";
     });
 
-    watchEffect(() => {
-      if (route.name === "Home") {
-        expandedEntries.clear();
-        searchInfo.searching = false;
-        searchworker.postMessage("stop");
-        dbworker.postMessage("stop");
-      }
+    onUnmounted(() => {
+      lects.value = [];
+      expandedEntries.clear();
+      searchInfo.searching = false;
+      searchworker.postMessage("stop");
+      dbworker.postMessage("stop");
     });
 
     watchEffect(() => {
@@ -120,16 +127,14 @@ export default defineComponent({
       }
       searchInfo.searching = true;
       searchInfo.results = {};
-      searchworker.postMessage(
-        JSON.stringify({
-          lect: lect.value,
-          query: query.value,
-        } as SearchCommand)
-      );
+      searchworker.postMessage({
+        lect: lect.value,
+        query: query.value.toLowerCase(),
+      });
     });
 
     return {
-      lects: lects_,
+      lects,
       scholar,
       queries,
       query,

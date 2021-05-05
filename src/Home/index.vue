@@ -40,10 +40,10 @@
             <a href="https://t.me/avzag" class="wrap">
               <btn icon="forum" text="Channel" />
             </a>
-            <a href="https://github.com/alkaitagi/Avzag#credits" class="wrap">
+            <a href="https://github.com/alkaitagi/avzag#credits" class="wrap">
               <btn icon="groups" text="Credits" />
             </a>
-            <a href="https://github.com/alkaitagi/Avzag" class="wrap">
+            <a href="https://github.com/alkaitagi/avzag" class="wrap">
               <btn icon="code" text="Repository" />
             </a>
           </div>
@@ -67,23 +67,40 @@ import InputQuery from "@/components/Query/InputQuery.vue";
 
 import {
   computed,
-  onMounted,
-  onUnmounted,
   ref,
-  watch,
   defineComponent,
+  toRaw,
+  onMounted,
+  watch,
+  onUnmounted,
 } from "vue";
 import { useRouter } from "vue-router";
-import { lects } from "@/store";
-import { reset, catalogue, search, query } from "./main";
+import { cache, checkOutdated, lects, loadJSON, storage } from "@/store";
+import { catalogue, search, query } from "./main";
 import { createMap } from "./map";
 
 export default defineComponent({
   components: { Marker, Card, InputQuery },
   setup() {
-    reset();
     const router = useRouter();
     onMounted(() => createMap());
+    onUnmounted(async () => {
+      cache.update("lects");
+      lects.value = [...search.selected];
+      await storage.setItem("lects", toRaw(lects.value));
+      await checkOutdated();
+    });
+    watch(
+      lects,
+      () => {
+        if (!search.selected.size && lects.value.length)
+          lects.value.forEach((l) => search.selected.add(l));
+      },
+      { immediate: true }
+    );
+
+    delete cache.records.value["catalogue.json"];
+    loadJSON("catalogue", []).then((j) => (catalogue.value = j));
 
     const empty = computed(() => !search.selected.size);
     const about = ref(false);
@@ -93,25 +110,12 @@ export default defineComponent({
       else search.selected.add(name);
     }
     function load() {
-      lects.value = [...search.selected];
       router.push(
         localStorage.urlUser
           ? { path: localStorage.urlUser }
-          : { name: "Dictionary" }
+          : { name: "dictionary" }
       );
     }
-
-    watch(
-      catalogue,
-      () =>
-        (search.selected = new Set(
-          JSON.parse(localStorage.lects ?? "[]") as string[]
-        )),
-      { immediate: true }
-    );
-    onUnmounted(
-      () => (localStorage.lects = JSON.stringify([...search.selected]))
-    );
 
     return { catalogue, query, search, empty, about, toggleLect, load };
   },

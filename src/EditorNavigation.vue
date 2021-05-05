@@ -5,21 +5,31 @@
         <router-link to="/home">
           <btn icon="arrow_back" />
         </router-link>
-        <select v-model="menu">
-          <option v-for="{ text, name } in menus" :key="name" :value="name">
-            {{ text }}
-          </option>
+        <select v-model="routeName">
+          <option
+            v-for="{ title, name } in editorRoutes"
+            :key="name"
+            :value="name"
+            v-text="title"
+          />
         </select>
-        <a href="https://github.com/alkaitagi/avzag/wiki" class="wrap">
-          <btn icon="help_outline" />
-        </a>
       </div>
       <div class="row">
-        <btn icon="cloud_download" @click="loadLect" />
-        <btn icon="cloud_upload" @click="saveLect" />
-        <btn icon="file_upload" @click="loadJSON" />
-        <btn icon="file_download" @click="saveJSON" />
-        <ConfirmButton message="Reset file?" @confirm="resetFile" />
+        <template v-if="lect">
+          <p v-if="isOutdated" class="icon">schedule</p>
+          <btn :disabled="!isDirty" icon="cloud_upload" @click="pushFile" />
+        </template>
+        <select v-if="!config.global" v-model="lect">
+          <option value="" v-text="'[Custom]'" />
+          <option v-for="l in lects" :key="l" :value="l" v-text="l" />
+        </select>
+        <btn icon="file_upload" @click="uploadJSON" />
+        <btn icon="file_download" @click="downloadJSON" />
+        <ConfirmButton
+          :disabled="!isDirty"
+          message="Reset file?"
+          @confirm="resetFile(false)"
+        />
       </div>
     </div>
   </div>
@@ -28,57 +38,50 @@
 
 <script lang="ts">
 import ConfirmButton from "@/components/ConfirmButton.vue";
-
 import { ref, watch, defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { loadJSON as loadDBJSON } from "@/store";
-import { config, file, resetFile } from "@/editor";
-import { uploadFile, downloadFile } from "@/file-manager";
-import { pushToStore } from "./gh-manager";
+import { loadJSON } from "@/store";
+import { editorRoutes } from "@/router";
+import {
+  lect,
+  resetFile,
+  pushFile,
+  uploadJSON,
+  downloadJSON,
+  config,
+  isDirty,
+  isOutdated,
+} from "@/editor";
+import { Lect } from "./Home/types";
 
 export default defineComponent({
+  name: "EditorNavigation",
   components: { ConfirmButton },
   setup() {
     const route = useRoute();
     const router = useRouter();
 
-    const menus = [
-      {
-        text: "Dictionary",
-        name: "DictionaryEditor",
-      },
-    ];
-    const menu = ref((route.name ?? menus[0].name) as string);
-    watch(menu, (menu) => router.push({ name: menu }));
+    const lects = ref([] as string[]);
+    loadJSON("catalogue", []).then(
+      (c) => (lects.value = c.map((l: Lect) => l.name))
+    );
 
-    async function loadLect() {
-      let json;
-      if (typeof config.filename === "string") {
-        const lect = window.prompt("Enter lect name");
-        if (!lect) return;
-        json = await loadDBJSON(lect + "/" + config.filename);
-      } else json = await loadDBJSON(config.filename());
-      if (json) file.value = json;
-    }
-    function loadJSON() {
-      uploadFile((c) => (file.value = JSON.parse(c)));
-    }
-    function saveJSON() {
-      downloadFile(
-        JSON.stringify(file.value, null, 2) + "\n",
-        route.name as string,
-        ".json"
-      );
-    }
-    function saveLect() {
-      pushToStore(
-        JSON.stringify(file.value, null, 2) + "\n",
-        `${window.prompt("Enter lect name")}/dictionary.json`,
-        window.prompt("Enter optional comment") ?? ""
-      );
-    }
+    const routeName = ref((route.name as string) ?? editorRoutes[0].name);
+    watch(routeName, () => router.push({ name: routeName.value }));
 
-    return { menu, menus, loadLect, loadJSON, saveLect, saveJSON, resetFile };
+    return {
+      routeName,
+      editorRoutes,
+      resetFile,
+      pushFile,
+      uploadJSON,
+      downloadJSON,
+      lect,
+      lects,
+      config,
+      isDirty,
+      isOutdated,
+    };
   },
 });
 </script>

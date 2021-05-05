@@ -13,6 +13,7 @@ const storesNames: string[] = [];
  * @param lects
  */
 async function cleanDB(lects: string[]) {
+  // db?.close();
   db = await openDB("avzag", version, {
     upgrade(db, transaction) {
       console.log("[updating the schema]");
@@ -58,11 +59,7 @@ async function cleanDB(lects: string[]) {
  * @returns
  */
 async function fillDB(dictionaries: Record<string, Entry[]>) {
-  postState("loading");
-  const size = Object.values(dictionaries).reduce((s, d) => s + d.length, 0);
-  const step = 1024;
-  let done = 0;
-
+  postMessage({ state: "loading" });
   for (const [l, ds] of Object.entries(dictionaries)) {
     const langStore = db.transaction(langStoreName, "readwrite").store;
     const languageList = await langStore.getAll();
@@ -83,13 +80,14 @@ async function fillDB(dictionaries: Record<string, Entry[]>) {
       d.language = l;
       // console.log(d);
       puts.push(st.add(d));
-      if (!(puts.length % step)) {
-        done += step;
-        const progress = Math.round((done / size) * 100);
-        postState(
-          "loading",
-          `[${progress}%] Loading ${l} - ${puts.length} of ${current}`
-        );
+      if (!(puts.length % 1024)) {
+        postMessage({
+          state: "loading",
+          lect: l,
+          progress: puts.length / ds.length,
+        });
+        await Promise.all(puts);
+        if (pending) return;
       }
     }
     console.log("[awaiting]");
@@ -121,33 +119,32 @@ async function load(lects: string[]) {
   console.log("Filling DB took " + (t3 - t2) + "milliseconds");
   postState("ready");
 }
-
 /**
  *
- * @param state
- * @param text
  */
-function postState(state: DBState, text: string | string[] = "Loading") {
-  postMessage(JSON.stringify({ state, text }));
+
+async function init(data: "stop" | Record<string, Entry[]>) {
+  if (data === "stop") return db?.close();
+  postMessage({ state: "fetching" });
+  const lects = Object.keys(data);
+  postMessage({ state: "fetched", lect: lects });
+
+  await cleanDB(lects);
+  await fillDB(data);
+  db.close();
+  if (!pending) postMessage({ state: "ready" });
 }
 
-let pending: undefined | (() => void);
-let executing = false;
-
-/**
- *
- */
 onmessage = (e) => {
-  const data = e.data as string;
   const call = async () => {
+    pending = null;
     executing = true;
-    if (data === "stop") db?.close();
-    else await load(JSON.parse(data));
+    await init(e.data);
     executing = false;
     if (pending) {
       const p = pending;
-      pending = undefined;
-      p();
+      pending = null;
+      (p as () => void)();
     }
   };
   if (executing) pending = call;
