@@ -20,12 +20,14 @@
     <div class="scroll-area col">
       <div class="row-1 lects">
         <btn
-          class="lect card-0"
+          class="lect card-0 seeker"
           :is-on="!lect"
           :icon="!lect ? 'search' : ''"
           :text="lists ? 'Lists' : 'Meanings'"
           @click="lect = ''"
-        />
+        >
+          <Seeker :seek="progress['']" />
+        </btn>
         <btn
           v-for="l in lects"
           :key="l"
@@ -34,6 +36,7 @@
           :is-on="lect === l"
           @click="lect = l"
         >
+          <Seeker :seek="progress[l]" />
           <Flag :lect="l" class="blur" />
           <h2 class="flex" v-text="l" />
         </btn>
@@ -46,7 +49,7 @@
         :meaning="m"
         :entries="es"
       />
-      <h2 v-if="!executing">End of search.</h2>
+      <h2 v-if="!executing">End of search</h2>
     </div>
   </template>
 </template>
@@ -65,11 +68,12 @@ import {
 import { dictionaryMeta, dictionaries } from "./main";
 import MeaningRow from "./MeaningRow.vue";
 import Flag from "@/components/Flag.vue";
+import Seeker from "@/components/Seeker.vue";
 import { Entry } from "./types";
 import Searcher from "./search";
 
 export default defineComponent({
-  components: { MeaningRow, Flag },
+  components: { MeaningRow, Flag, Seeker },
   setup() {
     const queries = reactive({} as Record<string, string>);
     const query = computed({
@@ -116,9 +120,10 @@ export default defineComponent({
       lects,
       lists,
       results: searcher.results,
+      executing: searcher.executing,
+      progress: searcher.progress,
       dictionaryMeta,
       dictionaries,
-      executing: searcher.executing,
     };
   },
 });

@@ -96,10 +96,13 @@ export default class Searcher {
   constructor(dictionaries: Ref<Record<string, Entry[]>>) {
     this.dictionaries = dictionaries;
     this.progress = ref(
-      Object.keys(this.dictionaries.value).reduce((p, l) => {
-        p[l] = 0;
-        return p;
-      }, {} as Record<string, number>)
+      Object.keys(this.dictionaries.value).reduce(
+        (p, l) => {
+          p[l] = 0;
+          return p;
+        },
+        { "": 0 } as Record<string, number>
+      )
     );
   }
 
@@ -121,10 +124,11 @@ export default class Searcher {
       if (meanings.length) this.addResult(lect, meanings, entries[i]);
       if (this.pending) return;
       else if (!(i % 1000)) {
-        console.log(i);
+        this.progress.value[lect] = i / entries.length;
         await this.sleep();
       }
     }
+    this.progress.value[lect] = 1;
   }
 
   async findMeanings(entries: Entry[], queries: string[][]) {
@@ -132,7 +136,10 @@ export default class Searcher {
     for (let i = 0; i < entries.length; i++) {
       checkQueries(entries[i], queries, true).forEach((m) => meanings.add(m));
       if (this.pending) return [];
-      else if (!(i % 1000)) await this.sleep();
+      else if (!(i % 1000)) {
+        this.progress.value[""] = i / entries.length;
+        await this.sleep();
+      }
     }
     return [...meanings].map((m) => ["!" + m]);
   }
@@ -142,6 +149,9 @@ export default class Searcher {
       this.pending = null;
       this.executing.value = true;
 
+      Object.keys(this.progress.value).forEach(
+        (k) => (this.progress.value[k] = 0)
+      );
       this.results.value = {};
       if (query) {
         let queries = parseQuery(query);
@@ -151,6 +161,7 @@ export default class Searcher {
               this.dictionaries.value[lect],
               queries
             );
+        this.progress.value[""] = 0;
         if (queries.length)
           await Promise.all(
             Object.entries(this.dictionaries.value).map((d) =>
