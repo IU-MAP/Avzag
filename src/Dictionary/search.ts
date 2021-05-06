@@ -131,16 +131,24 @@ export default class Searcher {
     this.progress.value[lect] = 1;
   }
 
-  async findMeanings(entries: Entry[], queries: string[][]) {
+  async findMeanings(lect = "", entries: Entry[], queries: string[][]) {
     const meanings = new Set<string>();
     for (let i = 0; i < entries.length; i++) {
-      checkQueries(entries[i], queries, true).forEach((m) => meanings.add(m));
+      if (lect)
+        this.addResult(
+          lect,
+          checkQueries(entries[i], queries, true),
+          entries[i]
+        );
+      else
+        checkQueries(entries[i], queries, true).forEach((m) => meanings.add(m));
       if (this.pending) return [];
       else if (!(i % 1000)) {
-        this.progress.value[""] = i / entries.length;
+        this.progress.value[lect] = i / entries.length;
         await this.sleep();
       }
     }
+    this.progress.value[lect] = 1;
     return [...meanings].map((m) => ["!" + m]);
   }
 
@@ -155,19 +163,29 @@ export default class Searcher {
       this.results.value = {};
       if (query) {
         let queries = parseQuery(query.toLowerCase());
-        if (queries.length)
-          if (lect)
-            queries = await this.findMeanings(
-              this.dictionaries.value[lect],
-              queries
-            );
-        this.progress.value[""] = 0;
-        if (queries.length)
-          await Promise.all(
-            Object.entries(this.dictionaries.value).map((d) =>
-              this.queryDictionary(...d, queries)
-            )
+        const lects = Object.keys(this.dictionaries.value);
+        if (lect && lects.length === 1)
+          await this.findMeanings(
+            lects[0],
+            this.dictionaries.value[lects[0]],
+            queries
           );
+        else {
+          if (queries.length)
+            if (lect)
+              queries = await this.findMeanings(
+                "",
+                this.dictionaries.value[lect],
+                queries
+              );
+          this.progress.value[""] = 0;
+          if (queries.length)
+            await Promise.all(
+              Object.entries(this.dictionaries.value).map((d) =>
+                this.queryDictionary(...d, queries)
+              )
+            );
+        }
       }
 
       this.executing.value = false;
