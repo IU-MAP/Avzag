@@ -49,7 +49,6 @@
         :meaning="m"
         :entries="es"
       />
-      <h2 v-if="!executing">End of search</h2>
     </div>
   </template>
 </template>
