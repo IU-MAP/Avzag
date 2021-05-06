@@ -57,6 +57,7 @@ import {
   defineComponent,
   reactive,
   ref,
+  watch,
   watchEffect,
   provide,
   onUnmounted,
@@ -103,7 +104,9 @@ export default defineComponent({
       searcher.search("stop");
     });
 
-    watchEffect(() => searcher.search(lect.value, query.value.toLowerCase()));
+    watch([query, lect], () =>
+      searcher.search(lect.value, (query.value ?? "").toLowerCase())
+    );
 
     return {
       scholar,

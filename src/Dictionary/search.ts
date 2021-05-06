@@ -120,7 +120,10 @@ export default class Searcher {
       const meanings = checkQueries(entries[i], queries);
       if (meanings.length) this.addResult(lect, meanings, entries[i]);
       if (this.pending) return;
-      else if (!(i % 1000)) await this.sleep();
+      else if (!(i % 1000)) {
+        console.log(i);
+        await this.sleep();
+      }
     }
   }
 
@@ -157,8 +160,8 @@ export default class Searcher {
       }
 
       this.executing.value = false;
-      if (pending) {
-        const p = pending;
+      if (this.pending) {
+        const p = this.pending;
         this.pending = null;
         (p as () => void)();
       }
