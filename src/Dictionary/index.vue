@@ -103,14 +103,7 @@ export default defineComponent({
       searcher.search("stop");
     });
 
-    watchEffect(() =>
-      query.value
-        ? searcher.search({
-            lect: lect.value,
-            query: query.value.toLowerCase(),
-          })
-        : (searcher.results.value = {})
-    );
+    watchEffect(() => searcher.search(lect.value, query.value.toLowerCase()));
 
     return {
       scholar,

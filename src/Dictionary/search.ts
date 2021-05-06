@@ -134,39 +134,26 @@ export default class Searcher {
     return [...meanings].map((m) => ["!" + m]);
   }
 
-  search(
-    command:
-      | "stop"
-      | {
-          lect: string;
-          query: string;
-        }
-  ) {
+  search(lect?: string, query?: string) {
     const call = async () => {
       this.pending = null;
       this.executing.value = true;
 
-      if (command !== "stop") {
-        this.results.value = {};
-        const queries = parseQuery(command.query);
+      this.results.value = {};
+      if (query) {
+        let queries = parseQuery(query);
         if (queries.length)
-          if (command.lect) {
-            const meanings = await this.findMeanings(
-              this.dictionaries.value[command.lect],
+          if (lect)
+            queries = await this.findMeanings(
+              this.dictionaries.value[lect],
               queries
             );
-            if (meanings.length)
-              await Promise.all(
-                Object.entries(this.dictionaries.value).map(([l, es]) =>
-                  this.queryDictionary(l, es, meanings)
-                )
-              );
-          } else
-            await Promise.all(
-              Object.entries(this.dictionaries.value).map(([l, es]) =>
-                this.queryDictionary(l, es, queries)
-              )
-            );
+        if (queries.length)
+          await Promise.all(
+            Object.entries(this.dictionaries.value).map((d) =>
+              this.queryDictionary(...d, queries)
+            )
+          );
       }
 
       this.executing.value = false;
