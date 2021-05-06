@@ -1,6 +1,8 @@
 <template>
   <div v-if="file" class="section small grid">
     <div class="col">
+      <btn icon="add" text="New word" @click="newEntry" />
+      <hr />
       <div class="row seeker">
         <btn
           class="flex"
@@ -48,7 +50,7 @@
     <template v-if="entry">
       <div class="col-2">
         <EditorCard icon="tag" header="Tags">
-          <TagsInput v-model="entry.tags" />
+          <TagsInput v-model="entry.tags" placeholder="Grammatical tags" />
         </EditorCard>
         <NotesEditor v-model="entry.notes" />
         <EditorCard icon="tune" header="Forms">
@@ -101,8 +103,17 @@
         <template v-if="usecase">
           <EditorCard icon="lightbulb" header="Concept">
             <div class="row">
-              <input v-model="usecase.meaning" style="flex: 0.5" type="text" />
-              <TagsInput v-model="usecase.tags" class="flex" />
+              <input
+                v-model="usecase.meaning"
+                placeholder="Meaning"
+                style="flex: 0.5"
+                type="text"
+              />
+              <TagsInput
+                v-model="usecase.tags"
+                placeholder="Semantic tags"
+                class="flex"
+              />
             </div>
           </EditorCard>
           <NotesEditor v-model="usecase.notes" />
@@ -150,7 +161,7 @@ import TagsInput from "@/components/TagsInput.vue";
 import Seeker from "@/components/Seeker.vue";
 
 import { ref, defineComponent, computed, watch } from "vue";
-import { configure, file } from "@/editor";
+import { configure, file, lect as editorLect } from "@/editor";
 import { Entry } from "./types";
 import Searcher from "./search";
 
@@ -162,16 +173,29 @@ export default defineComponent({
     const dictionary = computed(() => ({
       l: file.value as Entry[],
     }));
+    const searcher = new Searcher(dictionary);
 
     const lect = ref("l");
     const query = ref("");
     watch([query, lect], () => searcher.search(lect.value, query.value));
+    watch(editorLect, () => {
+      entry.value = undefined;
+      query.value = "";
+    });
 
-    const searcher = new Searcher(dictionary);
     const entry = ref();
     const usecase = ref();
     const form = ref();
     const sample = ref();
+
+    function newEntry() {
+      const e = {
+        forms: [{ plain: "a form" }],
+        uses: [{ meaning: "word" }],
+      };
+      (file.value as Entry[]).push(e);
+      entry.value = e;
+    }
 
     return {
       file,
@@ -183,6 +207,7 @@ export default defineComponent({
       progress: searcher.progress,
       lect,
       query,
+      newEntry,
     };
   },
 });

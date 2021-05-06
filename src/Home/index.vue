@@ -34,7 +34,7 @@
         <div v-if="about" id="about" class="col-1 card text-center small">
           <h1>Ævzag</h1>
           <div class="row-1 wrap center">
-            <router-link to="/editor/dictionary">
+            <router-link to="/editor/phonology">
               <btn icon="construction" text="Editor" />
             </router-link>
             <a href="https://t.me/avzag" class="wrap">
@@ -99,7 +99,13 @@ export default defineComponent({
       { immediate: true }
     );
 
-    delete cache.records.value["catalogue.json"];
+    if (navigator.onLine) {
+      delete cache.records.value["catalogue.json"];
+      caches
+        .keys()
+        .then((ks) => ks.find((k) => k.includes("avzag-precache")))
+        .then((k) => caches.delete(k ?? ""));
+    }
     loadJSON("catalogue", []).then((j) => (catalogue.value = j));
 
     const empty = computed(() => !search.selected.size);
@@ -113,7 +119,7 @@ export default defineComponent({
       router.push(
         localStorage.urlUser
           ? { path: localStorage.urlUser }
-          : { name: "dictionary" }
+          : { name: "phonology" }
       );
     }
 

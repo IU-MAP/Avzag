@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { lastCommitTime } from "./gh-manager";
 import StorageCache from "./storage-cache";
 
+const dev = process.env.NODE_ENV !== "production";
 export const lects = ref([] as string[]);
 export const root =
   (process.env.VUE_APP_STORE as string) ??
@@ -36,7 +37,7 @@ export async function checkOutdated(alert = false) {
 
 export async function loadJSON<T>(path: string, defaultValue?: T) {
   if (!path.endsWith(".json")) path += ".json";
-  if (!cache.add(path)) return (await storage.getItem<T>(path)) as T;
+  if (!dev && !cache.add(path)) return (await storage.getItem<T>(path)) as T;
   console.log("cached", path);
   const f = await fetch(root + path, { cache: "no-store" })
     .then((r) => r.json())
