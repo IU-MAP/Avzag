@@ -1,6 +1,10 @@
 <template>
   <div v-if="file" class="section small grid">
     <div class="col">
+      <div class="row">
+        <btn text="meanings" />
+        <btn text="forms" />
+      </div>
       <input type="text" placeholder="Meanings, tags, forms..." />
       <div class="scroll long col">
         <btn text="word 1" is-on />
@@ -122,11 +126,12 @@ export default defineComponent({
   setup() {
     configure({ default: [], filename: "dictionary" });
 
+    const lect = ref("");
     const entry = ref({ forms: [] as Text[], uses: [] as Use[] } as Entry);
     const usecase = ref();
     const form = ref();
     const sample = ref();
-    return { file, entry, usecase, form, sample };
+    return { file, entry, usecase, form, sample, lect };
   },
 });
 </script>
