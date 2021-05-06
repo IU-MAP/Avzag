@@ -1,10 +1,10 @@
 import { Entry } from "./types";
 
 /**
- *
- * @param entry
- * @param tag
- * @returns
+ * checks tag for conformity
+ * @param entry entry to check tag for
+ * @param tag tag to be checked with entry's tag
+ * @returns true if entry's tag is the same as passed tag, false otherwise
  */
 function checkTag(entry: Entry, tag: string) {
   tag = tag.substr(1);
@@ -13,10 +13,10 @@ function checkTag(entry: Entry, tag: string) {
 }
 
 /**
- *
- * @param area
- * @param segment
- * @returns
+ * checks if area starts with (!), ends with (+), contains or exactly matches (-) passed segment
+ * @param area full word
+ * @param segment segment to check (starts with a character or either of these: !, +, -)
+ * @returns true if area mathes the segment in any expected way depending on the first symbol
  */
 function checkSegment(area: string, segment: string) {
   switch (segment[0]) {
@@ -32,12 +32,12 @@ function checkSegment(area: string, segment: string) {
 }
 
 /**
- *
- * @param entry
- * @param token
- * @param forms
- * @returns
- */
+ * cheks token for tag or segment
+ * @param entry entry to check
+ * @param token token that tells what to check for
+ * @param forms forms of the entry
+ * @returns true if check passed, false otherwise
+*/
 function checkToken(entry: Entry, token: string, forms: boolean) {
   if (token[0] === "#") return checkTag(entry, token);
   if (forms)
@@ -48,13 +48,16 @@ function checkToken(entry: Entry, token: string, forms: boolean) {
 }
 
 /**
- *
- * @param entry
- * @param queries
- * @param forms
- * @returns
+ * @param entry entry to check
+ * @param queries queries
+ * @param forms possible forms of entry
+ * @returns word in english
  */
 export function checkQueries(entry: Entry, queries: string[][], forms = false) {
+  console.log(
+    JSON.parse(JSON.stringify(entry)),
+    JSON.parse(JSON.stringify(queries))
+  );
   const meanings = new Set<string>();
   for (const query of queries) {
     let meanings_ = entry.uses.map((u) => u.meaning);
@@ -64,13 +67,13 @@ export function checkQueries(entry: Entry, queries: string[][], forms = false) {
     }
     meanings_.forEach((m) => meanings.add(m));
   }
+  console.log("result", [meanings]);
   return [...meanings];
 }
 
 /**
- *
- * @param input
- * @returns
+ * @param input query to parse
+ * @returns parsed query
  */
 export function parseQuery(input: string) {
   return input
