@@ -61,16 +61,11 @@ import {
   provide,
   onUnmounted,
 } from "vue";
-import {
-  dictionaryMeta,
-  dictionaries,
-  results,
-  search,
-  executing,
-} from "./main";
+import { dictionaryMeta, dictionaries } from "./main";
 import MeaningRow from "./MeaningRow.vue";
 import Flag from "@/components/Flag.vue";
 import { Entry } from "./types";
+import Searcher from "./search";
 
 export default defineComponent({
   components: { MeaningRow, Flag },
@@ -84,6 +79,7 @@ export default defineComponent({
     const lists = ref(false);
     const lect = ref("");
     const lects = computed(() => Object.keys(dictionaries.value));
+    const searcher = new Searcher(dictionaries);
 
     const expandedEntries = reactive(new Map<Entry, number>());
     const setExpansion = (en: Entry, ex: boolean) => {
@@ -104,16 +100,16 @@ export default defineComponent({
 
     onUnmounted(() => {
       expandedEntries.clear();
-      search("stop");
+      searcher.search("stop");
     });
 
     watchEffect(() =>
       query.value
-        ? search({
+        ? searcher.search({
             lect: lect.value,
             query: query.value.toLowerCase(),
           })
-        : (results.value = {})
+        : (searcher.results.value = {})
     );
 
     return {
@@ -123,10 +119,10 @@ export default defineComponent({
       lect,
       lects,
       lists,
-      results,
+      results: searcher.results,
       dictionaryMeta,
       dictionaries,
-      executing,
+      executing: searcher.executing,
     };
   },
 });

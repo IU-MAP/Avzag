@@ -1,3 +1,4 @@
+import { ref, Ref } from "@vue/reactivity";
 import { Entry } from "./types";
 
 /**
@@ -54,7 +55,7 @@ function checkToken(entry: Entry, token: string, forms: boolean) {
  * @param forms
  * @returns
  */
-export function checkQueries(entry: Entry, queries: string[][], forms = false) {
+function checkQueries(entry: Entry, queries: string[][], forms = false) {
   const meanings = new Set<string>();
   for (const query of queries) {
     let meanings_ = entry.uses.map((u) => u.meaning);
@@ -72,7 +73,7 @@ export function checkQueries(entry: Entry, queries: string[][], forms = false) {
  * @param input
  * @returns
  */
-export function parseQuery(input: string) {
+function parseQuery(input: string) {
   return input
     .split(".")
     .map((q) =>
@@ -82,4 +83,100 @@ export function parseQuery(input: string) {
         .filter((t) => t)
     )
     .filter((q) => q.length);
+}
+
+export default class Searcher {
+  dictionaries: Ref<Record<string, Entry[]>>;
+  progress: Ref<Record<string, number>>;
+  results = ref({} as Record<string, Record<string, Entry[]>>);
+
+  pending: null | (() => void) = null;
+  executing = ref(false);
+
+  constructor(dictionaries: Ref<Record<string, Entry[]>>) {
+    this.dictionaries = dictionaries;
+    this.progress = ref(
+      Object.keys(this.dictionaries.value).reduce((p, l) => {
+        p[l] = 0;
+        return p;
+      }, {} as Record<string, number>)
+    );
+  }
+
+  async sleep(ms = 100) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  addResult(lect: string, meanings: string[], entry: Entry) {
+    for (const m of meanings) {
+      if (!this.results.value[m]) this.results.value[m] = {};
+      if (!this.results.value[m][lect]) this.results.value[m][lect] = [];
+      this.results.value[m][lect].push(entry);
+    }
+  }
+
+  async queryDictionary(lect: string, entries: Entry[], queries: string[][]) {
+    for (let i = 0; i < entries.length; i++) {
+      const meanings = checkQueries(entries[i], queries);
+      if (meanings.length) this.addResult(lect, meanings, entries[i]);
+      if (this.pending) return;
+      else if (!(i % 1000)) await this.sleep();
+    }
+  }
+
+  async findMeanings(entries: Entry[], queries: string[][]) {
+    const meanings = new Set<string>();
+    for (let i = 0; i < entries.length; i++) {
+      checkQueries(entries[i], queries, true).forEach((m) => meanings.add(m));
+      if (this.pending) return [];
+      else if (!(i % 1000)) await this.sleep();
+    }
+    return [...meanings].map((m) => ["!" + m]);
+  }
+
+  search(
+    command:
+      | "stop"
+      | {
+          lect: string;
+          query: string;
+        }
+  ) {
+    const call = async () => {
+      this.pending = null;
+      this.executing.value = true;
+
+      if (command !== "stop") {
+        this.results.value = {};
+        const queries = parseQuery(command.query);
+        if (queries.length)
+          if (command.lect) {
+            const meanings = await this.findMeanings(
+              this.dictionaries.value[command.lect],
+              queries
+            );
+            if (meanings.length)
+              await Promise.all(
+                Object.entries(this.dictionaries.value).map(([l, es]) =>
+                  this.queryDictionary(l, es, meanings)
+                )
+              );
+          } else
+            await Promise.all(
+              Object.entries(this.dictionaries.value).map(([l, es]) =>
+                this.queryDictionary(l, es, queries)
+              )
+            );
+      }
+
+      this.executing.value = false;
+      if (pending) {
+        const p = pending;
+        this.pending = null;
+        (p as () => void)();
+      }
+    };
+    if (this.executing.value) this.pending = call;
+    else call();
+  }
 }

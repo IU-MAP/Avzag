@@ -23,18 +23,3 @@ export type Entry = {
   tags?: string[];
   notes?: string[];
 };
-
-export type SearchOccurence =
-  | "started"
-  | {
-      lect: string;
-      meanings: string[];
-      entry: Entry;
-    };
-
-export type SearchCommand =
-  | "stop"
-  | {
-      lect: string;
-      query: string;
-    };
