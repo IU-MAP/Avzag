@@ -7,13 +7,12 @@
       </div>
       <input type="text" placeholder="Meanings, tags, forms..." />
       <div class="scroll long col">
-        <btn text="word 1" is-on />
-        <btn text="word 2" />
-        <btn text="word 3" />
-        <btn text="word 4" />
-        <btn text="word 5" />
-        <btn text="word 6" />
-        <btn text="word 7" />
+        <btn
+          v-for="(e, i) in results"
+          :key="i"
+          text="e.forms[0].plain"
+          :is-on="entry === e"
+        />
       </div>
     </div>
     <div class="col-2">
@@ -117,21 +116,46 @@ import EditorCard from "@/components/EditorCard.vue";
 import NotesEditor from "@/components/Notes/Editor.vue";
 import TagsInput from "@/components/TagsInput.vue";
 
-import { ref, defineComponent } from "vue";
-import { configure, file } from "@/editor";
-import { Entry, Use, Text } from "./types";
+import { ref, defineComponent, computed, watch } from "vue";
+import { configure, file, lect } from "@/editor";
+import { Entry } from "./types";
+import Searcher from "./search";
 
 export default defineComponent({
   components: { EditorCard, ArrayControl, NotesEditor, TagsInput },
   setup() {
     configure({ default: [], filename: "dictionary" });
 
-    const lect = ref("");
-    const entry = ref({ forms: [] as Text[], uses: [] as Use[] } as Entry);
+    const lectName = computed(() => lect.value ?? "_");
+    const dictionary = computed(
+      () =>
+        ({
+          [lectName.value]: file.value,
+        } as Record<string, Entry[]>)
+    );
+
+    const query = ref("");
+    const isMeaningSearch = ref(true);
+    watch([query, isMeaningSearch, lectName], () =>
+      searcher.search(isMeaningSearch.value ? "" : lectName.value, query.value)
+    );
+
+    const searcher = new Searcher(dictionary);
+    const entry = ref();
     const usecase = ref();
     const form = ref();
     const sample = ref();
-    return { file, entry, usecase, form, sample, lect };
+
+    return {
+      file,
+      entry,
+      usecase,
+      form,
+      sample,
+      isMeaningSearch,
+      results: searcher.results,
+      query,
+    };
   },
 });
 </script>

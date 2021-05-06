@@ -154,7 +154,7 @@ export default class Searcher {
       );
       this.results.value = {};
       if (query) {
-        let queries = parseQuery(query);
+        let queries = parseQuery(query.toLowerCase());
         if (queries.length)
           if (lect)
             queries = await this.findMeanings(

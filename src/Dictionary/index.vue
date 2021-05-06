@@ -108,9 +108,7 @@ export default defineComponent({
       searcher.search("stop");
     });
 
-    watch([query, lect], () =>
-      searcher.search(lect.value, (query.value ?? "").toLowerCase())
-    );
+    watch([query, lect], () => searcher.search(lect.value, query.value));
 
     return {
       scholar,
