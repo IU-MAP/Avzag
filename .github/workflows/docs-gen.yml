@@ -27,7 +27,6 @@ jobs:
       - name: Build docs 🔧
         run: |
           yarn install
-          echo src/**/*.ts
           yarn typedoc --out docs src/**/*.ts
 
       - name: Save the PR number 📩
