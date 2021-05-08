@@ -20,6 +20,7 @@
     <div class="scroll-area col">
       <div class="row-1 lects">
         <btn
+          v-if="lects.length"
           class="lect card-0 seeker"
           :is-on="!lect"
           :icon="!lect ? 'search' : ''"
@@ -74,16 +75,18 @@ import Searcher from "./search";
 export default defineComponent({
   components: { MeaningRow, Flag, Seeker },
   setup() {
+    const searcher = new Searcher(dictionaries);
+
     const queries = reactive({} as Record<string, string>);
     const query = computed({
       get: () => queries[lect.value],
       set: (q) => (queries[lect.value] = q),
     });
+
     const scholar = ref(false);
     const lists = ref(false);
     const lect = ref("");
     const lects = computed(() => Object.keys(dictionaries.value));
-    const searcher = new Searcher(dictionaries);
 
     const expandedEntries = reactive(new Map<Entry, number>());
     const setExpansion = (en: Entry, ex: boolean) => {
@@ -101,13 +104,9 @@ export default defineComponent({
       else queries[""] = "";
       lect.value = "";
     });
+    onUnmounted(() => expandedEntries.clear());
 
-    onUnmounted(() => {
-      expandedEntries.clear();
-      searcher.search("stop");
-    });
-
-    watch([query, lect], () => searcher.search(lect.value, query.value));
+    watch([query, lect], () => searcher.search(lect.value, query.value ?? ""));
 
     return {
       scholar,

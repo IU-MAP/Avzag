@@ -1,5 +1,5 @@
 <template>
-  <div class="row-1 appear lects small">
+  <div class="row-1 lects small">
     <div class="meaning lect col">
       <i class="text-faded">{{ meaning }}</i>
     </div>
@@ -12,7 +12,6 @@
           :entry="e"
           :meaning="meaning"
           :scholar="scholar"
-          class="appear"
         />
       </template>
       <span v-else />
@@ -73,14 +72,5 @@ export default defineComponent({
   height: $h;
   min-height: $h;
   justify-content: center;
-}
-.appear {
-  animation: appear $transition;
-}
-@keyframes appear {
-  0% {
-    transform: translateY(map-get($margins, "normal"));
-    opacity: 0;
-  }
 }
 </style>
