@@ -20,7 +20,7 @@
     <div class="scroll-area col">
       <div class="row-1 lects">
         <btn
-          v-if="lects.length"
+          v-if="lects.length > 1"
           class="lect card-0 seeker"
           :is-on="!lect"
           :icon="!lect ? 'search' : ''"
@@ -29,6 +29,7 @@
         >
           <Seeker :seek="progress['']" />
         </btn>
+        <p v-else class="lect">Meanings</p>
         <btn
           v-for="l in lects"
           :key="l"
@@ -87,6 +88,9 @@ export default defineComponent({
     const lists = ref(false);
     const lect = ref("");
     const lects = computed(() => Object.keys(dictionaries.value));
+    watch(lects, () => {
+      if (lects.value.length === 1) lect.value = lects.value[0];
+    });
 
     const expandedEntries = reactive(new Map<Entry, number>());
     const setExpansion = (en: Entry, ex: boolean) => {
