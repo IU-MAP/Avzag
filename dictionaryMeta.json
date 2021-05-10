@@ -1,0 +1,6 @@
+{
+  "lists": [
+    { "name": "Body parts", "query": "!head. !neck. !back. !hand. !foot" },
+    { "name": "One to five", "query": "!one. !two. !three. !four. !five" }
+  ]
+}
