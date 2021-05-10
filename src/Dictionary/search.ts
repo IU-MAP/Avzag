@@ -195,6 +195,7 @@ export default class Searcher {
       if (!queries.length) return;
 
       if (this.lects.value.length === 1) {
+        lect = this.lects.value[0];
         await this.queryDictionary(
           lect,
           this.dictionaries.value[lect],
