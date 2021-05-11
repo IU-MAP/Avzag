@@ -2,11 +2,14 @@
   <template v-if="dictionaries">
     <div class="section row">
       <toggle v-model="scholar" icon="school" />
-      <toggle v-model="lists" icon="format_list_bulleted" />
-      <select v-if="lists && !lect" v-model="queries['']">
-        <option v-for="(l, n) in dictionaryMeta.lists" :key="n" :value="l">
-          {{ n }}
-        </option>
+      <toggle v-model="list" icon="format_list_bulleted" />
+      <select v-if="list && !lect" v-model="queries['']">
+        <option
+          v-for="l in lists"
+          :key="l.name"
+          :value="l.query"
+          v-text="l.name"
+        />
       </select>
       <template v-else>
         <input
@@ -20,6 +23,7 @@
     <div class="scroll-area col">
       <div class="row-1 lects">
         <btn
+          v-if="lects.length > 1"
           class="lect card-0 seeker"
           :is-on="!lect"
           :icon="!lect ? 'search' : ''"
@@ -28,18 +32,32 @@
         >
           <Seeker :seek="progress['']" />
         </btn>
+        <p v-else class="lect">Meanings</p>
+
         <btn
-          v-for="l in lects"
-          :key="l"
-          :icon="lect === l ? 'search' : ''"
+          v-if="lects.length === 1"
           class="row lect flag card-0"
-          :is-on="lect === l"
-          @click="lect = l"
+          icon="search"
+          is-on
         >
-          <Seeker :seek="progress[l]" />
-          <Flag :lect="l" class="blur" />
-          <h2 class="flex" v-text="l" />
+          <Seeker :seek="progress['']" />
+          <Flag :lect="lects[0]" class="blur" />
+          <h2 class="flex" v-text="lects[0]" />
         </btn>
+        <template v-else>
+          <btn
+            v-for="l in lects"
+            :key="l"
+            :icon="lect === l ? 'search' : ''"
+            class="row lect flag card-0"
+            :is-on="lect === l"
+            @click="lect = l"
+          >
+            <Seeker :seek="progress[l]" />
+            <Flag :lect="l" class="blur" />
+            <h2 class="flex" v-text="l" />
+          </btn>
+        </template>
       </div>
       <MeaningRow
         v-for="(es, m) in results"
@@ -60,7 +78,6 @@ import {
   reactive,
   ref,
   watch,
-  watchEffect,
   provide,
   onUnmounted,
 } from "vue";
@@ -74,16 +91,21 @@ import Searcher from "./search";
 export default defineComponent({
   components: { MeaningRow, Flag, Seeker },
   setup() {
+    const searcher = new Searcher(dictionaries);
+
     const queries = reactive({} as Record<string, string>);
     const query = computed({
-      get: () => queries[lect.value],
+      get: () => queries[lect.value] ?? "",
       set: (q) => (queries[lect.value] = q),
     });
-    const scholar = ref(false);
-    const lists = ref(false);
+
     const lect = ref("");
     const lects = computed(() => Object.keys(dictionaries.value));
-    const searcher = new Searcher(dictionaries);
+
+    const scholar = ref(false);
+    const list = ref(false);
+    const lists = computed(() => dictionaryMeta.value.lists);
+    watch(list, () => (queries[""] = list.value ? lists.value[0].query : ""));
 
     const expandedEntries = reactive(new Map<Entry, number>());
     const setExpansion = (en: Entry, ex: boolean) => {
@@ -92,20 +114,7 @@ export default defineComponent({
     };
     provide("expandedEntries", expandedEntries);
     provide("setExpansion", setExpansion);
-
-    watchEffect(() => {
-      if (lists.value)
-        if (dictionaryMeta.value)
-          queries[""] = Object.values(dictionaryMeta.value.lists)[0] ?? "";
-        else lists.value = false;
-      else queries[""] = "";
-      lect.value = "";
-    });
-
-    onUnmounted(() => {
-      expandedEntries.clear();
-      searcher.search("stop");
-    });
+    onUnmounted(() => expandedEntries.clear());
 
     watch([query, lect], () => searcher.search(lect.value, query.value));
 
@@ -115,11 +124,11 @@ export default defineComponent({
       query,
       lect,
       lects,
+      list,
       lists,
       results: searcher.results,
       executing: searcher.executing,
       progress: searcher.progress,
-      dictionaryMeta,
       dictionaries,
     };
   },

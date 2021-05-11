@@ -1,4 +1,5 @@
 import { ref, Ref } from "@vue/reactivity";
+import { computed, onUnmounted } from "@vue/runtime-core";
 import { Entry } from "./types";
 
 /**
@@ -39,13 +40,21 @@ function checkSegment(area: string, segment: string) {
  * @param forms
  * @returns
  */
-function checkToken(entry: Entry, token: string, forms: boolean) {
+function checkToken(
+  entry: Entry,
+  token: string,
+  forms: boolean,
+  uses: boolean
+) {
   if (token[0] === "#") return checkTag(entry, token);
-  if (forms)
-    return entry.forms.some((f) => checkSegment(f.plain, token))
-      ? entry.uses.map((u) => u.meaning)
-      : [];
-  return entry.uses.map((u) => u.meaning).filter((m) => checkSegment(m, token));
+  const meanings = [] as string[];
+  if (forms && entry.forms.some((f) => checkSegment(f.plain, token)))
+    meanings.push(...entry.uses.map((u) => u.meaning));
+  if (uses)
+    meanings.push(
+      ...entry.uses.map((u) => u.meaning).filter((m) => checkSegment(m, token))
+    );
+  return meanings;
 }
 
 /**
@@ -55,12 +64,17 @@ function checkToken(entry: Entry, token: string, forms: boolean) {
  * @param forms
  * @returns
  */
-function checkQueries(entry: Entry, queries: string[][], forms = false) {
+function checkQueries(
+  entry: Entry,
+  queries: string[][],
+  forms: boolean,
+  uses: boolean
+) {
   const meanings = new Set<string>();
   for (const query of queries) {
     let meanings_ = entry.uses.map((u) => u.meaning);
     for (const token of query) {
-      const fits = checkToken(entry, token, forms);
+      const fits = checkToken(entry, token, forms, uses);
       meanings_ = meanings_.filter((m) => fits.includes(m));
     }
     meanings_.forEach((m) => meanings.add(m));
@@ -87,7 +101,9 @@ function parseQuery(input: string) {
 
 export default class Searcher {
   dictionaries: Ref<Record<string, Entry[]>>;
-  progress: Ref<Record<string, number>>;
+  lects = computed(() => Object.keys(this.dictionaries?.value ?? {}));
+
+  progress = ref({} as Record<string, number>);
   results = ref({} as Record<string, Record<string, Entry[]>>);
 
   pending: null | (() => void) = null;
@@ -95,18 +111,17 @@ export default class Searcher {
 
   constructor(dictionaries: Ref<Record<string, Entry[]>>) {
     this.dictionaries = dictionaries;
-    this.progress = ref(
-      Object.keys(this.dictionaries.value).reduce(
-        (p, l) => {
-          p[l] = 0;
-          return p;
-        },
-        { "": 0 } as Record<string, number>
-      )
-    );
+    this.reset();
+    onUnmounted(() => this.stop());
   }
 
-  async sleep(ms = 100) {
+  reset() {
+    this.lects.value.forEach((l) => (this.progress.value[l] = 0));
+    this.progress.value[""] = 0;
+    this.results.value = {};
+  }
+
+  async sleep(ms = 10) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
@@ -118,9 +133,15 @@ export default class Searcher {
     }
   }
 
-  async queryDictionary(lect: string, entries: Entry[], queries: string[][]) {
+  async queryDictionary(
+    lect: string,
+    entries: Entry[],
+    queries: string[][],
+    forms: boolean,
+    uses: boolean
+  ) {
     for (let i = 0; i < entries.length; i++) {
-      const meanings = checkQueries(entries[i], queries);
+      const meanings = checkQueries(entries[i], queries, forms, uses);
       if (meanings.length) this.addResult(lect, meanings, entries[i]);
       if (this.pending) return;
       else if (!(i % 1000)) {
@@ -131,63 +152,27 @@ export default class Searcher {
     this.progress.value[lect] = 1;
   }
 
-  async findMeanings(lect = "", entries: Entry[], queries: string[][]) {
+  async findMeanings(entries: Entry[], queries: string[][]) {
     const meanings = new Set<string>();
     for (let i = 0; i < entries.length; i++) {
-      if (lect)
-        this.addResult(
-          lect,
-          checkQueries(entries[i], queries, true),
-          entries[i]
-        );
-      else
-        checkQueries(entries[i], queries, true).forEach((m) => meanings.add(m));
+      checkQueries(entries[i], queries, true, false).forEach((m) =>
+        meanings.add(m)
+      );
       if (this.pending) return [];
       else if (!(i % 1000)) {
-        this.progress.value[lect] = i / entries.length;
+        this.progress.value[""] = i / entries.length;
         await this.sleep();
       }
     }
-    this.progress.value[lect] = 1;
+    this.progress.value[""] = 1;
     return [...meanings].map((m) => ["!" + m]);
   }
 
-  search(lect?: string, query?: string) {
+  async queue(action: () => Promise<unknown> | void) {
     const call = async () => {
       this.pending = null;
       this.executing.value = true;
-
-      Object.keys(this.progress.value).forEach(
-        (k) => (this.progress.value[k] = 0)
-      );
-      this.results.value = {};
-      if (query) {
-        let queries = parseQuery(query.toLowerCase());
-        const lects = Object.keys(this.dictionaries.value);
-        if (lect && lects.length === 1)
-          await this.findMeanings(
-            lects[0],
-            this.dictionaries.value[lects[0]],
-            queries
-          );
-        else {
-          if (queries.length)
-            if (lect)
-              queries = await this.findMeanings(
-                "",
-                this.dictionaries.value[lect],
-                queries
-              );
-          this.progress.value[""] = 0;
-          if (queries.length)
-            await Promise.all(
-              Object.entries(this.dictionaries.value).map((d) =>
-                this.queryDictionary(...d, queries)
-              )
-            );
-        }
-      }
-
+      await action();
       this.executing.value = false;
       if (this.pending) {
         const p = this.pending;
@@ -197,5 +182,42 @@ export default class Searcher {
     };
     if (this.executing.value) this.pending = call;
     else call();
+  }
+
+  stop() {
+    this.queue(() => console.log("searcher stopped"));
+  }
+
+  search(lect: string, query: string) {
+    this.queue(async () => {
+      this.reset();
+      let queries = parseQuery(query.toLowerCase());
+      if (!queries.length) return;
+
+      if (this.lects.value.length === 1) {
+        lect = this.lects.value[0];
+        await this.queryDictionary(
+          lect,
+          this.dictionaries.value[lect],
+          queries,
+          true,
+          true
+        );
+        return;
+      }
+
+      if (queries.length)
+        if (lect)
+          queries = await this.findMeanings(
+            this.dictionaries.value[lect],
+            queries
+          );
+      if (queries.length)
+        await Promise.all(
+          Object.entries(this.dictionaries.value).map((d) =>
+            this.queryDictionary(...d, queries, false, true)
+          )
+        );
+    });
   }
 }

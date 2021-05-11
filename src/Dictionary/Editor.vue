@@ -1,22 +1,16 @@
 <template>
   <div v-if="file" class="section small grid">
     <div class="col">
-      <div class="row seeker">
-        <btn
+      <div class="row">
+        <btn class="flex" icon="add" text="New word" @click="newEntry" />
+        <ConfirmButton
+          :disabled="!entry"
           class="flex"
-          icon="lightbulb"
-          text="Meanings"
-          :is-on="!lect"
-          @click="lect = ''"
-        />
-        <btn
-          class="flex"
-          icon="tune"
-          text="Forms"
-          :is-on="!!lect"
-          @click="lect = 'l'"
+          text="Delete"
+          @click="deleteEntry"
         />
       </div>
+      <hr />
       <div class="row seeker">
         <Seeker :seek="progress['l']" />
         <input
@@ -36,7 +30,7 @@
         >
           <i class="text-faded" v-text="m" />
           <btn
-            v-for="(e, i) in es['l']"
+            v-for="(e, i) in es['editor']"
             :key="i"
             :text="e.forms[0].plain"
             :is-on="entry === e"
@@ -48,7 +42,7 @@
     <template v-if="entry">
       <div class="col-2">
         <EditorCard icon="tag" header="Tags">
-          <TagsInput v-model="entry.tags" />
+          <TagsInput v-model="entry.tags" placeholder="Grammatical tags" />
         </EditorCard>
         <NotesEditor v-model="entry.notes" />
         <EditorCard icon="tune" header="Forms">
@@ -101,8 +95,17 @@
         <template v-if="usecase">
           <EditorCard icon="lightbulb" header="Concept">
             <div class="row">
-              <input v-model="usecase.meaning" style="flex: 0.5" type="text" />
-              <TagsInput v-model="usecase.tags" class="flex" />
+              <input
+                v-model="usecase.meaning"
+                placeholder="Meaning"
+                style="flex: 0.5"
+                type="text"
+              />
+              <TagsInput
+                v-model="usecase.tags"
+                placeholder="Semantic tags"
+                class="flex"
+              />
             </div>
           </EditorCard>
           <NotesEditor v-model="usecase.notes" />
@@ -145,33 +148,59 @@
 <script lang="ts">
 import ArrayControl from "@/components/ArrayControl.vue";
 import EditorCard from "@/components/EditorCard.vue";
+import ConfirmButton from "@/components/ConfirmButton.vue";
 import NotesEditor from "@/components/Notes/Editor.vue";
 import TagsInput from "@/components/TagsInput.vue";
 import Seeker from "@/components/Seeker.vue";
 
 import { ref, defineComponent, computed, watch } from "vue";
-import { configure, file } from "@/editor";
+import { configure, file, lect } from "@/editor";
 import { Entry } from "./types";
 import Searcher from "./search";
 
 export default defineComponent({
-  components: { EditorCard, ArrayControl, NotesEditor, TagsInput, Seeker },
+  components: {
+    EditorCard,
+    ArrayControl,
+    NotesEditor,
+    TagsInput,
+    Seeker,
+    ConfirmButton,
+  },
   setup() {
     configure({ default: [], filename: "dictionary" });
+    const searcher = new Searcher(
+      computed(() => ({
+        editor: file.value as Entry[],
+      }))
+    );
 
-    const dictionary = computed(() => ({
-      l: file.value as Entry[],
-    }));
-
-    const lect = ref("l");
     const query = ref("");
-    watch([query, lect], () => searcher.search(lect.value, query.value));
+    watch([query], () => searcher.search("editor", query.value));
+    watch(lect, () => {
+      entry.value = undefined;
+      query.value = "";
+    });
 
-    const searcher = new Searcher(dictionary);
     const entry = ref();
     const usecase = ref();
     const form = ref();
     const sample = ref();
+
+    function newEntry() {
+      const e = {
+        forms: [{ plain: "a form" }],
+        uses: [{ meaning: "word" }],
+      };
+      (file.value as Entry[]).push(e);
+      entry.value = e;
+    }
+    function deleteEntry() {
+      const arr = file.value as Entry[];
+      arr.splice(arr.indexOf(entry.value), 1);
+      entry.value = undefined;
+      searcher.search("editor", query.value);
+    }
 
     return {
       file,
@@ -181,8 +210,9 @@ export default defineComponent({
       sample,
       results: searcher.results,
       progress: searcher.progress,
-      lect,
       query,
+      newEntry,
+      deleteEntry,
     };
   },
 });
@@ -191,7 +221,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .grid {
   display: grid;
-  grid-template-columns: 192px minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: 208px minmax(0, 1fr) minmax(0, 1fr);
   gap: map-get($margins, "double");
 }
 .sample input {

@@ -1,4 +1,4 @@
-export type DictionaryMeta = { lists: Record<string, string> };
+export type DictionaryMeta = { lists: { name: string; query: string }[] };
 
 export type Text = {
   plain: string;
