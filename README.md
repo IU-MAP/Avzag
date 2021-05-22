@@ -10,6 +10,8 @@ The goal of the project is to develop a cross-lingual dictionary with efficient 
 
 Our backlog can be found in the ["Projects" -> "Dictionary"](https://github.com/IU-MAP/avzag/projects/1) section.
 
+Our final report can be found [here](https://docs.google.com/document/d/1PO85QKzmswkXvmy9avJxduC0IPConJkl2qqPK4dIJis/edit?usp=sharing).
+
 ## Use documentation (or how to use it)
 
 Whenever you need to get a quick translation of a word and see some examples of how to use it, you can go to the website, choose a set of languages you need and then you'll be transferred to the dictionary. It will take a few seconds to load the words according to the languages you chose. Then you can type in a word you need to get translation of. Within a second you'll see possible matches for the language you chose. You can also see some use cases and forms for those words. Yup, that simple :)
@@ -17,7 +19,7 @@ Whenever you need to get a quick translation of a word and see some examples of 
 ## Technical documentation
 
 Unfortunately, we didn't deploy our technical documentation. Instead, we store it in _./docs_ folder. You can clone the project, and do the following commands:
-```
+```bash
 ~/.../Avzag >>> cd docs
 ~/.../Avzag/docs >>> python -m http.server
 ```
