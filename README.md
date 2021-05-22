@@ -16,6 +16,10 @@ Our final report can be found [here](https://docs.google.com/document/d/1PO85QKz
 
 Whenever you need to get a quick translation of a word and see some examples of how to use it, you can go to the website, choose a set of languages you need and then you'll be transferred to the dictionary. It will take a few seconds to load the words according to the languages you chose. Then you can type in a word you need to get translation of. Within a second you'll see possible matches for the language you chose. You can also see some use cases and forms for those words. Yup, that simple :)
 
+If you are an editor and want to bring more words to the dictionary, there is an interface for you. At the main page with the map, you can click on the "info" sign at the top left corner and choose "Editor". Then you'll need to choose what exactly you want to which part of the database you want to add to: phonology, converter, phrasebook (or even phrasebook corpus), or dictionary. Then you just follow the interface and fill the necessary fields.
+
+In case you are lost and/or noticed some inconsistency, you click on the "info" sign, that is in the top left corner, and choose "Channel". That will take you straight to the telegram chanell with other people who are passionate about dagestani languages.
+
 ## Technical documentation
 
 Unfortunately, we didn't deploy our technical documentation. Instead, we store it in _./docs_ folder. You can clone the project, and do the following commands:
