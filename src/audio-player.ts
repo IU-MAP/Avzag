@@ -35,7 +35,7 @@ function canPlay(result: Ref<string[]>, lect: string, files: string[]) {
 function play(lect: string, files: string[], key?: string) {
   stop();
   state.key = key ?? lect ?? files[0];
-  state.timer = setInterval(seek, 50);
+  state.timer = window.setInterval(seek, 50);
 
   state.queue = files
     .map((f) => (lect ? url(lect, f) : f))

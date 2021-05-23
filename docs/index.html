@@ -1,0 +1,192 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>avzag</title>
+	<meta name="description" content="Documentation for avzag">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">avzag</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>avzag</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#avzag-dictionary" id="avzag-dictionary" style="color: inherit; text-decoration: none;">
+					<h1>Avzag Dictionary</h1>
+				</a>
+				<p><img src="https://github.com/IU-MAP/avzag/actions/workflows/dist.yml/badge.svg" alt="deployment status">
+					<img src="https://github.com/IU-MAP/avzag/actions/workflows/lint.yml/badge.svg" alt="code quality">
+				<img src="https://github.com/IU-MAP/avzag/actions/workflows/test.yml/badge.svg" alt="test"></p>
+				<p>This repo is a fork of <a href="https://github.com/alkaitagi/avzag">Avzag</a> project for <em>IU-S21-MAP</em> course. During the course the <strong>team</strong> of <a href="https://github.com/QazyBi">@qazybi</a>, <a href="https://github.com/alkaitagi/">@alkaitagi</a>, <a href="https://github.com/annwhoorma">@annwhoorma</a> will develop the new Dictionary module for the application. The web site is written using VueJS framework in TypeScript language.</p>
+				<p>The goal of the project is to develop a cross-lingual dictionary with efficient search and rich data representation. The system should provide capability for searching offline, and in various grammatical forms and usage samples for the dictionary entries.</p>
+				<p>Our backlog can be found in the <a href="https://github.com/IU-MAP/avzag/projects/1">&quot;Projects&quot; -&gt; &quot;Dictionary&quot;</a> section.</p>
+				<a href="#project-setup" id="project-setup" style="color: inherit; text-decoration: none;">
+					<h2>Project setup</h2>
+				</a>
+				<p>After donwloading the repo for the first time <code>yarn install</code>. To run the app locally <code>yarn serve</code>.</p>
+				<a href="#sprints" id="sprints" style="color: inherit; text-decoration: none;">
+					<h2>Sprints</h2>
+				</a>
+				<p>You can find sprints-related information (including burndown chart) in <a href="https://github.com/IU-MAP/avzag/discussions/20">this discussion</a>.</p>
+				<p>You can find our backlog and sprints board <a href="https://github.com/IU-MAP/avzag/projects/1">here</a>. Note that we have one board for all sprints, each task has a tag with a sprint number.</p>
+				<a href="#sprint-0" id="sprint-0" style="color: inherit; text-decoration: none;">
+					<h3>Sprint 0</h3>
+				</a>
+				<p>We&#39;ve completed knowledge acquisition:</p>
+				<ul>
+					<li>decided to use web workers for loading DB and searching;</li>
+					<li>decided to use jsdoc to generate documentation for our project;</li>
+				</ul>
+				<a href="#sprint-1" id="sprint-1" style="color: inherit; text-decoration: none;">
+					<h3>Sprint 1</h3>
+				</a>
+				<p>We&#39;ve implemented cleaning and loading of DB with web-workers.</p>
+				<p>We&#39;ve failed to set up documentation generationg with jsdoc because vue plugins for jsdoc don&#39;t support Vue 3.0.</p>
+				<a href="#sprint-2" id="sprint-2" style="color: inherit; text-decoration: none;">
+					<h3>Sprint 2</h3>
+				</a>
+				<p>We&#39;ve optimized search.</p>
+				<p>We&#39;ve moved search to another dbworker.</p>
+				<p>We&#39;ve implemented parallel search.</p>
+				<p>We&#39;ve managed workers&#39; communication and lifecycle.</p>
+				<p>We&#39;ve created a separate branch <code>dev</code> for development which is merged to main after each sprint.</p>
+				<p>We&#39;ve made little progress in generating documentation as no plugins worked. We&#39;ve found another tool - tsdoc.</p>
+				<p>We haven&#39;t created any automated testing. Nevertheless, we&#39;ve done some manual testing for features we added and for features we had before to make sure we didn&#39;t break anything. One of the criteria for a &quot;passed test&quot; is to have no errors in the console and correct output messages if any. We are planning to use jest and/or selenium to do auto-testing.</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="modules.html">Modules</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/dictionary_db_worker.html">Dictionary/db.worker</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/dictionary_main.html">Dictionary/main</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/dictionary_search_worker.html">Dictionary/search.worker</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/dictionary_types.html">Dictionary/types</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/home_main.html">Home/main</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/home_map.html">Home/map</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/home_types.html">Home/types</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/audio_player.html">audio-<wbr>player</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_notes_types.html">components/<wbr>Notes/types</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_query_types.html">components/<wbr>Query/types</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/editor.html">editor</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/main.html">main</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/registerserviceworker.html">register<wbr>Service<wbr>Worker</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/router.html">router</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shims_vue.html">shims-<wbr>vue</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/store.html">store</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/worker_loader.html">worker-<wbr>loader</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
