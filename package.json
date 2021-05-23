@@ -21,11 +21,8 @@
     ]
   },
   "dependencies": {
-<<<<<<< HEAD
-=======
     "@octokit/rest": "^18.5.3",
     "@types/node": "^14.14.37",
->>>>>>> fa3d5621edb58c7101ab9b3c028c8ebaabafcfac
     "core-js": "^3.10.1",
     "howler": "^2.2.1",
     "idb": "^6.0.0",
