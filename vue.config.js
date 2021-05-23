@@ -1,19 +1,6 @@
 module.exports = {
   publicPath: process.env.NODE_ENV === "production" ? "/avzag/" : "/",
   productionSourceMap: false,
-  chainWebpack: (config) =>
-    config.module
-      .rule("web-worker")
-      .test("/.worker.(c|m)?js$/i")
-      .use("worker")
-      .loader("worker-loader")
-      .end()
-      .use("babel")
-      .loader("babel-loader")
-      .options({
-        presets: ["@babel/preset-env"],
-      })
-      .end(),
   configureWebpack: {
     devtool: "source-map",
   },

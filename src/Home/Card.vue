@@ -15,12 +15,10 @@
 </template>
 
 <script lang="ts">
-import Flag from "@/components/Flag.vue";
 import { computed, defineComponent, PropType } from "vue";
-import { Lect, SearchState } from "./types";
+import { Lect, SearchState } from "../Home/types";
 
 export default defineComponent({
-  components: { Flag },
   props: {
     lect: { type: Object as PropType<Lect>, default: () => ({}) },
     search: { type: Object as PropType<SearchState>, default: () => ({}) },
