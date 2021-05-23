@@ -10,6 +10,26 @@ The goal of the project is to develop a cross-lingual dictionary with efficient 
 
 Our backlog can be found in the ["Projects" -> "Dictionary"](https://github.com/IU-MAP/avzag/projects/1) section.
 
+Our final report can be found [here](https://docs.google.com/document/d/1PO85QKzmswkXvmy9avJxduC0IPConJkl2qqPK4dIJis/edit?usp=sharing).
+
+## User documentation (or how to use it)
+
+Whenever you need to get a quick translation of a word and see some examples of how to use it, you can go to the website, choose a set of languages you need and then you'll be transferred to the dictionary. It will take a few seconds to load the words according to the languages you chose. Then you can type in a word you need to get translation of. Within a second you'll see possible matches for the language you chose. You can also see some use cases and forms for those words. Yup, that simple :)
+
+If you are an editor and would like to bring more words to the dictionary, there is an interface for you. At the main page with the map, you can click on the "info" sign at the top left corner and choose "Editor". Then you'll need to choose what exactly you want to which part of the database you want to add to: phonology, converter, phrasebook (or even phrasebook corpus), or dictionary. Then you just follow the interface and fill the necessary fields.
+
+In case you are lost and/or noticed some inconsistency, you click on the "info" sign, that is in the top left corner, and choose "Channel". That will take you straight to the telegram chanell with other people who are passionate about dagestani languages.
+
+## Technical documentation
+
+Unfortunately, we didn't deploy our technical documentation. Instead, we store it in _./docs_ folder. You can clone the project, and do the following commands:
+```bash
+~/.../Avzag >>> cd docs
+~/.../Avzag/docs >>> python -m http.server
+```
+
+Most probably it will be served at `localhost:8000` and all you need to do is to go there.
+
 ## Project setup
 
 After donwloading the repo for the first time `yarn install`. To run the app locally `yarn serve`.
@@ -19,32 +39,3 @@ After donwloading the repo for the first time `yarn install`. To run the app loc
 You can find sprints-related information (including burndown chart) in [this discussion](https://github.com/IU-MAP/avzag/discussions/20).
 
 You can find our backlog and sprints board [here](https://github.com/IU-MAP/avzag/projects/1). Note that we have one board for all sprints, each task has a tag with a sprint number.
-
-### Sprint 0
-
-We've completed knowledge acquisition:
-
-- decided to use web workers for loading DB and searching;
-- decided to use jsdoc to generate documentation for our project;
-
-### Sprint 1
-
-We've implemented cleaning and loading of DB with web-workers.
-
-We've failed to set up documentation generationg with jsdoc because vue plugins for jsdoc don't support Vue 3.0.
-
-### Sprint 2
-
-We've optimized search.
-
-We've moved search to another dbworker.
-
-We've implemented parallel search.
-
-We've managed workers' communication and lifecycle.
-
-We've created a separate branch `dev` for development which is merged to main after each sprint.
-
-We've made little progress in generating documentation as no plugins worked. We've found another tool - tsdoc.
-
-We haven't created any automated testing. Nevertheless, we've done some manual testing for features we added and for features we had before to make sure we didn't break anything. One of the criteria for a "passed test" is to have no errors in the console and correct output messages if any. We are planning to use jest and/or selenium to do auto-testing.

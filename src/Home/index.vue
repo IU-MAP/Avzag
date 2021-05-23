@@ -34,7 +34,7 @@
         <div v-if="about" id="about" class="col-1 card text-center small">
           <h1>Ævzag</h1>
           <div class="row-1 wrap center">
-            <router-link to="/editor/dictionary">
+            <router-link to="/editor/phonology">
               <btn icon="construction" text="Editor" />
             </router-link>
             <a href="https://t.me/avzag" class="wrap">
@@ -67,23 +67,46 @@ import InputQuery from "@/components/Query/InputQuery.vue";
 
 import {
   computed,
-  onMounted,
-  onUnmounted,
   ref,
-  watch,
   defineComponent,
+  toRaw,
+  onMounted,
+  watch,
+  onUnmounted,
 } from "vue";
 import { useRouter } from "vue-router";
-import { lects } from "@/store";
-import { reset, catalogue, search, query } from "./main";
+import { cache, checkOutdated, lects, loadJSON, storage } from "@/store";
+import { catalogue, search, query } from "./main";
 import { createMap } from "./map";
 
 export default defineComponent({
   components: { Marker, Card, InputQuery },
   setup() {
-    reset();
     const router = useRouter();
     onMounted(() => createMap());
+    onUnmounted(async () => {
+      cache.update("lects");
+      lects.value = [...search.selected];
+      await storage.setItem("lects", toRaw(lects.value));
+      await checkOutdated();
+    });
+    watch(
+      lects,
+      () => {
+        if (!search.selected.size && lects.value.length)
+          lects.value.forEach((l) => search.selected.add(l));
+      },
+      { immediate: true }
+    );
+
+    if (navigator.onLine) {
+      delete cache.records.value["catalogue.json"];
+      caches
+        .keys()
+        .then((ks) => ks.find((k) => k.includes("avzag-precache")))
+        .then((k) => caches.delete(k ?? ""));
+    }
+    loadJSON("catalogue", []).then((j) => (catalogue.value = j));
 
     const empty = computed(() => !search.selected.size);
     const about = ref(false);
@@ -93,25 +116,12 @@ export default defineComponent({
       else search.selected.add(name);
     }
     function load() {
-      lects.value = [...search.selected];
       router.push(
         localStorage.urlUser
           ? { path: localStorage.urlUser }
-          : { name: "Dictionary" }
+          : { name: "phonology" }
       );
     }
-
-    watch(
-      catalogue,
-      () =>
-        (search.selected = new Set(
-          JSON.parse(localStorage.lects ?? "[]") as string[]
-        )),
-      { immediate: true }
-    );
-    onUnmounted(
-      () => (localStorage.lects = JSON.stringify([...search.selected]))
-    );
 
     return { catalogue, query, search, empty, about, toggleLect, load };
   },

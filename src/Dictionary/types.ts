@@ -1,49 +1,25 @@
+export type DictionaryMeta = { lists: { name: string; query: string }[] };
+
 export type Text = {
   plain: string;
   ipa?: string;
   glossed?: string;
 };
 
-export type Sample = {
-  text: Text;
+export type Sample = Text & {
   translation: string;
 };
 
-export type Form = {
-  text: Text;
-  grammar: string;
+export type Use = {
+  meaning: string;
+  tags?: string[];
+  samples?: Sample[];
+  notes?: string[];
 };
 
 export type Entry = {
-  translation: string;
-  forms: Form[];
-  samples?: Sample[];
-  tags?: string;
-  explanation?: string;
-  etymology?: string;
-  related?: string[];
-};
-
-export type DictionaryMeta = { lists: Record<string, string[]> };
-
-export type Search = Record<string, Record<string, Entry[]>>;
-
-export type DBWorkerState =
-  | "preparing"
-  | "fetching"
-  | "fetched"
-  | "loading"
-  | "ready";
-
-export type SearchWorkerCommand =
-  | string[]
-  | {
-      lect: string;
-      query: string[];
-      queryMode: string;
-    };
-
-export type SearchWorkerResult = {
-  lect: string;
-  entry: Entry;
+  forms: Text[];
+  uses: Use[];
+  tags?: string[];
+  notes?: string[];
 };

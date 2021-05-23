@@ -12,7 +12,7 @@ type Track = {
 
 const state = reactive({
   key: null as null | string,
-  timer: 0,
+  timer: 0 as unknown,
   current: undefined as undefined | Track,
   queue: [] as Track[],
 });
@@ -22,14 +22,14 @@ function url(lect: string, file: string) {
 }
 
 function canPlay(result: Ref<string[]>, lect: string, files: string[]) {
-  files
-    .map((f) => url(lect, f))
-    .map((u, i) =>
-      fetch(u)
-        .then((r) => r.blob())
-        .then(({ type }) => type.includes("audio"))
-        .then((a) => (result.value[i] = a ? u : ""))
-    );
+  files.forEach((f, i) => {
+    if (!f) return;
+    const u = url(lect, f);
+    fetch(u)
+      .then((r) => r.blob())
+      .then(({ type }) => type.includes("audio"))
+      .then((a) => (result.value[i] = a ? u : ""));
+  });
 }
 
 function play(lect: string, files: string[], key?: string) {
@@ -80,7 +80,7 @@ function seek() {
 function stop() {
   Howler.unload();
   state.key = null;
-  clearInterval(state.timer);
+  clearInterval(state.timer as number);
   state.current = undefined;
   state.queue.length = 0;
 }

@@ -8,45 +8,48 @@ const EditorNavigation = () => import("@/EditorNavigation.vue");
 const Dictionary = () => import("@/Dictionary/index.vue");
 const DictionaryEditor = () => import("@/Dictionary/Editor.vue");
 
+export const userRoutes = [
+  {
+    path: "dictionary",
+    name: "dictionary",
+    icon: "book",
+    component: Dictionary,
+  },
+];
+export const editorRoutes = [
+  {
+    path: "dictionary",
+    name: "dictionaryEditor",
+    title: "Dictionary",
+    component: DictionaryEditor,
+  },
+];
+
 const routes = [
   {
     path: "/home",
-    name: "Home",
+    name: "home",
     component: Home,
   },
   {
     path: "/",
     component: Navigation,
-    children: [
-      {
-        path: "dictionary",
-        name: "Dictionary",
-        component: Dictionary,
-      },
-    ],
+    children: userRoutes,
   },
   {
     path: "/editor/",
     component: EditorNavigation,
-    children: [
-      {
-        path: "dictionary",
-        name: "DictionaryEditor",
-        component: DictionaryEditor,
-      },
-    ],
+    children: editorRoutes,
   },
   {
     path: "/:pathMatch(.*)",
     redirect: {
-      name: "Home",
+      name: "home",
     },
   },
 ] as RouteRecordRaw[];
 
 export default createRouter({
-  history: createWebHistory(
-    process.env.NODE_ENV === "production" ? "/avzag/" : "/"
-  ),
+  history: createWebHistory(),
   routes,
 });
